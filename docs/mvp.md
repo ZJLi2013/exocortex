@@ -1,11 +1,12 @@
 # exocortex MVP
 
-Plan Revision: 3
+Plan Revision: 4
 Plan Review: approved
 
 ## Goal
 
 随手丢进来的研究链接由 LLM 整理成一个 Obsidian wiki：自动长出概念页、判断它影响我哪个研究问题，人不做分类。
+来源落在所有研究问题之外时，由 LLM 提议新的研究问题（lens），human 批准后生效。
 
 ### 长期目标与边界
 
@@ -48,11 +49,35 @@ Plan Review: approved
 
 ## 下一步决策
 
-MVP 可用。剩余缺口来自 t4 收录方反馈，按是否需要 human 分两类：
+MVP 可用；t4 反馈里 agent 能定的缺口已改进 `AGENTS.md`，`check_wiki.py` 不再依赖 Obsidian 运行（commit `65995be`）。
 
-- **需 human 定**：robotrsi 范围里的「agent」是否包含纯 RL 策略（决定 SGS / AlphaNIST 这类是否 keep）。
-- **agent 可直接改 `AGENTS.md`**：建概念页时允许给旧来源补 `concepts`；README 小写 / 非 main 分支的退路；README 无数字但引论文时补抓 arXiv；`check_wiki.py` 在没有 `obsidian` CLI 时退到纯文件链接检查。
-- 之后才做无头触发（inbox 有新内容时自动跑收录）。
+下一步做 r4「lens 外的来源提议新 lens」（设计见下节）：
+
+- **t5**：实现「lint lenses」并在现有 18 个来源上跑，验提议是否命中预登记的两个簇。
+- **t6**（t5 通过后）：human 批准一个候选，agent 对全部已有来源补判新 lens。
+- robotrsi 范围里「agent」含不含纯 RL，交给 r4 机制处理：SGS / AlphaNIST 会作为候选 lens 出现，human 届时选「新开」还是「并入 robotrsi 并改范围句」。
+- 无头触发排在 r4 之后。
+
+## r4：来源落在所有 lens 之外
+
+lens 是 human 的研究问题，不由 LLM 自建；但 LLM 能看见「有一簇来源不属于任何问题」。复用概念页做聚类，不加 embedding。
+
+- **触发**：收录批次结束后做 lint lenses。某个概念页链到的来源里，`lenses: []` 的有 ≥ 2 个 → 这些来源构成一簇；共享来源的簇合并。只有 1 个无 lens 来源的不提议，留在 Bases 的 `unowned` 视图里。
+- **提议**：每簇写一个 `wiki/lenses/<name>.md`，frontmatter `status: proposed`。范围句草案一句；「当前判断」留空；「为何提议」列簇内来源与共享概念；若某个已有 lens 放宽范围句即可覆盖，写一行「也可并入 <lens>：<改后的范围句>」。
+- **收录时**：只对 `status` 不是 `proposed` 的 lens 判定，候选 lens 不吸新来源，避免没批准的问题越长越大。
+- **human 动作**：「批准 lens <name>」→ 去掉 `status`，agent 对全部已有来源补判这个 lens（keep 写草稿）；「并入 <lens>」→ human 改该 lens 范围句，agent 删候选并补判；「否决 lens <name>」→ 删文件，log 记一行，同一簇没有新来源加入就不再提议。
+- **index**：`index.base` 加 `unowned` 视图（`lenses` 为空的来源），让 lens 外的积压可见。
+
+预登记（现有 18 个来源）：
+
+| 簇 | 来源 | 共享概念 | 预期 |
+|---|---|---|---|
+| 机器人 RL 训练 | sgs、alphanist | 无示教强化学习、课程式探索 | 提议 1 个 lens |
+| 决策模型 | jevany、openjev | System 1 决策模型、选项概率读出、概率校准 | 提议 1 个 lens |
+| — | batch-invariant-vlas、sciencediscovery | 无共享 | 不提议，只在 `unowned` |
+
+t5 验收：新 agent 只拿「lint lenses」+ `AGENTS.md`，恰好提出上表两个候选、不提单来源候选；`check_wiki.py --sources 18` 退出 0；候选 lens 不改动任何来源页的 `lenses`。
+不通过 → 多提或少提看是聚类规则（阈值 / 合并）还是概念同义判断出错，改对应那条规则。
 
 ## 系统
 
@@ -178,3 +203,5 @@ lenses: [robotrsi]
 - r2（2026-10-16，human）：3dgen_tracker 与 embodied_radar 已有自动管线，不进第 1 步。
 - r3（2026-10-16，human）：手工 index 不可扩展、`raw/` 放的是综合页、没有 LLM 整理层。改为 llm-wiki：来源平铺、
   LLM 长概念页、lens 由 LLM 判定、索引用 Bases；整理者先用 coding agent。
+- r4（2026-10-16，human）：进来的来源很可能完全不属于已有 lens（t4 里 5/6 双 reject）。加「lint lenses」：
+  无 lens 来源经概念页成簇时提议候选 lens，human 批准后补判全库。

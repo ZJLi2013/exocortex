@@ -14,6 +14,16 @@ views:
       - property: published
         direction: DESC
   - type: table
+    name: unowned
+    filters:
+      and:
+        - file.inFolder("wiki/sources")
+        - lenses.isEmpty()
+    order:
+      - file.name
+      - published
+      - concepts
+  - type: table
     name: concepts
     filters:
       and:

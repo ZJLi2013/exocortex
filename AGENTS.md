@@ -11,7 +11,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 | `raw/<slug>.md` | 抓取的原文，写一次不改 | agent |
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
 | `wiki/concepts/<name>.md` | 跨来源的概念，≥ 2 个来源提到才建 | agent |
-| `wiki/lenses/<name>.md` | human 的研究问题：范围、当前判断、待批准草稿 | 范围与当前判断归 human；草稿归 agent |
+| `wiki/lenses/<name>.md` | human 的研究问题：范围、当前判断、待批准草稿 | 范围与当前判断归 human；草稿与 `status: proposed` 的候选归 agent |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/log.md` | 追加日志 | agent |
 
@@ -80,7 +80,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
    - [[<slug>]]：……
    ```
 
-5. **lens 判定**：逐个读 `wiki/lenses/*.md` 的「范围」，判这条来源 keep 还是 reject。
+5. **lens 判定**：逐个读 `wiki/lenses/*.md` 的「范围」，判这条来源 keep 还是 reject。跳过 `status: proposed` 的候选 lens。
    - reject：不写 lens 页，log 里记 lens 名与一句理由。
    - keep：在该 lens 的「待批准」下追加草稿，**不改「当前判断」**：
 
@@ -94,7 +94,41 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 6. **log**：`wiki/log.md` 追加 `## [YYYY-MM-DD] ingest | <工作名>`，下面一行写 lens 判定结果，新建了概念页就再写一行页名。
 7. 处理完的 URL 从 `inbox/links.md` 删除。
 
-全部收录完运行 `python evals/check_wiki.py --sources <来源总数>`。
+全部收录完做一遍下面的 lint lenses，再运行 `python evals/check_wiki.py --sources <来源总数>`。
+
+## lint lenses（收录批次结束后，或 human 说「lint lenses」）
+
+lens 外的来源成簇时，提议一个新研究问题，由 human 决定要不要。
+
+1. **找簇**：逐个读 `wiki/concepts/*.md`，看它链到的来源里有几个的 `lenses: []`。≥ 2 个 → 这些无 lens 来源成一簇。
+   两簇共享任一来源就合并。只有 1 个无 lens 来源的概念不成簇。
+2. **跳过**：已有候选 lens 覆盖同一簇时只追加新来源；log 里该簇被否决过、且没有新来源加入时不提。
+3. **提议**：每簇写 `wiki/lenses/<name>.md`（name 小写短横线）：
+
+   ```markdown
+   ---
+   type: lens
+   status: proposed
+   ---
+   # <name>
+
+   ## 范围
+
+   <一句话草案：会改变什么判断的什么工作>
+
+   ## 为何提议
+
+   - 来源：[[<slug>]]、[[<slug>]]
+   - 共享概念：[[<概念>]]
+   - 也可并入 [[<已有 lens>]]：<改后的范围句>   ← 只在放宽某个已有 lens 的范围句就能覆盖时写
+
+   ## 当前判断
+
+   ## 待批准
+   ```
+
+   候选 lens 不改任何来源页的 `lenses`。
+4. **log**：`## [YYYY-MM-DD] lint | lenses`，每个候选一行（名字与来源）；没有候选也记一行。
 
 ## 查询
 
@@ -106,3 +140,9 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 ## 批准
 
 human 说「批准 <lens> 的 <工作名> 草稿」时，把草稿内容并入「当前判断」并删除草稿；只有 human 能触发。
+
+候选 lens 同样只由 human 处置：
+
+- 「批准 lens <name>」：删掉 `status` 与「为何提议」，对 `wiki/sources/` 全部来源做一遍收录第 5 步（只判这个 lens），keep 的同时把它加进来源页 `lenses`。
+- 「并入 <已有 lens>」：human 先改该 lens 的范围句；agent 删候选文件，对全部来源补判该 lens。
+- 「否决 lens <name>」：删候选文件，log 记 `## [YYYY-MM-DD] reject lens | <name>` 与簇内来源。
