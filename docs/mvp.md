@@ -44,15 +44,15 @@ Plan Review: approved
   那两份文档本身是 LLM 写的综合页，放进 `raw/` 是层次错位；r3 改为从原始来源编译。
 - r3 冷启动可用：12 个原始来源编译出 8 个概念页（最大的链 11 个来源），无设计上下文的 agent 只读 wiki 作答 4/5（t3b）。
   漏的一题（Q5 漏 Agent Laboratory）事实在 lens 页里，是作答方没把「难以引导」归为反例，不是 wiki 缺事实。
-- 收录目前由我给 subagent 写详细指令完成，`AGENTS.md` 能否单独驱动收录还没验证。
+- `AGENTS.md` 能单独驱动收录：新 agent 只拿「收录 inbox」处理 6 个新链接，预登记的 3 条判定全中，SGS 与 AlphaNIST 自己长出共享概念页（t4）。
 
 ## 下一步决策
 
-t4：human 给的 6 个新链接（含两个 lens 都不覆盖的 Jev 系列）放进 inbox，新 agent 只拿「照 `AGENTS.md` 收录 inbox」执行。
+MVP 可用。剩余缺口来自 t4 收录方反馈，按是否需要 human 分两类：
 
-- 开跑前把 t3 学到的抓取规则写进 `AGENTS.md`：GitHub 仓库抓 raw README；JS 渲染页抓 HTML 抽文本；`published` 查不到时用原文引的 arXiv 编号推年月。
-- **t4 通过** → 无头触发（Cursor SDK / agent CLI 在 inbox 有新内容时跑收录）。
-- **t4 不通过** → 按失败位置改 `AGENTS.md`；lens 判定理由说不通就改 lens 范围句。
+- **需 human 定**：robotrsi 范围里的「agent」是否包含纯 RL 策略（决定 SGS / AlphaNIST 这类是否 keep）。
+- **agent 可直接改 `AGENTS.md`**：建概念页时允许给旧来源补 `concepts`；README 小写 / 非 main 分支的退路；README 无数字但引论文时补抓 arXiv；`check_wiki.py` 在没有 `obsidian` CLI 时退到纯文件链接检查。
+- 之后才做无头触发（inbox 有新内容时自动跑收录）。
 
 ## 系统
 

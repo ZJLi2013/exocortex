@@ -53,3 +53,21 @@ concepts/人定义评估与验收、lenses/agent-loop，及该概念页列出的
 
 ## [2026-10-16] query | Q5
 concepts/自改进、concepts/选出集合与确认集合分离、lenses/agent-loop，及 rsigym、rsiagent、autoresearch、alphaevolve、embodiedrsi 来源页。
+
+## [2026-10-16] ingest | JevAny
+robotrsi reject（机器人只在 playground 回放，无机器人结果）；agent-loop reject（决策模型基础设施，不是 research agent 或自改进系统）。
+
+## [2026-10-16] ingest | OpenJev
+robotrsi reject（不涉及机器人）；agent-loop reject（决策推理服务器，不是 research agent 或自改进系统）。
+
+## [2026-10-16] ingest | SGS
+robotrsi reject（纯 RL 训练课程，无 agent）；agent-loop reject（不是 research agent 或自改进系统）。
+
+## [2026-10-16] ingest | AlphaNIST
+robotrsi reject（纯 RL 训练，无 agent，只有训练成功率）；agent-loop reject（不是 research agent 或自改进系统）。
+
+## [2026-10-16] ingest | Ctrl-World
+robotrsi keep；agent-loop reject（README 只有世界模型推理与训练，无 agent 循环）。
+
+## [2026-10-16] ingest | Batch-Invariant VLAs
+robotrsi reject（VLA 推理数值工程，无 agent，不改选底座、改进方向或评测选择）；agent-loop reject（不涉及 research agent）。

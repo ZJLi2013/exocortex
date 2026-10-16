@@ -23,7 +23,9 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 
 1. **去重**：`rg "^url: <URL>$" raw/` 命中则跳过，log 记一行。
 2. **抓原文**写 `raw/<slug>.md`。slug 用工作名的小写短横线形式（`embodiedevo`、`gemini-4-argon`）。
-   arXiv 抓 `https://arxiv.org/html/<id>` 全文，抓不到再退到 abs 页。frontmatter：
+   arXiv 抓 `https://arxiv.org/html/<id>` 全文，抓不到再退到 abs 页。
+   GitHub 仓库页只返回导航壳，改抓 `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/README.md`。
+   正文靠 JavaScript 填充的页面，下载 HTML 抽文本。存原文用 `python scripts/save_raw.py --url <URL> --slug <slug> --title <标题> --from <抓到的文件>`。frontmatter：
 
    ```yaml
    url: <原 URL>
@@ -37,7 +39,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
    ---
    type: source
    url: <原 URL>
-   published: YYYY-MM-DD      # 原文发布日期；查不到写 unknown
+   published: YYYY-MM-DD      # 原文发布日期；没写日期但引了自己的 arXiv 编号就按编号写 YYYY-MM；都没有写 unknown
    ingested: YYYY-MM-DD
    concepts: [概念 A, 概念 B]  # 纯文本，含只有本来源提到的
    lenses: ["[[robotrsi]]"]   # keep 的 lens，链接形式；都不 keep 写 []

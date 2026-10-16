@@ -1,4 +1,4 @@
-﻿views:
+views:
   - type: table
     name: sources
     filters:
