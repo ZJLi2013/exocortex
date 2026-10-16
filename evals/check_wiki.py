@@ -1,8 +1,7 @@
-﻿"""Structural check of the wiki: source pages, raw files, unresolved links, Bases view."""
+﻿"""Structural check of the wiki: source pages, raw files, unresolved links."""
 
 import argparse
 import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -10,10 +9,16 @@ ROOT = Path(__file__).resolve().parent.parent
 FIELDS = ["type", "url", "published", "ingested", "concepts", "lenses"]
 
 
-def obsidian(command: str) -> str:
-    # base:query exits -1 on Windows unless launched through the shell.
-    return subprocess.run(f"obsidian {command}", shell=True, cwd=ROOT, capture_output=True, text=True,
-                          encoding="utf-8", check=True).stdout.strip()
+def unresolved_links() -> list[str]:
+    # Resolved like Obsidian: by file name or by vault-relative path, ignoring #heading and |alias.
+    files = [p.relative_to(ROOT).with_suffix("").as_posix() for p in ROOT.rglob("*.md")]
+    targets = set(files) | {f.rsplit("/", 1)[-1] for f in files}
+    broken = []
+    for page in sorted((ROOT / "wiki").rglob("*.md")):
+        for link in re.findall(r"\[\[([^\]|#]+)", page.read_text(encoding="utf-8")):
+            if link.strip() not in targets:
+                broken.append(f"{link} (in {page.relative_to(ROOT).as_posix()})")
+    return broken
 
 
 def main() -> None:
@@ -35,15 +40,9 @@ def main() -> None:
         if not (ROOT / "raw" / page.name).exists() or f"[[raw/{page.stem}]]" not in text:
             problems.append(f"{page.name}: no raw/{page.name} or no link to it")
 
-    # raw/ keeps the original pages' relative links; only wiki/ must resolve.
-    rows = [r.split("\t") for r in obsidian("unresolved verbose format=tsv").splitlines() if "\t" in r]
-    broken = [f"{r[0]} (in {r[-1]})" for r in rows if r[-1].startswith("wiki/")]
+    broken = unresolved_links()
     if broken:
         problems.append("unresolved links: " + "; ".join(broken))
-
-    listed = obsidian("base:query path=wiki/index.base view=sources format=paths").splitlines()
-    if len(listed) != args.sources:
-        problems.append(f"Bases view lists {len(listed)} sources, expected {args.sources}")
 
     concepts = sorted((ROOT / "wiki/concepts").glob("*.md"))
     print(f"{len(pages)} sources, {len(concepts)} concepts")

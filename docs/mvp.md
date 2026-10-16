@@ -171,6 +171,7 @@ lenses: [robotrsi]
 | t1（r2） | 镜像两份 tracker 文档进 `raw/`，`--check` 作 verifier | pass | verify `20261016T091210Z-c1be5484` |
 | t2（r2） | 无设计上下文的 subagent 只读快照作答 | 5/5；作答方报告概念措辞不一、日期口径不一，只能通读 | commit `df3a910` 的 `evals/answers.md` |
 | t3（r3） | 3 个 subagent 并行各收 3 个来源，我合并概念页与 lens 草稿；新 agent 只读 wiki 作答 | 12 来源 / 8 概念页；作答 4/5（Q5 漏 Agent Laboratory）；作答方报告 RSIGym、RAX 发布月未落到来源页 | verify `20261016T095843Z-36c55293`；`evals/answers.md`。首个 verify 失败是 verifier 命令里 `$LASTEXITCODE` 被提前展开，改 `cmd /c … && …` 后重 init |
+| t4（r3） | 新 agent 只拿「收录 inbox」+ `AGENTS.md` 处理 6 个 human 给的链接 | 18 来源 / 13 概念页；3 条预登记判定全中（只 Ctrl-World 被 robotrsi keep）；反馈 7 条缺口，最大是 lens 范围里「agent」未定义 | verify pass；收录方回复存于本轮对话 |
 
 ## Revision 记录
 
