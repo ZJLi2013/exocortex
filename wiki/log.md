@@ -71,3 +71,7 @@ robotrsi keep；agent-loop reject（README 只有世界模型推理与训练，�
 
 ## [2026-10-16] ingest | Batch-Invariant VLAs
 robotrsi reject（VLA 推理数值工程，无 agent，不改选底座、改进方向或评测选择）；agent-loop reject（不涉及 research agent）。
+
+## [2026-10-16] lint | lenses
+demo-free-rl：sgs、alphanist
+system1-decision：jevany、openjev
