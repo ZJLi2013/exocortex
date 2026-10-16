@@ -42,14 +42,17 @@ Plan Review: approved
 
 - r2 证明「聚到一处能查」：无设计上下文的 agent 只读两份 tracker 文档的快照，5/5 题命中（commit `df3a910`）。
   那两份文档本身是 LLM 写的综合页，放进 `raw/` 是层次错位；r3 改为从原始来源编译。
-- r3 未验证。
+- r3 冷启动可用：12 个原始来源编译出 8 个概念页（最大的链 11 个来源），无设计上下文的 agent 只读 wiki 作答 4/5（t3b）。
+  漏的一题（Q5 漏 Agent Laboratory）事实在 lens 页里，是作答方没把「难以引导」归为反例，不是 wiki 缺事实。
+- 收录目前由我给 subagent 写详细指令完成，`AGENTS.md` 能否单独驱动收录还没验证。
 
 ## 下一步决策
 
-先做 t3：12 个种子来源冷启动编译 wiki，用原查询集验收。
+t4：human 给的 6 个新链接（含两个 lens 都不覆盖的 Jev 系列）放进 inbox，新 agent 只拿「照 `AGENTS.md` 收录 inbox」执行。
 
-- **t3 通过** → t4：丢 5 条新链接（含与两个 lens 都无关的），验 lens 判定；再用 Cursor SDK / agent CLI 让 inbox 有新内容时无头触发。
-- **t3 不通过** → 按失败位置改 `AGENTS.md`：缺事实改来源页规则，缺跨来源串联改概念页规则，缺判断改 lens 种子。
+- 开跑前把 t3 学到的抓取规则写进 `AGENTS.md`：GitHub 仓库抓 raw README；JS 渲染页抓 HTML 抽文本；`published` 查不到时用原文引的 arXiv 编号推年月。
+- **t4 通过** → 无头触发（Cursor SDK / agent CLI 在 inbox 有新内容时跑收录）。
+- **t4 不通过** → 按失败位置改 `AGENTS.md`；lens 判定理由说不通就改 lens 范围句。
 
 ## 系统
 
@@ -167,6 +170,7 @@ lenses: [robotrsi]
 |---|---|---|---|
 | t1（r2） | 镜像两份 tracker 文档进 `raw/`，`--check` 作 verifier | pass | verify `20261016T091210Z-c1be5484` |
 | t2（r2） | 无设计上下文的 subagent 只读快照作答 | 5/5；作答方报告概念措辞不一、日期口径不一，只能通读 | commit `df3a910` 的 `evals/answers.md` |
+| t3（r3） | 3 个 subagent 并行各收 3 个来源，我合并概念页与 lens 草稿；新 agent 只读 wiki 作答 | 12 来源 / 8 概念页；作答 4/5（Q5 漏 Agent Laboratory）；作答方报告 RSIGym、RAX 发布月未落到来源页 | verify `20261016T095843Z-36c55293`；`evals/answers.md`。首个 verify 失败是 verifier 命令里 `$LASTEXITCODE` 被提前展开，改 `cmd /c … && …` 后重 init |
 
 ## Revision 记录
 
