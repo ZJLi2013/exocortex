@@ -1,11 +1,11 @@
 # exocortex MVP
 
-Plan Revision: 2
+Plan Revision: 3
 Plan Review: approved
 
 ## Goal
 
-把散在各仓库、手工维护的研究追踪聚到一个 Obsidian vault，在一处就能查到、并跨 tracker 回答问题。
+随手丢进来的研究链接由 LLM 整理成一个 Obsidian wiki：自动长出概念页、判断它影响我哪个研究问题，人不做分类。
 
 ### 长期目标与边界
 
@@ -14,107 +14,162 @@ Plan Review: approved
 
 | 做 | 现在不做 |
 |---|---|
-| 聚拢手工维护的 tracker，统一查看与查询 | 个人日常管理（日程、待办、邮件） |
-| 随手丢进来的链接自动路由到相关主题页（第 2 步） | 已有自动管线的 tracker（3dgen_tracker、embodied_radar）：它们自成闭环，规模也大，需要时再接 |
-| agent 起草 insight，human 批准后写入（第 3 步） | 自建 UI；Obsidian 只当阅读器 |
-| | embedding / RAG；规模到数千页之前用 `index.md` + `rg` |
+| LLM 收录来源、维护来源页与概念页（[llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)） | 人工主题分类；按主题分文件夹 |
+| LLM 按 lens 判断一条来源会改变哪个判断，起草改动，human 批准 | LLM 直接改 lens 的「当前判断」 |
+| 索引由 Obsidian Bases 从 frontmatter 生成 | 手写 index |
+| | embedding 聚类：来源上百后复用 3dgen 的近邻图 + Louvain 管线 |
+| | 已有自动管线的 tracker（3dgen_tracker、embodied_radar）、个人日常管理 |
+| | 改原仓库的 `landscape.md` / `research-rsi-track.md`；它们的 owner 迁不迁，等本 MVP 通过再定 |
+
+### 两种组织，都不是分类
+
+- **概念页（下而上）**：LLM 从来源里抽概念；同一概念被第二个来源提到时建页，链回所有来源。概念名先查已有页再起新名。
+- **lens（上而下）**：我的研究问题，每个由 human 写一句范围。LLM 对每条来源逐个 lens 判 keep / reject 与影响哪条判断。
+  lens 回答「它改变我哪个判断」，不回答「它是什么」；一条来源可以命中 0 到多个 lens。
+
+页面按类型分目录（来源 / 概念 / lens），类型是页面的结构，不是主题。
 
 ### 借鉴
 
-| 来源 | 取 | 不取 |
-|---|---|---|
-| [Karpathy llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | `raw/` 只读 + `wiki/` agent 写 + schema 文件三层；`index.md` 目录、`log.md` 追加日志；ingest / query / lint 三个操作 | — |
-| [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) | 页面 YAML frontmatter；新来源与旧页冲突时写 `> [!contradiction]` callout 而不是覆盖；lint 查死链、孤页、过期索引 | `entities/concepts/domains/...` 七类固定目录、`hot.md` 会话缓存、Obsidian REST API；等真遇到问题再加 |
-| [LinkVault](https://github.com/calghar/LinkVault) / [engram](https://github.com/tomashrdlicka/engram) | 第 2 步的 inbox：链接先进队列，去重后路由到已有页，没有合适的才新建 | — |
+| 来源 | 取 |
+|---|---|
+| [Karpathy llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | `raw/` 只读、`wiki/` LLM 写、schema 文件；ingest / query / lint；`log.md` |
+| [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) | frontmatter 约定；冲突写 `> [!contradiction]` 不覆盖；lint 查死链与孤页 |
+| embodied_radar `domain.yaml` | 一句话范围 + LLM keep / reject，用在 lens 判定 |
+| 3dgen_tracker `docs/paper_graph.md` | 手写 9 类混用四个轴、留一法 0.42–0.93，是不做人工分类的依据；聚类留到规模够时 |
 
 ## 当前结论
 
-- **t1 通过**：robotrsi（7 个文件）与 agent_loop（1 个文件）已镜像进 `raw/`，重跑同步不产生 diff。
-  `research-rsi-track.md` 在 agent-loop 里从未提交，manifest 记为「未提交」。
-- **t2 的 agent 部分通过**：一个没有设计上下文的 agent 只读 vault，5/5 题命中全部应命中来源，未编造。
-  Obsidian 里能否搜到 RAX、RSIGym 待 human 确认。
-- 通过是因为 vault 只有 9 个文件，agent 全部读完；按概念（选 / 确认分离、谁写评估器）和按日期的问题都靠通读。
-  文件数上百后这条路会失效，第 2 步加 inbox 时要一并决定概念页何时建。
+- r2 证明「聚到一处能查」：无设计上下文的 agent 只读两份 tracker 文档的快照，5/5 题命中（commit `df3a910`）。
+  那两份文档本身是 LLM 写的综合页，放进 `raw/` 是层次错位；r3 改为从原始来源编译。
+- r3 未验证。
 
 ## 下一步决策
 
-先做 t1 聚拢、t2 验证可用。t2 的结果决定第 2 步做什么：
+先做 t3：12 个种子来源冷启动编译 wiki，用原查询集验收。
 
-- **t2 通过** → 第 2 步做 inbox 路由（每个追踪页声明范围规则，丢进来的链接按范围分发）。
-  开工前要先定：手工 tracker 的 owner 是留在原仓库（exocortex 起草改动、回写原仓库），还是迁进 exocortex。
-- **t2 因「找不到跨 tracker 的相关内容」失败** → 第 2 步先建 `wiki/topics/` 跨 tracker 主题页，再做 inbox。
+- **t3 通过** → t4：丢 5 条新链接（含与两个 lens 都无关的），验 lens 判定；再用 Cursor SDK / agent CLI 让 inbox 有新内容时无头触发。
+- **t3 不通过** → 按失败位置改 `AGENTS.md`：缺事实改来源页规则，缺跨来源串联改概念页规则，缺判断改 lens 种子。
 
 ## 系统
 
 ```text
-exocortex/               # = Obsidian vault 根
-├── AGENTS.md            # schema：目录约定、query 先读 index 再 rg、raw 只读
-├── scripts/sync_sources.py   # 源列表写在脚本顶部
-├── raw/                 # 脚本写的快照，agent 与 human 都不手改
-│   ├── manifest.md      # 每个源：路径、源 commit、文件数、源是否有未提交改动
-│   └── <source>/
+exocortex/                    # = Obsidian vault 根
+├── AGENTS.md                 # 收录 / 查询 / lint 规则与 frontmatter schema；coding agent 按它执行
+├── inbox/links.md            # 一行一个 URL，或 Web Clipper 剪下的 .md
+├── raw/<slug>.md             # 抓取的原文，写一次不改
 └── wiki/
-    ├── index.md         # 每个源一节：它是什么、入口文件、核查日期范围
-    └── log.md           # ## [YYYY-MM-DD] sync | query | ingest | lint …
+    ├── sources/<slug>.md     # 一个来源一页
+    ├── concepts/<name>.md    # ≥ 2 个来源提到时建
+    ├── lenses/<name>.md      # 范围（human）+ 当前判断 + 待批准草稿
+    ├── index.base            # Bases 视图：来源按日期、概念按来源数、lens
+    └── log.md
 ```
 
-**复制而不是 symlink / junction**：原仓库仍是这些文件的 owner，exocortex 只读快照；
-Windows junction 在 Obsidian 与 git 下行为不一致。同步是镜像：源里删掉的文件 raw 里也删。
-保留源内相对目录，`landscape.md` → `works/*.md` 的链接在 vault 里照常可点。
+整理者是 coding agent（Cursor 里说「按 AGENTS.md 收录 inbox」）。Obsidian CLI 做 lint 与 Bases 查询，需要 Obsidian 开着且已打开本 vault。
 
-### 第 1 步聚拢的源
+r2 的 `scripts/sync_sources.py`、`raw/robotrsi/`、`raw/agent_loop/`、`raw/manifest.md`、`wiki/index.md` 在 t3 中删除。
 
-| 源 | 路径 | 内容 | 量 |
-|---|---|---|---|
-| `robotrsi` | `robotRSI/doc/landscape.md`、`doc/works/` | agent × 具身工作地图与逐篇笔记 | 7 个 |
-| `agent_loop` | `agent-loop/docs/study/research-rsi-track.md` | Research / RSI 工作追踪表 | 1 个 |
+### 收录一条来源
 
-两份文件链到的项目内文档（`direction.md`、`exploration-mode/*`、`industry-practices.md`）不聚拢，在 vault 里显示为未解析链接。
-
-### 渲染样例
-
-`raw/manifest.md` 一行：
+1. URL 已在某个 `raw/*.md` 的 `url:` 里 → 跳过并在 log 记一行。
+2. 抓取原文写 `raw/<slug>.md`（frontmatter：`url`、`fetched`、`title`）。
+3. 写 `wiki/sources/<slug>.md`，样例：
 
 ```markdown
-| robotrsi | ji_qi_ren/…/robotRSI/doc | 1a2b3c4 | 7 | 有未提交改动 |
+---
+type: source
+url: https://arxiv.org/abs/2610.18867
+published: 2026-10-13
+ingested: 2026-10-16
+concepts: [选出集合与确认集合分离, 技能库写回]
+lenses: [robotrsi]
+---
+# EmbodiedEvo
+
+一个 Playground 场景学技能与 lessons，冻结后才抽 Test 场景；RoboDojo 上 37.82%。
+
+- 关键数字：……
+- 可信度：……
+- 概念：[[选出集合与确认集合分离]]
+- 原文：[[raw/embodiedevo]]
 ```
 
-不写同步时间：重跑无变化时 manifest 也不变，`git status` 才能干净。
-
-`wiki/index.md` 一节：
+4. 概念：`concepts` 里每项先 `rg` 已有概念页；已有则在该页「来源」下追加一行；
+   第二个来源提到且无页 → 建页并链回两个来源。只有一个来源的概念只留在 frontmatter，不写 wikilink。
+5. lens：逐个读 `wiki/lenses/*.md` 的范围，判 keep / reject。keep 时在该 lens 的「待批准」下追加：
 
 ```markdown
-## robotrsi：agent × 具身相关工作地图
-四个比较轴、评测场地、方法与框架三张表，逐篇笔记在 works/。核查日期 2026-09-29 至 2026-10-16。
-入口：[[raw/robotrsi/landscape]]
+> [!draft] EmbodiedEvo（2026-10-16）
+> 影响判断 2：……；依据 [[embodiedevo]]
 ```
 
-## t2 验收：查询集
+   与「当前判断」冲突时改用 `> [!contradiction]`。不改「当前判断」本身。
+6. `wiki/log.md` 追加 `## [YYYY-MM-DD] ingest | <title>`。
+7. 全部收录完跑 `obsidian unresolved total` 与 `obsidian orphans`。
 
-agent 只读 `exocortex/`（`AGENTS.md` → `wiki/index.md` → `rg raw/`），不打开原仓库。每题答案要引用 raw 路径。
-「应命中」是设计时在原文件里查到的位置；命中指答案引用了该来源。Q1、Q3、Q4、Q5 需要同时用到两个源。
+### lens 种子
 
-| # | 问题 | 应命中 |
+范围句由 human 定稿；「当前判断」从原 tracker 的判断句搬入（不含事实表），作为起点。
+
+| lens | 范围（草案） | 当前判断来源 |
 |---|---|---|
-| Q1 | 哪些工作把「选出候选的集合」和「确认胜出的集合」分开？ | rsi-track 的 RSIGym 自改进（6 题选、37 题全集降分）；landscape 的 EmbodiedRSI、EmbodiedEvo、ASPIRE、RAX |
-| Q2 | Gemini 4 Argon 的公开状态和已知读数是什么？ | landscape 主表与 `works/gemini-argon.md`（56% → 75%、未给评测次数、模型闭源） |
-| Q3 | 哪些系统由 human 写评估器、任务定义或验收，agent 只在其内搜索？ | rsi-track 的 AlphaEvolve、RSIGym；landscape 的 Gemini 4 Argon（硬件上由人写阶段与验收） |
-| Q4 | 2026-10-13 及以后读过或核过的工作有哪些？ | rsi-track 的 RSIGym、ScienceDiscovery；landscape 的 EmbodiedEvo、Gemini 4 Argon、RAX |
-| Q5 | 哪些地方记录了自改进没迁移、或被当作反例？ | rsi-track 的 Qwen3.8 自改进（56.66% → 56.26%）、autoresearch 贪心接受规则、Agent Laboratory「难以引导」；landscape 的 RSIAgent 具身迁移性未验证 |
+| `robotrsi` | 会改变 RoboRSI 选底座、改进方向或评测选择的 agent × 机器人工作 | `landscape.md` 开头判断、比较轴 |
+| `agent-loop` | 会改变 agent-loop 探索模式、评估 / 预算 / 人工介入设计的 research agent 与自改进系统 | `research-rsi-track.md`「当前判断」与「对 agent-loop」列 |
+
+### 冷启动种子（12 个）
+
+覆盖查询集需要的工作，全部取自两份 tracker 的原始链接：
+
+| 工作 | URL |
+|---|---|
+| RSIGym | https://github.com/evolvent-ai/RSIGym |
+| ScienceDiscovery | https://github.com/openJiuwen-ai/sciencediscovery |
+| AlphaEvolve | https://arxiv.org/abs/2506.13131 |
+| autoresearch | https://github.com/karpathy/autoresearch |
+| Agent Laboratory | https://arxiv.org/abs/2501.04227 |
+| EmbodiedRSI | https://arxiv.org/abs/2610.10498 |
+| EmbodiedEvo | https://arxiv.org/abs/2610.18867 |
+| ASPIRE | https://research.nvidia.com/labs/gear/aspire/ |
+| RAX | https://github.com/robot-agent-exploration/rax |
+| Gemini 4 Argon | https://developers.googleblog.com/gemini-4-argon-for-robotics/ |
+| RoboQuest | https://arxiv.org/abs/2610.10388 |
+| RSIAgent | https://arxiv.org/html/2609.15364v1 |
+
+## t3 验收
+
+1. 无设计上下文的 agent 只读 `AGENTS.md`、`wiki/`、`raw/` 作答，`python evals/check_answers.py evals/answers.md` ≥ 4/5。
+   答案须引用 `wiki/` 页；两份原 tracker 文档不在 vault 里。
+2. `obsidian unresolved total` 为 0；`obsidian base:query` 列出 12 个来源。
+3. 至少一个概念页链到 ≥ 3 个来源（Q1 的「选出集合与确认集合分离」应自然长出）。
+
+查询集：Q1–Q3、Q5 同 r2；Q4 的「读过或核过」是 tracker 自己的记录，来源里没有，改为发布日期。
+
+| # | 问题 | 应提到 |
+|---|---|---|
+| Q1 | 哪些工作把「选出候选的集合」和「确认胜出的集合」分开？ | RSIGym、EmbodiedRSI、EmbodiedEvo、ASPIRE、RAX |
+| Q2 | Gemini 4 Argon 的公开状态和已知读数是什么？ | 56%、75% |
+| Q3 | 哪些系统由 human 写评估器、任务定义或验收，agent 只在其内搜索？ | AlphaEvolve、RSIGym、Argon |
+| Q4 | 收录的来源里，哪些是 2026-10 发布的？ | EmbodiedRSI、EmbodiedEvo、RoboQuest、Argon |
+| Q5 | 哪些地方记录了自改进没迁移、或被当作反例？ | 56.26、autoresearch、Agent Laboratory、RSIAgent |
+
+分两段跑，合计上限 1 小时，超了停下报告：
+
+- **t3a**：先收录 RSIGym、EmbodiedEvo、Gemini 4 Argon，human 在 Obsidian 里看来源页、概念页、lens 草稿，按意见改 `AGENTS.md`。
+  这 3 个来源预期长出「选出集合与确认集合分离」概念页（RSIGym 的 6 题选 / 37 题确认、EmbodiedEvo 的 Playground / Test）。
+- **t3b**：收录其余 9 个，跑上面的 t3 验收。
+
+估算（未实测）：12 个来源有效阅读 30 万–50 万 token，输出约 5 万；agent 每次工具调用重发上下文，累计计费输入约 100 万–300 万，多数命中缓存。
 
 ## Experiment Log
 
 | task | 做法 | 结果 | 证据 |
 |---|---|---|---|
-| t1 | `sync_sources.py` 镜像两个源，`--check` 作锁定 verifier | pass；commit 后重跑 `git status` 为空 | verify `20261016T091210Z-c1be5484` |
-| t2 | 无设计上下文的 subagent 只读 `AGENTS.md`、`wiki/`、`raw/` 作答；`evals/check_answers.py` 查应命中路径与关键词 | 5/5；Q4 还多找出核于 10-16 的 PhyAgentOS、RoboQuest（应命中表漏了） | [`evals/answers.md`](../evals/answers.md) |
-
-t2 作答 agent 报告的阻力：
-
-- 日期有三种口径（读取、核于、发布日期），Q4 要靠 landscape 里「核于各自笔记的日期」一句才能把发布日期算作核查日期。
-- 同一概念措辞不一（没有迁移 / 反例 / 没复现 / 迁移性未验证），单个关键词搜不全，Q1、Q5 靠通读。
-- `direction.md`、`exploration-mode/*`、`industry-practices.md` 未聚拢，autoresearch 等的细节断在链接处。
+| t1（r2） | 镜像两份 tracker 文档进 `raw/`，`--check` 作 verifier | pass | verify `20261016T091210Z-c1be5484` |
+| t2（r2） | 无设计上下文的 subagent 只读快照作答 | 5/5；作答方报告概念措辞不一、日期口径不一，只能通读 | commit `df3a910` 的 `evals/answers.md` |
 
 ## Revision 记录
 
-- r2（2026-10-16，human）：3dgen_tracker 与 embodied_radar 已有自动管线，不进第 1 步；只聚拢 robotrsi 与 agent_loop 两个手工 tracker，查询集随之重写。
+- r2（2026-10-16，human）：3dgen_tracker 与 embodied_radar 已有自动管线，不进第 1 步。
+- r3（2026-10-16，human）：手工 index 不可扩展、`raw/` 放的是综合页、没有 LLM 整理层。改为 llm-wiki：来源平铺、
+  LLM 长概念页、lens 由 LLM 判定、索引用 Bases；整理者先用 coding agent。

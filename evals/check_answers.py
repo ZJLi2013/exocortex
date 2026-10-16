@@ -4,16 +4,15 @@ import re
 import sys
 from pathlib import Path
 
-RSI_TRACK = "raw/agent_loop/research-rsi-track.md"
-ROBOTRSI = "raw/robotrsi/"
+WIKI = "wiki/"
 
 # question -> (path substrings that must be cited, keywords that must appear)
 GOLD = {
-    "Q1": ([RSI_TRACK, ROBOTRSI], ["RSIGym", "EmbodiedRSI", "EmbodiedEvo", "ASPIRE", "RAX"]),
-    "Q2": (["raw/robotrsi/works/gemini-argon.md"], ["56%", "75%"]),
-    "Q3": ([RSI_TRACK, ROBOTRSI], ["AlphaEvolve", "RSIGym", "Argon"]),
-    "Q4": ([RSI_TRACK, ROBOTRSI], ["RSIGym", "ScienceDiscovery", "EmbodiedEvo", "Argon", "RAX"]),
-    "Q5": ([RSI_TRACK, ROBOTRSI], ["56.26", "autoresearch", "Agent Laboratory", "RSIAgent"]),
+    "Q1": ([WIKI], ["RSIGym", "EmbodiedRSI", "EmbodiedEvo", "ASPIRE", "RAX"]),
+    "Q2": ([WIKI], ["56%", "75%"]),
+    "Q3": ([WIKI], ["AlphaEvolve", "RSIGym", "Argon"]),
+    "Q4": ([WIKI], ["EmbodiedRSI", "EmbodiedEvo", "RoboQuest", "Argon"]),
+    "Q5": ([WIKI], ["56.26", "autoresearch", "Agent Laboratory", "RSIAgent"]),
 }
 PASS_AT = 4
 

@@ -1,3 +1,5 @@
 # agent-loop local state and harness runtime
 .agent-loop/
 .harness/
+# Obsidian UI state
+.obsidian/

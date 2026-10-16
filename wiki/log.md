@@ -1,11 +1,10 @@
 # log
 
-## [2026-10-16] sync | robotrsi, agent_loop
+## [2026-10-16] ingest | RSIGym
+agent-loop keep；robotrsi reject（不涉及机器人）。
 
-首次聚拢：robotrsi 7 个文件，agent_loop 1 个文件。
+## [2026-10-16] ingest | EmbodiedEvo
+robotrsi keep；agent-loop keep。
 
-## [2026-10-16] query | 哪些工作把「选出候选的集合」和「确认胜出的集合」分开？
-## [2026-10-16] query | Gemini 4 Argon 的公开状态和已知读数是什么？
-## [2026-10-16] query | 哪些系统由 human 写评估器、任务定义或验收，agent 只在其内搜索？
-## [2026-10-16] query | 2026-10-13 及以后读过或核过的工作有哪些？
-## [2026-10-16] query | 哪些地方记录了自改进没迁移、或被当作反例？
+## [2026-10-16] ingest | Gemini 4 Argon
+robotrsi keep；agent-loop reject（硬件自改进的阶段由人写，不是 research agent）。

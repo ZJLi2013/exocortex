@@ -1,0 +1,31 @@
+﻿views:
+  - type: table
+    name: sources
+    filters:
+      and:
+        - file.inFolder("wiki/sources")
+    order:
+      - file.name
+      - published
+      - ingested
+      - lenses
+      - concepts
+    sort:
+      - property: published
+        direction: DESC
+  - type: table
+    name: concepts
+    filters:
+      and:
+        - file.inFolder("wiki/concepts")
+    order:
+      - file.name
+      - file.backlinks
+  - type: table
+    name: lenses
+    filters:
+      and:
+        - file.inFolder("wiki/lenses")
+    order:
+      - file.name
+      - file.backlinks
