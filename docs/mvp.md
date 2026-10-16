@@ -29,7 +29,12 @@ Plan Review: approved
 
 ## 当前结论
 
-未验证。
+- **t1 通过**：robotrsi（7 个文件）与 agent_loop（1 个文件）已镜像进 `raw/`，重跑同步不产生 diff。
+  `research-rsi-track.md` 在 agent-loop 里从未提交，manifest 记为「未提交」。
+- **t2 的 agent 部分通过**：一个没有设计上下文的 agent 只读 vault，5/5 题命中全部应命中来源，未编造。
+  Obsidian 里能否搜到 RAX、RSIGym 待 human 确认。
+- 通过是因为 vault 只有 9 个文件，agent 全部读完；按概念（选 / 确认分离、谁写评估器）和按日期的问题都靠通读。
+  文件数上百后这条路会失效，第 2 步加 inbox 时要一并决定概念页何时建。
 
 ## 下一步决策
 
@@ -99,7 +104,16 @@ agent 只读 `exocortex/`（`AGENTS.md` → `wiki/index.md` → `rg raw/`），�
 
 ## Experiment Log
 
-（尚无）
+| task | 做法 | 结果 | 证据 |
+|---|---|---|---|
+| t1 | `sync_sources.py` 镜像两个源，`--check` 作锁定 verifier | pass；commit 后重跑 `git status` 为空 | verify `20261016T091210Z-c1be5484` |
+| t2 | 无设计上下文的 subagent 只读 `AGENTS.md`、`wiki/`、`raw/` 作答；`evals/check_answers.py` 查应命中路径与关键词 | 5/5；Q4 还多找出核于 10-16 的 PhyAgentOS、RoboQuest（应命中表漏了） | [`evals/answers.md`](../evals/answers.md) |
+
+t2 作答 agent 报告的阻力：
+
+- 日期有三种口径（读取、核于、发布日期），Q4 要靠 landscape 里「核于各自笔记的日期」一句才能把发布日期算作核查日期。
+- 同一概念措辞不一（没有迁移 / 反例 / 没复现 / 迁移性未验证），单个关键词搜不全，Q1、Q5 靠通读。
+- `direction.md`、`exploration-mode/*`、`industry-practices.md` 未聚拢，autoresearch 等的细节断在链接处。
 
 ## Revision 记录
 
