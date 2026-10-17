@@ -37,7 +37,7 @@
 | 路径 | 内容 |
 |---|---|
 | `inbox/links.md` | 待收录的 URL |
-| `raw/` | 抓下来的原文，写一次不改 |
+| `raw/` | 抓下来的原文，写一次不改；只存在本地，不进仓库 |
 | `wiki/sources/` | 一个来源一页：关键数字、谁评估、可信度 |
 | `wiki/concepts/` | 跨来源概念 |
 | `wiki/lenses/` | 研究问题与待批准草稿 |
@@ -48,3 +48,8 @@
 
 18 个来源、13 个概念页、4 个 lens（`robotrsi`、`agent-loop`、`demo-free-rl`、`system1-decision`）。
 为什么这样设计见 [docs/design.md](docs/design.md)；验收结果与下一步见 [docs/mvp.md](docs/mvp.md)。
+
+## 贡献与许可
+
+所有改动走 pull request，见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+代码 MIT（[LICENSE](LICENSE)），wiki 与文档文字 CC BY 4.0（[LICENSE-CONTENT](LICENSE-CONTENT)）；来源原文版权归原作者，不在仓库里分发。
