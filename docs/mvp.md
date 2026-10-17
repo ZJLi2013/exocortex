@@ -28,8 +28,7 @@ Plan Review: approved
 - **无头触发**：inbox 有新内容时自动跑收录（Cursor SDK / agent CLI）。
 - **批准草稿**：四个 lens 的「待批准」里积压了草稿，并入「当前判断」后 lens 才开始积累判断。
 
-已知缺口（t5 收录方反馈，未处理）：「也可并入」没有判据；放宽某个 lens 的范围会顺带吸入别的来源；
-没有概念页的概念不参与 lens 聚类，ScienceDiscovery、batch-invariant-vlas 因此只留在 `unowned`。
+未处理的已知缺口见 [design.md](design.md#已知缺口)。
 
 ## 边界
 
@@ -42,16 +41,7 @@ Plan Review: approved
 
 ## 系统
 
-执行规则（收录、lint lenses、查询、批准）以 [AGENTS.md](../AGENTS.md) 为准，本节只讲为什么这样组织。
-
-- **概念页（下而上）**：同一概念被第二个来源提到时建页，链回所有来源。不预设分类：3dgen_tracker 手写 9 类混用四个轴，
-  留一法一致性只有 0.42–0.93。
-- **lens（上而下）**：human 的研究问题，一句范围加「当前判断」。lens 回答「它改变我哪个判断」，不回答「它是什么」；
-  一条来源可以命中 0 到多个 lens。范围句 + LLM keep / reject 的做法取自 embodied_radar 的 `domain.yaml`。
-- **新 lens**：无 lens 来源在概念页上成簇（≥ 2 个）时提议候选 lens（`status: proposed`），不参与收录判定，human 批准、并入或否决。
-  复用概念页做聚类，不加 embedding。
-- **借鉴**：`raw/` 只读、`wiki/` LLM 写、`log.md` 取自 Karpathy llm-wiki；frontmatter 约定与 `> [!contradiction]` 不覆盖取自
-  [claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian)。
+执行规则以 [AGENTS.md](../AGENTS.md) 为准；concept 与 lens 的分工、各项设计理由与放弃的方案见 [design.md](design.md)。
 
 ```text
 exocortex/                    # = Obsidian vault 根

@@ -47,4 +47,4 @@
 ## 现状
 
 18 个来源、13 个概念页、4 个 lens（`robotrsi`、`agent-loop`、`demo-free-rl`、`system1-decision`）。
-设计、验收结果与下一步见 [docs/mvp.md](docs/mvp.md)。
+为什么这样设计见 [docs/design.md](docs/design.md)；验收结果与下一步见 [docs/mvp.md](docs/mvp.md)。
