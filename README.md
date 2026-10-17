@@ -3,17 +3,27 @@
 研究领域的个人知识库：你丢链接，LLM 把它整理进一个 Obsidian wiki，并判断它会改变你哪个研究问题的哪条判断。
 你不做分类，只挑源、提问、批准结论。
 
+## 准备
+
+不用安装，没有依赖包：
+
+1. `git clone` 本仓库。
+2. 用一个能读写文件、能联网抓网页的 coding agent 打开它。默认用 Cursor：仓库根目录的 [AGENTS.md](AGENTS.md) 会被 Cursor 自动加载为规则，
+   直接在 Cursor 的 agent 对话里说话即可。Claude Code、Codex CLI 等也可以，开头先让它读一遍 `AGENTS.md`。
+3. 有 Python 3 就能跑 `evals/` 里的检查脚本（只用标准库）。
+4. 可选：用 [Obsidian](https://obsidian.md) 把本目录打开为 vault 来浏览、看图谱和 Bases 视图。agent 收录不依赖 Obsidian。
+
 ## 怎么用
+
+下表的「说」都是在上面那个 agent 对话里说。
 
 | 你想做 | 怎么做 |
 |---|---|
-| 收录新来源 | 把 URL 一行一个写进 `inbox/links.md`，对 agent 说「收录 inbox」 |
-| 查东西 | 直接问 agent，答案会引用 `wiki/` 里的页面 |
+| 收录新来源 | 把 URL 一行一个写进 `inbox/links.md`，说「收录 inbox」 |
+| 查东西 | 直接提问，答案会引用 `wiki/` 里的页面 |
 | 采纳一条判断 | 打开 `wiki/lenses/<lens>.md` 看「待批准」，说「批准 <lens> 的 <工作名> 草稿」 |
 | 处置新研究问题 | 有 `status: proposed` 的 lens 出现时，说「批准 lens <name>」「并入 <已有 lens>」或「否决 lens <name>」 |
 | 检查 wiki 完整性 | `python evals/check_wiki.py --sources <来源数>` |
-
-agent 按 [AGENTS.md](AGENTS.md) 执行，在 Cursor 里打开本仓库即可。浏览用 Obsidian 打开本目录作为 vault。
 
 ## wiki 怎么组织
 
