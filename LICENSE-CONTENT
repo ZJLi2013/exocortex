@@ -1,0 +1,14 @@
+Copyright (c) 2026 zjli2013
+
+The written content of this repository — everything under wiki/, docs/,
+AGENTS.md and README.md — is licensed under the Creative Commons Attribution
+4.0 International License (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+
+Code (evals/, scripts/) is licensed under the MIT License; see LICENSE.
+
+Excerpts, figures and numbers quoted on source pages remain the property of
+their original authors and are cited for research commentary. Full texts of
+third-party sources (raw/) are kept locally and are not distributed by this
+repository; commits made before raw/ was untracked may still contain them
+and are not covered by either license.

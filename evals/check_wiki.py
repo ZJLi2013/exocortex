@@ -7,6 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 FIELDS = ["type", "url", "published", "ingested", "concepts", "lenses"]
+# raw/ is local-only (third-party full texts); fresh clones do not have it.
+HAS_RAW = (ROOT / "raw").is_dir()
 
 
 def unresolved_links() -> list[str]:
@@ -16,7 +18,7 @@ def unresolved_links() -> list[str]:
     broken = []
     for page in sorted((ROOT / "wiki").rglob("*.md")):
         for link in re.findall(r"\[\[([^\]|#]+)", page.read_text(encoding="utf-8")):
-            if link.strip() not in targets:
+            if link.strip() not in targets and (HAS_RAW or not link.startswith("raw/")):
                 broken.append(f"{link} (in {page.relative_to(ROOT).as_posix()})")
     return broken
 
@@ -37,7 +39,7 @@ def main() -> None:
         missing = [f for f in FIELDS if not re.search(rf"^{f}:", front, flags=re.M)]
         if missing:
             problems.append(f"{page.name}: missing {', '.join(missing)}")
-        if not (ROOT / "raw" / page.name).exists() or f"[[raw/{page.stem}]]" not in text:
+        if f"[[raw/{page.stem}]]" not in text or (HAS_RAW and not (ROOT / "raw" / page.name).exists()):
             problems.append(f"{page.name}: no raw/{page.name} or no link to it")
 
     broken = unresolved_links()
