@@ -3,6 +3,7 @@ type: source
 url: https://github.com/Robert-gyj/Ctrl-World
 published: 2025-10
 ingested: 2026-10-16
+tags: []
 concepts: [世界模型内策略评测, 世界模型合成轨迹, 世界模型后训练]
 lenses: ["[[robotrsi]]"]
 ---

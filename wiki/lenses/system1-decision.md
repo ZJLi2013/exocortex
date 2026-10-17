@@ -1,5 +1,6 @@
 ---
 type: lens
+tags: []
 ---
 # system1-decision
 

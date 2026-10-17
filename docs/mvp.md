@@ -1,6 +1,6 @@
 # exocortex MVP
 
-Plan Revision: 5
+Plan Revision: 6
 Plan Review: approved
 
 ## Goal
@@ -23,7 +23,7 @@ Plan Review: approved
 
 ## 下一步决策
 
-下一步 t8：丢链接时 human 顺手打标签（`<URL> #jev`），agent 用它辅助 lens 判定与 lens 提议（human 已选，设计待写）。
+下一步 t8：human 标签（设计见下节）。规则已实现，验收等 human 给一批带标签的新链接。
 
 其余候选：
 
@@ -31,6 +31,24 @@ Plan Review: approved
 - **批准草稿**：四个 lens 的「待批准」里积压了草稿，并入「当前判断」后 lens 才开始积累判断。
 
 未处理的已知缺口见 [design.md](design.md#已知缺口)。
+
+## r6：human 丢链接时顺手打标签
+
+human 没细看，但知道大概方向（「jev 相关」「kernel 优化」）。这个意图 LLM 从原文推不出来，成本却只有一个词。
+
+- **inbox**：`<URL> #jev #kernel`，标签可选，小写短横线。
+- **来源页**：frontmatter `tags: [jev, kernel]` 存 human 标签，与 LLM 的 `concepts` 分开；没打写 `[]`。`tags` 是 Obsidian 原生属性，标签面板直接可用。
+- **lens 判定**：标签是线索，不是归属；仍按内容逐个 lens 判。lens 页 frontmatter `tags` 列出与它对应的 human 标签：
+  带这些标签的来源优先判这个 lens；keep 时 agent 把来源的新标签追加进去；标签与内容不符时 log 里注明。
+- **lint lenses**：先看 human 标签，≥ 2 个无 lens 来源共享同一 human 标签即成簇，候选 lens 默认以该标签命名；再看 `concepts`。
+
+t8 验收：human 给 ≥ 5 个带标签的新链接，新 agent 只拿「收录 inbox」+ `AGENTS.md`：
+
+- 带 `jev` 的来源按内容判 `system1-decision`，该 lens 的 `tags` 出现 `jev`；
+- ≥ 2 个共享某个未被覆盖标签的无 lens 来源，lint 提出以该标签命名的候选 lens；
+- `check_wiki.py --sources <N>` 退出 0。
+
+不通过 → 标签被当成归属（内容不符仍 keep）就改判定规则；该成簇没成簇就改 lint 规则。
 
 ## 边界
 
@@ -89,3 +107,4 @@ exocortex/                    # = Obsidian vault 根
 - r4（2026-10-16，human）：进来的来源很可能完全不属于已有 lens（t4 里 5/6 双 reject）。加 lint lenses：
   无 lens 来源经概念页成簇时提议候选 lens，human 批准后补判全库。
 - r5（2026-10-17，human）：概念页冗余且难维护。降级为来源页 `concepts` 标签，lens 提议改看共享标签。
+- r6（2026-10-17，human）：human 丢链接时顺手打标签，比 LLM 标签更稳、带着 human 的意图；用于 lens 判定线索与 lens 提议。

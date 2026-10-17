@@ -7,14 +7,17 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 
 | 路径 | 内容 | 谁写 |
 |---|---|---|
-| `inbox/links.md` | 待收录的 URL，一行一个 | human |
+| `inbox/links.md` | 待收录的 URL，一行一个，可跟 human 标签：`<URL> #jev #kernel` | human |
 | `raw/<slug>.md` | 抓取的原文，写一次不改 | agent |
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
 | `wiki/lenses/<name>.md` | human 的研究问题：范围、当前判断、待批准草稿 | 范围与当前判断归 human；草稿与 `status: proposed` 的候选归 agent |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/log.md` | 追加日志 | agent |
 
-不按主题建目录。分组靠来源页的 `concepts` 标签与 lens，二者都不是预设分类。
+不按主题建目录。分组靠 lens 与两种标签，都不是预设分类：
+
+- `tags`：human 丢链接时打的标签，带着 human 的意图（「大概是 jev 相关」），agent 照抄不改；
+- `concepts`：agent 读原文后打的标签，写方法或主张。
 
 ## 收录（human 说「收录 inbox」）
 
@@ -42,7 +45,8 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
    url: <原 URL>
    published: YYYY-MM-DD      # 首发日期（不取修订日）；没写日期但链了自己的 arXiv 编号就按编号写 YYYY-MM；都没有写 unknown
    ingested: YYYY-MM-DD
-   concepts: [概念 A, 概念 B]  # 标签，纯文本；见第 4 步
+   tags: [jev]                # inbox 行里的 human 标签，去掉 #；没打写 []
+   concepts: [概念 A, 概念 B]  # agent 标签，纯文本；见第 4 步
    lenses: ["[[robotrsi]]"]   # keep 的 lens，链接形式；都不 keep 写 []
    ---
    # <工作名>
@@ -61,8 +65,10 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
    先搜其它来源页的 `concepts:`，有同义的就用已有写法，不另起新名；确实没有才起新标签。不建概念页。
 
 5. **lens 判定**：逐个读 `wiki/lenses/*.md` 的「范围」，判这条来源 keep 还是 reject。跳过 `status: proposed` 的候选 lens。
+   human 标签是线索不是归属：lens frontmatter `tags` 含来源某个标签时先判这个 lens，但仍按内容判；
+   标签指向的 lens 被 reject 时，log 里写「标签 <tag> 与内容不符」。
    - reject：不写 lens 页，log 里记 lens 名与一句理由。
-   - keep：在该 lens 的「待批准」下追加草稿，**不改「当前判断」**：
+   - keep：把来源的 human 标签补进该 lens 的 `tags`（已有则不加）；在该 lens 的「待批准」下追加草稿，**不改「当前判断」**：
 
      ```markdown
      > [!draft] <工作名>（YYYY-MM-DD）
@@ -80,15 +86,17 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 
 lens 外的来源成簇时，提议一个新研究问题，由 human 决定要不要。
 
-1. **找簇**：只看 `lenses: []` 的来源页，比较它们的 `concepts:`。≥ 2 个来源共享同一个（或同义的）标签 → 成一簇。
+1. **找簇**：只看 `lenses: []` 的来源页。先比 `tags:`，≥ 2 个来源共享同一个 human 标签 → 成一簇；
+   再比 `concepts:`，≥ 2 个来源共享同一个（或同义的）标签 → 成一簇。
    两簇共享任一来源就合并。不与任何其它无 lens 来源共享标签的来源不成簇。
 2. **跳过**：已有候选 lens 覆盖同一簇时只追加新来源；log 里该簇被否决过、且没有新来源加入时不提。
-3. **提议**：每簇写 `wiki/lenses/<name>.md`（name 小写短横线）：
+3. **提议**：每簇写 `wiki/lenses/<name>.md`（name 小写短横线；簇由 human 标签成簇时默认用该标签）：
 
    ```markdown
    ---
    type: lens
    status: proposed
+   tags: [<簇内来源的 human 标签>]   # 没有写 []
    ---
    # <name>
 
@@ -113,7 +121,7 @@ lens 外的来源成簇时，提议一个新研究问题，由 human 决定要�
 ## 查询
 
 1. 列 `wiki/sources/` 看有哪些来源，或全文搜 `wiki/`。
-2. 先读 lens 页，再按 `concepts:` 标签或全文搜索找来源页；细节不够才读 `raw/`。
+2. 先读 lens 页，再按 `tags:` / `concepts:` 标签或全文搜索找来源页；细节不够才读 `raw/`。
 3. 每条事实引用页面路径（`wiki/sources/<slug>.md`）。查不到就说查不到。
 4. log 追加 `## [YYYY-MM-DD] query | <问题>`。
 

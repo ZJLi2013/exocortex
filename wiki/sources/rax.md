@@ -3,6 +3,7 @@ type: source
 url: https://github.com/robot-agent-exploration/rax
 published: 2026
 ingested: 2026-10-16
+tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 经验写成代码技能, 探索预算扩展, 把 agent 编译成程序]
 lenses: ["[[robotrsi]]", "[[agent-loop]]"]
 ---
