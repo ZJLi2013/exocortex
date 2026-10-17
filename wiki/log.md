@@ -75,3 +75,11 @@ robotrsi reject（VLA 推理数值工程，无 agent，不改选底座、改进�
 ## [2026-10-16] lint | lenses
 demo-free-rl：sgs、alphanist
 system1-decision：jevany、openjev
+
+## [2026-10-16] approve lens | demo-free-rl
+human 批准。keep：sgs、alphanist。
+reject：jevany、openjev、batch-invariant-vlas、sciencediscovery、ctrl-world、roboquest、gemini-4-argon、embodiedevo、embodiedrsi、aspire、rax（编码 / 世界模型 / 基座评测，不是无示教 RL 训练课程）；rsigym、autoresearch、alphaevolve、agent-laboratory、rsiagent（research agent 或软件环境，不是机器人 RL）。
+
+## [2026-10-16] approve lens | system1-decision
+human 批准。keep：jevany、openjev。
+reject：sgs、alphanist、batch-invariant-vlas、sciencediscovery、ctrl-world、roboquest、gemini-4-argon、embodiedevo、embodiedrsi、aspire、rax、rsigym、autoresearch、alphaevolve、agent-laboratory、rsiagent（都不提供返回校准概率的 System 1 决策模型或服务）。

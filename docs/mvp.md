@@ -53,10 +53,8 @@ MVP 可用；t4 反馈里 agent 能定的缺口已改进 `AGENTS.md`，`check_wi
 
 下一步做 r4「lens 外的来源提议新 lens」（设计见下节）：
 
-- **t5**：实现「lint lenses」并在现有 18 个来源上跑，验提议是否命中预登记的两个簇。
-- **t6**（t5 通过后）：human 批准一个候选，agent 对全部已有来源补判新 lens。
-- robotrsi 范围里「agent」含不含纯 RL，交给 r4 机制处理：SGS / AlphaNIST 会作为候选 lens 出现，human 届时选「新开」还是「并入 robotrsi 并改范围句」。
-- 无头触发排在 r4 之后。
+- t5、t6 已过：两个候选 lens 均批准为独立 lens，簇内来源已 keep。
+- 下一步候选：无头触发（inbox 有新内容时自动收录）；或 human 批准各 lens 的待批准草稿并入「当前判断」。
 
 ## r4：来源落在所有 lens 之外
 
@@ -197,6 +195,7 @@ lenses: [robotrsi]
 | t2（r2） | 无设计上下文的 subagent 只读快照作答 | 5/5；作答方报告概念措辞不一、日期口径不一，只能通读 | commit `df3a910` 的 `evals/answers.md` |
 | t3（r3） | 3 个 subagent 并行各收 3 个来源，我合并概念页与 lens 草稿；新 agent 只读 wiki 作答 | 12 来源 / 8 概念页；作答 4/5（Q5 漏 Agent Laboratory）；作答方报告 RSIGym、RAX 发布月未落到来源页 | verify `20261016T095843Z-36c55293`；`evals/answers.md`。首个 verify 失败是 verifier 命令里 `$LASTEXITCODE` 被提前展开，改 `cmd /c … && …` 后重 init |
 | t4（r3） | 新 agent 只拿「收录 inbox」+ `AGENTS.md` 处理 6 个 human 给的链接 | 18 来源 / 13 概念页；3 条预登记判定全中（只 Ctrl-World 被 robotrsi keep）；反馈 7 条缺口，最大是 lens 范围里「agent」未定义 | verify pass；收录方回复存于本轮对话 |
+| t5（r4） | 新 agent 只拿「lint lenses」+ `AGENTS.md` | 两个预登记候选全中、无多提；反馈：「也可并入」无判据，放宽范围会顺带吸入别的来源（如 batch-invariant-vlas） | verify `20261016T144423Z-849f37d5` |
 
 ## Revision 记录
 

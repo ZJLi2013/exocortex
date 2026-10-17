@@ -4,7 +4,7 @@ url: https://sgs-rl.github.io/
 published: 2026-10
 ingested: 2026-10-16
 concepts: [课程式探索, 无示教强化学习, 大规模并行仿真 RL, 仿真到真机零样本迁移]
-lenses: []
+lenses: ["[[demo-free-rl]]"]
 ---
 # SGS
 

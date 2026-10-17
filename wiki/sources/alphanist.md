@@ -4,7 +4,7 @@ url: https://alpha-nist.github.io/
 published: unknown
 ingested: 2026-10-16
 concepts: [课程式探索, 无示教强化学习, 选出集合与确认集合分离, 二值任务奖励, 多任务共享策略]
-lenses: []
+lenses: ["[[demo-free-rl]]"]
 ---
 # AlphaNIST
 

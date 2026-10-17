@@ -1,6 +1,5 @@
 ---
 type: lens
-status: proposed
 ---
 # demo-free-rl
 
@@ -8,12 +7,12 @@ status: proposed
 
 会改变机器人策略训练里「起始状态 / 任务配置怎么采样、奖励给到多稀疏、要不要示教」这些选择的无示教强化学习工作。
 
-## 为何提议
-
-- 来源：[[sgs]]、[[alphanist]]
-- 共享概念：[[无示教强化学习]]、[[课程式探索]]
-- 也可并入 [[robotrsi]]：会改变 RoboRSI 选底座、改进方向或评测选择的机器人工作，含无 agent 的 RL 训练。
-
 ## 当前判断
 
 ## 待批准
+
+> [!draft] SGS（2026-10-16）
+> 新增：Success-Guided Sampling 只改 reset 到哪个任务配置，并行环境到 100 万时 ANYmal D 0.73、Franka 螺母 0.70，均匀采样两项都约为 0。依据 [[sgs]]
+
+> [!draft] AlphaNIST（2026-10-16）
+> 新增：只用二值任务奖励、共享策略跨 20 个 NIST 装配任务训练成功率 98.2%，高于单任务专家 81.4%；稠密奖励反而更差。依据 [[alphanist]]
