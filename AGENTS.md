@@ -10,12 +10,11 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 | `inbox/links.md` | 待收录的 URL，一行一个 | human |
 | `raw/<slug>.md` | 抓取的原文，写一次不改 | agent |
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
-| `wiki/concepts/<name>.md` | 跨来源的概念，≥ 2 个来源提到才建 | agent |
 | `wiki/lenses/<name>.md` | human 的研究问题：范围、当前判断、待批准草稿 | 范围与当前判断归 human；草稿与 `status: proposed` 的候选归 agent |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/log.md` | 追加日志 | agent |
 
-不按主题建目录。分组靠概念页与 lens，二者都不是预设分类。
+不按主题建目录。分组靠来源页的 `concepts` 标签与 lens，二者都不是预设分类。
 
 ## 收录（human 说「收录 inbox」）
 
@@ -43,7 +42,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
    url: <原 URL>
    published: YYYY-MM-DD      # 首发日期（不取修订日）；没写日期但链了自己的 arXiv 编号就按编号写 YYYY-MM；都没有写 unknown
    ingested: YYYY-MM-DD
-   concepts: [概念 A, 概念 B]  # 纯文本，含只有本来源提到的
+   concepts: [概念 A, 概念 B]  # 标签，纯文本；见第 4 步
    lenses: ["[[robotrsi]]"]   # keep 的 lens，链接形式；都不 keep 写 []
    ---
    # <工作名>
@@ -53,32 +52,13 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
    - **关键数字**：带条件与口径，例「LIBERO-PRO 50.0% → 82.4%（自报，单次）」
    - **评估与接纳**：谁评、在哪个集合上评、谁宣布成功
    - **可信度**：作者自报 / 单次 / 未给评测次数 / 未开源 等
-   - **概念**：列出 `concepts` 全部项，有页的写成链接，`[[概念 A]]`、概念 B
    - **原文**：[[raw/<slug>]]
    ```
 
    只写原文里有的事实；推断写成「未说明」。正文不超过 40 行。
 
-4. **概念**：对 `concepts` 每一项
-   - 先 `rg -l` 查 `wiki/concepts/` 与其它来源页的 `concepts:`，有同义的就复用已有名字；
-   - 已有页 → 在该页「来源」下追加 `- [[<slug>]]：<一句话说明这个来源怎样体现该概念>`；
-   - 无页且另有来源页的 `concepts:` 含同名 → 建页，链回所有含它的来源，并把这些来源页「概念」行改成链接；
-     建页时再扫一遍已有来源页正文，明确体现该概念的旧来源也补进它的 `concepts:` 并链回；
-   - 只有本来源提到 → 只留在 frontmatter。
-
-   概念页格式：
-
-   ```markdown
-   ---
-   type: concept
-   ---
-   # <概念名>
-
-   <一句话定义>
-
-   ## 来源
-   - [[<slug>]]：……
-   ```
+4. **concepts 标签**：3–6 个，写这个来源的方法或主张，不写泛主题（「机器人」「LLM」不算）。
+   先搜其它来源页的 `concepts:`，有同义的就用已有写法，不另起新名；确实没有才起新标签。不建概念页。
 
 5. **lens 判定**：逐个读 `wiki/lenses/*.md` 的「范围」，判这条来源 keep 还是 reject。跳过 `status: proposed` 的候选 lens。
    - reject：不写 lens 页，log 里记 lens 名与一句理由。
@@ -91,7 +71,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 
      不对应任何已有判断时写 `> 新增：<一句话>`；与某条当前判断冲突时用 `> [!contradiction]`。
 
-6. **log**：`wiki/log.md` 追加 `## [YYYY-MM-DD] ingest | <工作名>`，下面一行写 lens 判定结果，新建了概念页就再写一行页名。
+6. **log**：`wiki/log.md` 追加 `## [YYYY-MM-DD] ingest | <工作名>`，下面一行写 lens 判定结果。
 7. 处理完的 URL 从 `inbox/links.md` 删除。
 
 全部收录完做一遍下面的 lint lenses，再运行 `python evals/check_wiki.py --sources <来源总数>`。
@@ -100,8 +80,8 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 
 lens 外的来源成簇时，提议一个新研究问题，由 human 决定要不要。
 
-1. **找簇**：逐个读 `wiki/concepts/*.md`，看它链到的来源里有几个的 `lenses: []`。≥ 2 个 → 这些无 lens 来源成一簇。
-   两簇共享任一来源就合并。只有 1 个无 lens 来源的概念不成簇。
+1. **找簇**：只看 `lenses: []` 的来源页，比较它们的 `concepts:`。≥ 2 个来源共享同一个（或同义的）标签 → 成一簇。
+   两簇共享任一来源就合并。不与任何其它无 lens 来源共享标签的来源不成簇。
 2. **跳过**：已有候选 lens 覆盖同一簇时只追加新来源；log 里该簇被否决过、且没有新来源加入时不提。
 3. **提议**：每簇写 `wiki/lenses/<name>.md`（name 小写短横线）：
 
@@ -119,7 +99,7 @@ lens 外的来源成簇时，提议一个新研究问题，由 human 决定要�
    ## 为何提议
 
    - 来源：[[<slug>]]、[[<slug>]]
-   - 共享概念：[[<概念>]]
+   - 共享标签：<标签>
    - 也可并入 [[<已有 lens>]]：<改后的范围句>   ← 只在放宽某个已有 lens 的范围句就能覆盖时写
 
    ## 当前判断
@@ -133,7 +113,7 @@ lens 外的来源成簇时，提议一个新研究问题，由 human 决定要�
 ## 查询
 
 1. 列 `wiki/sources/` 看有哪些来源，或全文搜 `wiki/`。
-2. 先读概念页与 lens 页，再读来源页；细节不够才读 `raw/`。
+2. 先读 lens 页，再按 `concepts:` 标签或全文搜索找来源页；细节不够才读 `raw/`。
 3. 每条事实引用页面路径（`wiki/sources/<slug>.md`）。查不到就说查不到。
 4. log 追加 `## [YYYY-MM-DD] query | <问题>`。
 

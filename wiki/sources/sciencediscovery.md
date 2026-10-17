@@ -18,5 +18,4 @@ lenses: []
   首次代码执行前弹出权限卡，由人批准后才执行；每个交付物记录代码、环境、日志与引用证据，供事后审查。
   agent 在 fail-closed 沙箱内运行 Python、R、shell；agent 不能改的范围除此之外未说明。
 - **可信度**：产品 README，无实验或评测；Apache 2.0 开源。
-- **概念**：结果溯源、沙箱代码执行、执行前人工授权、多 agent 编排
 - **原文**：[[raw/sciencediscovery]]

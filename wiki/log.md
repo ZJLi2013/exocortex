@@ -83,3 +83,18 @@ reject：jevany、openjev、batch-invariant-vlas、sciencediscovery、ctrl-world
 ## [2026-10-16] approve lens | system1-decision
 human 批准。keep：jevany、openjev。
 reject：sgs、alphanist、batch-invariant-vlas、sciencediscovery、ctrl-world、roboquest、gemini-4-argon、embodiedevo、embodiedrsi、aspire、rax、rsigym、autoresearch、alphaevolve、agent-laboratory、rsiagent（都不提供返回校准概率的 System 1 决策模型或服务）。
+
+## [2026-10-17] query | Q1
+lenses/agent-loop，及 embodiedevo、embodiedrsi、aspire、rax、alphaevolve、agent-laboratory、jevany、rsigym、rsiagent、autoresearch、alphanist 来源页。
+
+## [2026-10-17] query | Q2
+sources/gemini-4-argon、lenses/robotrsi、log。
+
+## [2026-10-17] query | Q3
+lenses/agent-loop，及 alphaevolve、autoresearch、rsigym、embodiedevo、rax、aspire、embodiedrsi、rsiagent、gemini-4-argon、agent-laboratory、roboquest 来源页。
+
+## [2026-10-17] query | Q4
+全部 18 个来源页的 published 字段；RSIGym 等 unknown 项另查 raw/。
+
+## [2026-10-17] query | Q5
+lenses/agent-loop，及 rsigym、autoresearch、rsiagent、agent-laboratory、alphaevolve、embodiedrsi 来源页。

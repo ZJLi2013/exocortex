@@ -3,6 +3,7 @@
 import argparse
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -46,10 +47,15 @@ def main() -> None:
     if broken:
         problems.append("unresolved links: " + "; ".join(broken))
 
-    concepts = sorted((ROOT / "wiki/concepts").glob("*.md"))
-    print(f"{len(pages)} sources, {len(concepts)} concepts")
-    for c in concepts:
-        print(f"  {c.stem}: {c.read_text(encoding='utf-8').count('- [[')} sources")
+    tags = Counter()
+    for page in pages:
+        m = re.search(r"^concepts:\s*\[(.*)\]", page.read_text(encoding="utf-8"), flags=re.M)
+        if m:
+            tags.update(t.strip() for t in m.group(1).split(",") if t.strip())
+    shared = [(t, n) for t, n in tags.most_common() if n > 1]
+    print(f"{len(pages)} sources, {len(tags)} concept tags, {len(shared)} shared by 2+ sources")
+    for t, n in shared:
+        print(f"  {t}: {n}")
     for p in problems:
         print("FAIL", p)
     sys.exit(1 if problems else 0)

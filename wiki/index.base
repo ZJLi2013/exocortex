@@ -24,14 +24,6 @@ views:
       - published
       - concepts
   - type: table
-    name: concepts
-    filters:
-      and:
-        - file.inFolder("wiki/concepts")
-    order:
-      - file.name
-      - file.backlinks
-  - type: table
     name: lenses
     filters:
       and:
