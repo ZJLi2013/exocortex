@@ -10,13 +10,14 @@
 
 ## 怎么用
 
-在 agent 对话里：
+**浏览与看图谱用 Obsidian**：打开方式、图谱配置和常用看法见 [docs/obsidian.md](docs/obsidian.md)。
+
+其余在 agent 对话里：
 
 | 你想做 | 怎么做 |
 |---|---|
 | 收录 | 把 URL 写进 `inbox/links.md`，标签先查 [docs/human-tags.md](docs/human-tags.md) 里已有的写法（`<URL> #jev`），说「收录 inbox」 |
 | 查询 | 直接提问，答案引用 `wiki/` 里的页面 |
-| 看关联 | 用 Obsidian 打开仓库，`Ctrl+G` 开图谱：来源之间的边来自评测集、模型、方法三类共享节点和来源页的「关联」（基于 / 对照 / 相悖）。配置与用法见 [docs/obsidian.md](docs/obsidian.md) |
 | 裁决冲突 | `wiki/lenses/<lens>.md` 的「冲突」里是你的标签指向它、LLM 却按内容 reject 的来源。说「<lens> 收下 / 不收 <工作名>」 |
 | 处置新 lens | 出现 `status: proposed` 的 lens 时，说「批准 lens <name>」「并入 <已有 lens>」或「否决 lens <name>」 |
 | 检查 | `python scripts/check_wiki.py --sources <来源数>` |

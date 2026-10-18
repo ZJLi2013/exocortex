@@ -15,7 +15,7 @@
 - **Filters → Search files** 粘贴：
 
   ```text
-  -path:raw -path:inbox -path:docs -path:scripts -path:wiki/lenses -file:log -file:README -file:AGENTS -file:CONTRIBUTING -file:LICENSE
+  -path:raw -path:inbox -path:docs -path:scripts -path:wiki/lenses -file:log -file:README -file:AGENTS -file:CONTRIBUTING -file:LICENSE -file:index
   ```
 
 - **Filters**：不勾「Existing files only」。评测集、模型、方法都没有页面，勾上它们就消失了。
