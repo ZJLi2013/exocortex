@@ -27,26 +27,25 @@
 
 ## wiki 怎么组织
 
-不按主题建目录，靠两种会自己长出来的结构：
+不按主题建目录，靠两样东西：
 
-- **概念页**（`wiki/concepts/`）：同一个概念被第二个来源提到时自动建页，链回所有来源。
+- **概念标签**（来源页的 `concepts:`）：LLM 收录时打 3–6 个方法或主张标签，先复用已有写法。
 - **lens**（`wiki/lenses/`）：你的研究问题，一句话范围加一组「当前判断」。每收一条来源，LLM 逐个 lens 判 keep / reject；
   keep 的写成待批准草稿，「当前判断」只在你批准后才改。
-- **新 lens 的提议**：两个以上不属于任何 lens 的来源共享一个概念页时，LLM 起草一个候选 lens 等你处置。
+- **新 lens 的提议**：两个以上不属于任何 lens 的来源共享一个标签时，LLM 起草一个候选 lens 等你处置。
 
 | 路径 | 内容 |
 |---|---|
 | `inbox/links.md` | 待收录的 URL |
 | `raw/` | 抓下来的原文，写一次不改；只存在本地，不进仓库 |
-| `wiki/sources/` | 一个来源一页：关键数字、谁评估、可信度 |
-| `wiki/concepts/` | 跨来源概念 |
+| `wiki/sources/` | 一个来源一页：关键数字、谁评估、可信度、概念标签 |
 | `wiki/lenses/` | 研究问题与待批准草稿 |
-| `wiki/index.base` | Obsidian Bases 视图：来源、概念、lens、无 lens 来源（`unowned`） |
+| `wiki/index.base` | Obsidian Bases 视图：来源、lens、无 lens 来源（`unowned`） |
 | `wiki/log.md` | 每次收录、查询、lens 判定的日志 |
 
 ## 现状
 
-18 个来源、13 个概念页、4 个 lens（`robotrsi`、`agent-loop`、`demo-free-rl`、`system1-decision`）。
+18 个来源、4 个 lens（`robotrsi`、`agent-loop`、`demo-free-rl`、`system1-decision`）。
 为什么这样设计见 [docs/design.md](docs/design.md)；验收结果与下一步见 [docs/mvp.md](docs/mvp.md)。
 
 ## 贡献与许可

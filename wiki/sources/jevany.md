@@ -23,5 +23,4 @@ System 1 决策模型的开源训练与部署框架：输入状态、问题与�
   - agent loop 演示每个环境只有一对录制，不是统计评测。
   - 机器人只出现在 playground：Franka 插销由 PyBullet 接触物理判成功，GIF 是旧 checkpoint 的回放，未给机器人成功率。
 - **可信度**：作者自报；评测次数与方差未说明；代码与起步数据 Apache-2.0 开源，权重发布在 Hugging Face。
-- **概念**：[[System 1 决策模型]]、[[选项概率读出]]、[[概率校准]]、LLM 规划加小模型选动作
 - **原文**：[[raw/jevany]]

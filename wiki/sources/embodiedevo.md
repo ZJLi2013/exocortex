@@ -18,5 +18,4 @@ coding agent 在每个任务的一个 Playground 场景里把物理反馈蒸馏�
 - **评估与接纳**：Playground 布局与 Test 布局不同；Playground 可 reset、可写 `skills/` `lessons/`，Test 只读、不能 reset、不回写经验。
   协议文件与执行记录对 agent 只读。
 - **可信度**：作者自报；对比用 2026-10-09 排行榜快照；需 RoboDojo / Isaac Sim。
-- **概念**：[[选出集合与确认集合分离]]、[[人定义评估与验收]]、[[harness 演化]]、[[自改进]]、[[经验写成代码技能]]、[[跨模型迁移]]
 - **原文**：[[raw/embodiedevo]]
