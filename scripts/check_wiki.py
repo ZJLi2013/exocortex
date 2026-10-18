@@ -7,7 +7,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-FIELDS = ["type", "url", "published", "ingested", "concepts", "lenses"]
+FIELDS = ["type", "url", "published", "ingested", "tags", "concepts", "lenses"]
 # raw/ is local-only (third-party full texts); fresh clones do not have it.
 HAS_RAW = (ROOT / "raw").is_dir()
 

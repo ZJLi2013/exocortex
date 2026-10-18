@@ -3,6 +3,7 @@ type: source
 url: https://cyberneticphysics.com/blog/batch-invariant-vlas
 published: 2026-09-04
 ingested: 2026-10-16
+tags: []
 concepts: [批不变推理, 推理非确定性, 逐层张量追踪定位发散]
 lenses: []
 ---

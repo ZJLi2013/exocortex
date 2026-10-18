@@ -3,8 +3,9 @@ type: source
 url: https://arxiv.org/abs/2610.18867
 published: 2026-10
 ingested: 2026-10-16
+tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 经验写成代码技能, 跨模型迁移]
-lenses: ["[[robotrsi]]", "[[agent-loop]]"]
+lenses: ["[[agentic-robotics]]", "[[agent-loop]]"]
 ---
 # EmbodiedEvo
 

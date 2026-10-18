@@ -3,8 +3,9 @@ type: source
 url: https://developers.googleblog.com/gemini-4-argon-for-robotics/
 published: 2026-10-13
 ingested: 2026-10-16
+tags: []
 concepts: [人定义评估与验收, 自改进, 仿真孪生造数据, 基座接管人做的环节, 验证 agent]
-lenses: ["[[robotrsi]]"]
+lenses: ["[[agentic-robotics]]"]
 ---
 # Gemini 4 Argon
 

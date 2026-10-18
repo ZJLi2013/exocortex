@@ -1,7 +1,8 @@
 ---
 type: lens
+tags: []
 ---
-# system1-decision
+# jev
 
 ## 范围
 
