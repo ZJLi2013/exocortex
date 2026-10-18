@@ -1,4 +1,4 @@
-﻿"""Structural check of the wiki: source pages, raw files, unresolved links."""
+﻿"""Structural check of the wiki: source pages, raw files, lens pages, unresolved links."""
 
 import argparse
 import re
@@ -24,6 +24,28 @@ def unresolved_links() -> list[str]:
     return broken
 
 
+def split(text: str, prefix: str) -> dict[str, str]:
+    parts = re.split(rf"^{prefix} ", text, flags=re.M)[1:]
+    return {p.split("\n", 1)[0].strip(): p.split("\n", 1)[-1] for p in parts}
+
+
+def lens_problems(page: Path, pages: list[Path]) -> list[str]:
+    text = page.read_text(encoding="utf-8")
+    if re.search(r"^status: proposed", text, flags=re.M):
+        return []
+    name, out = page.name, []
+    sections = split(text, "##")
+    missing = [s for s in ["范围", "总结", "工作", "冲突"] if s not in sections]
+    if missing:
+        return [f"{name}: missing section {', '.join(missing)}"]
+    listed = re.findall(r"^- \[\[([^\]|]+)\]\]：", sections["工作"], flags=re.M)
+    out += [f"{name}: duplicate row {s}" for s, n in Counter(listed).items() if n > 1]
+    owned = {p.stem for p in pages if f'"[[{page.stem}]]"' in p.read_text(encoding="utf-8").split("---")[1]}
+    out += [f"{name}: {s} has lens but no row" for s in sorted(owned - set(listed))]
+    out += [f"{name}: row {s} is not a source with this lens" for s in sorted(set(listed) - owned)]
+    return out
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sources", type=int, required=True, help="expected number of source pages")
@@ -42,6 +64,9 @@ def main() -> None:
             problems.append(f"{page.name}: missing {', '.join(missing)}")
         if f"[[raw/{page.stem}]]" not in text or (HAS_RAW and not (ROOT / "raw" / page.name).exists()):
             problems.append(f"{page.name}: no raw/{page.name} or no link to it")
+
+    for lens in sorted((ROOT / "wiki/lenses").glob("*.md")):
+        problems += lens_problems(lens, pages)
 
     broken = unresolved_links()
     if broken:

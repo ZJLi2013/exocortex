@@ -5,7 +5,7 @@ published: unknown
 ingested: 2026-10-16
 tags: []
 concepts: [结果溯源, 沙箱代码执行, 执行前人工授权, 多 agent 编排]
-lenses: []
+lenses: ["[[agent-loop]]"]
 ---
 # ScienceDiscovery
 

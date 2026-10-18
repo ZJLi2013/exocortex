@@ -1,41 +1,25 @@
 ---
 type: lens
-tags: []
+tags: [agentic-robotics]
 ---
 # agentic-robotics
 
 ## 范围
 
-会改变 RoboRSI 选底座、改进方向或评测选择的 agent × 机器人工作。
+冻结的前沿模型当 agent、在模型外写代码技能 / 程序 / harness 来驱动机器人操作的工作，以及评测这类 agent 的 benchmark。
 
-## 当前判断
+## 总结
 
-1. 最快的适应环正在移到模型外部：失败先被写成 memory，再固化成可执行、可测试的代码，稳定且高频的行为才蒸馏回权重。
-2. 权重训练没有消失，它从唯一的改进手段变成了慢环。
-3. 通用多模态基座正在接过适应环里原本由人做的环节：建仿真、定义任务、判分、造数据。
-4. 谁提出改动与谁有权宣布成功必须分开。强门禁要求环境原生谓词或独立 verifier、held-out seeds、历史回归和版本化回滚。
-5. 演化期用 agent、部署期把 agent 编译掉是可行路线。
-6. LIBERO-10 已被报到 100%，区分不了方法，不作评测选择。
+6 个系统让 agent 从执行反馈中把经验沉淀成模型外的技能、程序或 harness，1 个 benchmark 评测前沿模型当 agent 的能力。常见评测是 RoboDojo、LIBERO-Pro、BEHAVIOR-1K。全部是自报，没有第三方复现。
 
-## 待批准
+## 工作
 
-> [!draft] EmbodiedEvo（2026-10-16）
-> 支持判断 1、4：经验写成代码 Skills 与 Lessons、不改权重，RoboDojo-Sim 成功率 37.82%；Playground / Test 分离、Test 只读。依据 [[embodiedevo]]
+- [[rax]]：coding agent 在线探索学任务，再编译成脱离 agent 运行的程序；未见布局平均成功率随探索 4 → 128 回合从 25% 升到 79%，编译后执行快 100× 以上。（自报）
+- [[aspire]]：按执行 trace 修 code-as-policy 程序，验证过的修复进技能库；Claude Opus 5.5 下 LIBERO-Pro 平均 99%。（自报）
+- [[embodiedevo]]：在 Playground 场景把物理反馈写成代码 Skills 与 Lessons，冻结后在未见场景执行；RoboDojo-Sim 自跑 Score 44.48、SR 37.82%。（自报）
+- [[embodiedrsi]]：冻结 VLA 外的 harness 按信息增益与实验成本选下一次物理实验；RoboCasa365 77.0%，真机 SmolVLA 46.0% → 71.3%。（自报）
+- [[roboquest]]：10 个需靠物理交互取证的移动操作 benchmark；最好的 GPT-6 Astra 成功率 23.2%，失败主要来自缺证据。（自报）
+- [[worldscape-r2si]]：内层 agent 调 Skill 执行，外层 agent 复盘修 Skill 并用执行记录训练动作模型；称 RoboDojo 总榜第一，未给分数。（自报，公司发布稿）
+- [[physicalrsi]]：基座改写 harness 生成多个变体、按仿真表现选优继承，π₀.₅ 作为技能之一；RoboDojo-Sim 官方榜 Score 36.27、SR 31.38%。（自报）
 
-> [!draft] Gemini 4 Argon（2026-10-16）
-> 支持判断 3：基座从一张照片建仿真孪生、定义 77 个任务、生成 4,500+ 条轨迹，真机 56% → 75%（未给评测次数）。依据 [[gemini-4-argon]]
-
-> [!draft] RAX（2026-10-16）
-> 支持判断 1、5：冻结模型的 agent 把在线探索写成 skill，再编译成脱离 agent 的程序，快 103–241×；未见场景 25% → 79%。依据 [[rax]]
-
-> [!draft] EmbodiedRSI（2026-10-16）
-> 支持判断 1、4：VLA 冻结只演化代码与技能，演化 / 评测 seed 互不相交，真机零样本 46.0% → 71.3%。依据 [[embodiedrsi]]
-
-> [!draft] ASPIRE（2026-10-16）
-> 支持判断 1、4：验证过的修复进代码技能库，debug split 学、held-out seed 报告。扩展判断 6：Opus 5.5 下 LIBERO-Pro 平均 99%，LIBERO-Pro 也在饱和。依据 [[aspire]]
-
-> [!draft] RoboQuest（2026-10-16）
-> 新增评测选择依据：执行技能单测 72–81%，整体最高 23.2%，失败主要是缺证据（43–46%）与过早提交；代码技能库覆盖不到「主动取证、何时提交」这一块。依据 [[roboquest]]
-
-> [!draft] Ctrl-World（2026-10-16）
-> 新增评测选择依据：π0.5 可在 DROID 训练的动作条件世界模型里闭环 rollout 评测指令遵循，两者都零样本迁到新场景；作者自认物理交互建模不准，README 未给与真机结果的一致性数字。依据 [[ctrl-world]]
+## 冲突
