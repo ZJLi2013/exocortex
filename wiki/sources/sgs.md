@@ -6,6 +6,9 @@ ingested: 2026-10-16
 tags: []
 concepts: [课程式探索, 无示教强化学习, 大规模并行仿真 RL, 仿真到真机零样本迁移]
 benchmarks: []
+methods: []
+models_used: []
+models_compared: []
 lenses: ["[[robotics-rl]]"]
 ---
 # SGS

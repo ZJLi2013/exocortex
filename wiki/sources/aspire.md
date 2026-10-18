@@ -4,8 +4,11 @@ url: https://research.nvidia.com/labs/gear/aspire/
 published: 2026-07
 ingested: 2026-10-16
 tags: []
-concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 经验写成代码技能, 跨模型迁移, 进化式代码搜索]
+concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 跨模型迁移]
 benchmarks: ["[[LIBERO-Pro]]", "[[Robosuite]]", "[[BEHAVIOR-1K]]"]
+methods: ["[[harness 演化]]", "[[经验写成代码技能]]", "[[进化式代码搜索]]"]
+models_used: ["[[Claude Opus 5.5]]", "[[Claude Opus 4.6]]", "[[GPT-5.5]]", "[[GPT-6 Astra]]", "[[Claude Sonnet 5.5]]", "[[Claude Fable 5.1]]", "[[Kimi-K3]]", "[[Qwen3.8-Max]]"]
+models_compared: []
 lenses: ["[[agentic-robotics]]"]
 ---
 # ASPIRE
@@ -25,4 +28,5 @@ coding agent 从执行 trace 诊断失败、修 code-as-policy 程序，把验�
   - agent 只能调用预定义的感知 / 规划 / 控制原语 API，原语集合固定。
   - 真机还不能自主学习：成功检测、安全 reset、安全监控与标定仍需解决。
 - **可信度**：项目页，作者自报；评测次数与方差未说明；LIBERO-Pro 任务数页内写法不一（摘要 80 个，结果节 160 个）；依赖冻结的前沿 LLM，搜索循环耗费大量 LLM 调用和 rollout；代码链接 NVlabs/ASPIRE。页面未写发布日期，BibTeX 引 arXiv:2607.00272。
+- **模型**：主结果用 Claude Opus 5.5；跨具身迁移仿真用 Opus 4.6、真机用 GPT-5.5；真机在线学习用 GPT-6 Astra；另在固定环境下换 Sonnet 5.5、Fable 5.1、Kimi K3、Qwen 3.8 Max 当底座。
 - **原文**：[[raw/aspire]]

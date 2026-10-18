@@ -6,6 +6,9 @@ ingested: 2026-10-16
 tags: []
 concepts: [System 1 决策模型, 选项概率读出, 概率校准, 扩散模型读出答案, 兼容第三方决策 API]
 benchmarks: ["[[JevBench]]"]
+methods: []
+models_used: ["[[DiffusionGemma 26B-A4B]]"]
+models_compared: []
 lenses: ["[[jev]]"]
 ---
 # OpenJev
@@ -22,4 +25,5 @@ lenses: ["[[jev]]"]
   - 转接模型的准确率多是原作者数字；OpenJev 只自测与原实现的一致性（如 Clef 17 问全部同一 top answer）。
   - 某个槽熵 > 0.1 时自动再读 3 次取平均。
 - **可信度**：性能为作者自测；无质量评测；Apache-2.0 开源；声明与 TypeSafe 无关联。
+- **模型**：默认模型 openjev-latest 基于 DiffusionGemma 26B-A4B。
 - **原文**：[[raw/openjev]]

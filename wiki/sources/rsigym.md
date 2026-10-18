@@ -4,8 +4,11 @@ url: https://github.com/evolvent-ai/RSIGym
 published: 2026-10
 ingested: 2026-10-16
 tags: []
-concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 服务化研究预算]
+concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 服务化研究预算]
 benchmarks: ["[[Terminal-Bench]]", "[[SkillsBench]]"]
+methods: ["[[harness 演化]]"]
+models_used: ["[[Claude Opus 5]]", "[[Claude Opus 5.5]]", "[[deepseek-v4-1-flash]]", "[[GPT-6 Astra]]", "[[GPT-6.1 Sol]]", "[[GPT-6 Sol]]", "[[Qwen3.5-35B-A3B-Base]]", "[[Qwen3.6-35B-A3B-Instruct]]", "[[Qwen3.8-27B]]"]
+models_compared: []
 lenses: ["[[agent-loop]]"]
 ---
 # RSIGym
@@ -19,4 +22,5 @@ lenses: ["[[agent-loop]]"]
 - **评估与接纳**：任务定义（`instruction.md`、`key.json`）规定初始系统、可改部分、提交物、评估协议与事后审计；官方评测 avg@3。
   final evaluation 复用开发期可见的任务。
 - **可信度**：作者自报；每个研究配置只跑一次；研究 agent 推理与官方评测不计入 \$500。
+- **模型**：六个研究 agent：Opus 5、Opus 5.5、DeepSeek V4.1 Flash、GPT-6 Astra、GPT-6.1 Sol、GPT-6 Sol；被改进的目标模型从 Qwen3.5-35B-A3B-Base 等起步，harness 迭代实验固定 Qwen3.6-35B-A3B-Instruct；另一实验让 Qwen3.8-27B 同时当研究者与目标。
 - **原文**：[[raw/rsigym]]

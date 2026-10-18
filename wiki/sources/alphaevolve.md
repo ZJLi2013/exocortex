@@ -4,8 +4,11 @@ url: https://arxiv.org/abs/2506.13131
 published: 2025-06
 ingested: 2026-10-16
 tags: []
-concepts: [人定义评估与验收, 选出集合与确认集合分离, 自改进, 进化式代码搜索, 评估级联]
+concepts: [人定义评估与验收, 选出集合与确认集合分离, 自改进, 评估级联]
 benchmarks: []
+methods: ["[[进化式代码搜索]]"]
+models_used: ["[[Gemini 2.0 Flash]]", "[[Gemini 2.0 Pro]]"]
+models_compared: []
 lenses: ["[[agent-loop]]"]
 ---
 # AlphaEvolve
@@ -27,4 +30,5 @@ Gemini 2.0 Flash + Pro 对用户标记的代码块提 diff，按用户写的评�
   - 人工介入：外部数学家提出数学问题并协助形式化；部分矩阵乘目标由研究者把自己的想法写进初始程序；TPU 改动由 TPU 设计者验证正确性；XLA IR 最终版由人类专家确认对所有输入正确。
   - 主要局限：只适用于能写出自动评估器的问题，需人工实验的任务不在范围内。
 - **可信度**：Google DeepMind 白皮书，作者自报；生产部署结果无外部复现；数学结果附 Colab；AlphaEvolve 本身是否开源未说明。
+- **模型**：Gemini 2.0 Flash（多出候选）与 Gemini 2.0 Pro（少量高质量候选）组合生成代码。
 - **原文**：[[raw/alphaevolve]]
