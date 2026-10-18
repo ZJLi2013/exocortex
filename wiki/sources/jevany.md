@@ -5,6 +5,7 @@ published: unknown
 ingested: 2026-10-16
 tags: []
 concepts: [System 1 决策模型, 选项概率读出, 概率校准, LLM 规划加小模型选动作]
+benchmarks: ["[[JevBench]]", "[[JevJudge]]"]
 lenses: ["[[jev]]"]
 ---
 # JevAny

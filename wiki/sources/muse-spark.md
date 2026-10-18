@@ -5,6 +5,7 @@ published: 2026-09-02
 ingested: 2026-10-18
 tags: [llm-foundation-models]
 concepts: [原生视觉理解, 长程 agent 工作流, 真实执行环境中的视觉推理]
+benchmarks: ["[[GDPval-AA]]", "[[DeepSWE]]", "[[Terminal-Bench]]", "[[MRCR]]"]
 lenses: ["[[llm-foundation-models]]"]
 ---
 # Muse Spark 1.3

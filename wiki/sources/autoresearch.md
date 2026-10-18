@@ -5,6 +5,7 @@ published: 2026-03
 ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, harness 演化, 贪心接受, 固定时长预算]
+benchmarks: []
 lenses: ["[[agent-loop]]"]
 ---
 # autoresearch

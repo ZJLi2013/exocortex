@@ -5,6 +5,7 @@ published: 2026-09
 ingested: 2026-10-16
 tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 经验写成代码技能, 验证 agent, 课程式探索]
+benchmarks: ["[[OSWorld]]", "[[ALE]]", "[[GameCraft-Bench]]"]
 lenses: ["[[agent-loop]]"]
 ---
 # RSIAgent
@@ -27,3 +28,7 @@ curriculum / actor / verifier 三个 agent 在新软件环境里先广（BRS）�
   - 失败模式：verifier 在官方 rubric 下仍有错时返回 PASS；未充分验证的决定被写成规则（如把缺失数据标记当有效答案）并在后续复用；练习没覆盖目标的真正弱点（未测试获取不可得的用户信息）。
 - **可信度**：作者自报；OSWorld 结果标为 provisional，各次运行的预算与评测范围未完全对齐；代码开源。
 - **原文**：[[raw/rsiagent]]
+
+## 关联
+
+- 对照 [[muse-spark]]：OSWorld 对照表列入 Muse Spark 1.3 的 66.90

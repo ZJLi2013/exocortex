@@ -5,6 +5,7 @@ published: 2025-01
 ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, 选出集合与确认集合分离, LLM 自评偏高, 人工检查点]
+benchmarks: ["[[MLE-Bench]]"]
 lenses: ["[[agent-loop]]"]
 ---
 # Agent Laboratory

@@ -5,6 +5,7 @@ published: unknown
 ingested: 2026-10-18
 tags: [llm-foundation-models]
 concepts: [原生视觉理解, 更短输出降本, prompt 编码参考实现]
+benchmarks: ["[[HLE]]", "[[Terminal-Bench]]", "[[DeepSWE]]"]
 lenses: ["[[llm-foundation-models]]"]
 ---
 # DeepSeek-V4.1-Flash-1017
@@ -15,3 +16,7 @@ DeepSeek-V4.1-Flash 的小版本更新，推理、编码、agent 与视觉基准
 - **评估与接纳**：表内还有 K3、GLM-5.3、GPT-5.6 Sol、Opus 5。未说明评测次数。技术报告沿用 V4.1-Flash 的 PDF，本卡未单列新报告。
 - **可信度**：作者自报。卡面未写发布日期；Hugging Face 仓库创建于 2026-10-17。权重 MIT。
 - **原文**：[[raw/deepseek-v4-1-flash-1017]]
+
+## 关联
+
+- 基于 [[deepseek-v4-1-flash]]：同一模型的小版本更新，沿用其技术报告

@@ -5,6 +5,7 @@ published: unknown
 ingested: 2026-10-16
 tags: []
 concepts: [课程式探索, 无示教强化学习, 选出集合与确认集合分离, 二值任务奖励, 多任务共享策略]
+benchmarks: []
 lenses: ["[[robotics-rl]]"]
 ---
 # AlphaNIST
@@ -21,3 +22,7 @@ lenses: ["[[robotics-rl]]"]
   - 用 SGS 的 Beta 采样，偏好策略约一半能解的起始状态，每个状态都有机会被抽到。
 - **可信度**：项目页；作者、日期、论文、代码均未给；只有仿真，无真机。
 - **原文**：[[raw/alphanist]]
+
+## 关联
+
+- 基于 [[sgs]]：起始状态用 success-guided Beta 采样，偏好策略约一半能解的状态

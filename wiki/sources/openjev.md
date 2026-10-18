@@ -5,6 +5,7 @@ published: unknown
 ingested: 2026-10-16
 tags: []
 concepts: [System 1 决策模型, 选项概率读出, 概率校准, 扩散模型读出答案, 兼容第三方决策 API]
+benchmarks: ["[[JevBench]]"]
 lenses: ["[[jev]]"]
 ---
 # OpenJev

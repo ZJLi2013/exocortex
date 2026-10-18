@@ -5,6 +5,7 @@ published: 2026-08-26
 ingested: 2026-10-18
 tags: [llm-foundation-models]
 concepts: [混合线性与稀疏注意力, IndexPool, KV cache 压缩, 原生视觉理解, 流形约束超连接]
+benchmarks: ["[[DeepSWE]]", "[[AutomationBench]]", "[[Artificial Analysis Intelligence Index]]", "[[GDPval-AA]]", "[[Toolathlon]]", "[[HLE]]"]
 lenses: ["[[llm-foundation-models]]"]
 ---
 # GLM-5.3-Flash

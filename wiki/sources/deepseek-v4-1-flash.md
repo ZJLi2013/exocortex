@@ -5,6 +5,7 @@ published: 2026-09-10
 ingested: 2026-10-18
 tags: [llm-foundation-models]
 concepts: [因果编码器-解码器, 非对称激活参数, KV cache 压缩, 原生视觉理解, 大规模强化学习后训练]
+benchmarks: []
 lenses: ["[[llm-foundation-models]]"]
 ---
 # DeepSeek-V4.1-Flash

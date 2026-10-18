@@ -5,6 +5,7 @@ published: 2026-10-17
 ingested: 2026-10-18
 tags: [agentic-robotics]
 concepts: [harness 演化, 自改进, 经验写成代码技能, 执行记录训练动作模型, 更新先过测试再发布]
+benchmarks: ["[[RoboDojo]]"]
 lenses: ["[[agentic-robotics]]"]
 ---
 # WorldScape R²SI

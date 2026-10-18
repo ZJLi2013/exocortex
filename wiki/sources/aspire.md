@@ -5,6 +5,7 @@ published: 2026-07
 ingested: 2026-10-16
 tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 经验写成代码技能, 跨模型迁移, 进化式代码搜索]
+benchmarks: ["[[LIBERO-Pro]]", "[[Robosuite]]", "[[BEHAVIOR-1K]]"]
 lenses: ["[[agentic-robotics]]"]
 ---
 # ASPIRE

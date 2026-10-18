@@ -5,6 +5,7 @@ published: 2026-09-22
 ingested: 2026-10-18
 tags: [llm-foundation-models]
 concepts: [大规模强化学习后训练, 选出集合与确认集合分离, 原生视觉理解, 开源训练环境与 RL 代码]
+benchmarks: ["[[Artificial Analysis Intelligence Index]]", "[[DeepSWE]]"]
 lenses: ["[[llm-foundation-models]]"]
 ---
 # MiMo-V2.6

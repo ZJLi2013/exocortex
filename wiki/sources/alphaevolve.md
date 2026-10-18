@@ -5,6 +5,7 @@ published: 2025-06
 ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, 选出集合与确认集合分离, 自改进, 进化式代码搜索, 评估级联]
+benchmarks: []
 lenses: ["[[agent-loop]]"]
 ---
 # AlphaEvolve

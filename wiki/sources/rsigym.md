@@ -5,6 +5,7 @@ published: 2026-10
 ingested: 2026-10-16
 tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 服务化研究预算]
+benchmarks: ["[[Terminal-Bench]]", "[[SkillsBench]]"]
 lenses: ["[[agent-loop]]"]
 ---
 # RSIGym

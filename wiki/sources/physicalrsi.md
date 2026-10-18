@@ -5,6 +5,7 @@ published: unknown
 ingested: 2026-10-18
 tags: [agentic-robotics]
 concepts: [harness 演化, 自改进, 经验写成代码技能, 进化式代码搜索, VLA 当技能调用]
+benchmarks: ["[[RoboDojo]]"]
 lenses: ["[[agentic-robotics]]"]
 ---
 # PhysicalRSI 1.0
