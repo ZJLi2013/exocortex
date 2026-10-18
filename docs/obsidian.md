@@ -48,9 +48,11 @@
 | 节点 | 样子 | 来自来源页的 |
 |---|---|---|
 | 来源 | 按 lens 上色；没有 lens 的是默认色 | 文件本身 |
-| 评测集 | 灰色，无页面 | `benchmarks` |
-| 模型 | 灰色，无页面 | `models_used`、`models_compared` |
-| 方法 | 灰色，无页面 | `methods` |
+| 评测集，如 RoboDojo | 灰色，无页面 | `benchmarks` |
+| 模型，如 GPT-6 Astra、π0.5 | 灰色，无页面 | `models_used`、`models_compared` |
+| 方法，如 harness evolution、code skills from experience、evolutionary code search | 灰色，无页面 | `methods` |
+
+箭头从来源指向它链接的节点。灰点没有页面，是故意的：它们只用来把引用同一个评测集、模型或方法的来源连起来。
 
 来源与来源之间的直连边来自正文「关联」一节（基于 / 对照 / 相悖），以及模型字段里链到库内来源页的模型（如 RSIGym 用了 [[deepseek-v4-1-flash]]）。
 
