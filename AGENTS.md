@@ -13,7 +13,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 | `wiki/lenses/<name>.md` | human 的研究问题：范围、当前判断、待批准草稿 | 范围与当前判断归 human；草稿与 `status: proposed` 的候选归 agent |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/lens-rejections.yaml` | human 否决过的候选 lens 与当时的簇内来源 | agent |
-| `wiki/log.md` | 审计日志，只追加；按事件类型或来源名搜索，不整份读 | agent |
+| `wiki/log.md` | 审计日志，只追加，只在本地；按事件类型或来源名搜索，不整份读 | agent |
 
 不按主题建目录。分组靠 lens 与两种标签，都不是预设分类：
 
