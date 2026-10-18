@@ -39,21 +39,6 @@ agentic-robotics keep；agent-loop keep。
 ## [2026-10-16] lint | 新建概念页
 经验写成代码技能、跨模型迁移、验证 agent、进化式代码搜索（ASPIRE 的「程序进化搜索」并入）。
 
-## [2026-10-16] query | Q1
-concepts/选出集合与确认集合分离、lenses/agent-loop，及 embodiedevo、embodiedrsi、aspire、rax、alphaevolve、agent-laboratory、rsigym、rsiagent、autoresearch 来源页。
-
-## [2026-10-16] query | Q2
-sources/gemini-4-argon、concepts/验证 agent、lenses/agentic-robotics、log。
-
-## [2026-10-16] query | Q3
-concepts/人定义评估与验收、lenses/agent-loop，及该概念页列出的 11 个来源页。
-
-## [2026-10-16] query | Q4
-全部 12 个来源页的 published 字段；RSIGym、RAX 另查 raw/rsigym、raw/rax。
-
-## [2026-10-16] query | Q5
-concepts/自改进、concepts/选出集合与确认集合分离、lenses/agent-loop，及 rsigym、rsiagent、autoresearch、alphaevolve、embodiedrsi 来源页。
-
 ## [2026-10-16] ingest | JevAny
 agentic-robotics reject（机器人只在 playground 回放，无机器人结果）；agent-loop reject（决策模型基础设施，不是 research agent 或自改进系统）。
 
@@ -83,21 +68,6 @@ reject：jevany、openjev、batch-invariant-vlas、sciencediscovery、ctrl-world
 ## [2026-10-16] approve lens | jev
 human 批准。keep：jevany、openjev。
 reject：sgs、alphanist、batch-invariant-vlas、sciencediscovery、ctrl-world、roboquest、gemini-4-argon、embodiedevo、embodiedrsi、aspire、rax、rsigym、autoresearch、alphaevolve、agent-laboratory、rsiagent（都不提供返回校准概率的 System 1 决策模型或服务）。
-
-## [2026-10-17] query | Q1
-lenses/agent-loop，及 embodiedevo、embodiedrsi、aspire、rax、alphaevolve、agent-laboratory、jevany、rsigym、rsiagent、autoresearch、alphanist 来源页。
-
-## [2026-10-17] query | Q2
-sources/gemini-4-argon、lenses/agentic-robotics、log。
-
-## [2026-10-17] query | Q3
-lenses/agent-loop，及 alphaevolve、autoresearch、rsigym、embodiedevo、rax、aspire、embodiedrsi、rsiagent、gemini-4-argon、agent-laboratory、roboquest 来源页。
-
-## [2026-10-17] query | Q4
-全部 18 个来源页的 published 字段；RSIGym 等 unknown 项另查 raw/。
-
-## [2026-10-17] query | Q5
-lenses/agent-loop，及 rsigym、autoresearch、rsiagent、agent-laboratory、alphaevolve、embodiedrsi 来源页。
 
 ## [2026-10-18] rename | lenses
 robotrsi → agentic-robotics，system1-decision → jev，demo-free-rl → robotics-rl（human）。
