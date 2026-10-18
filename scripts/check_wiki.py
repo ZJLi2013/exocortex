@@ -29,44 +29,20 @@ def split(text: str, prefix: str) -> dict[str, str]:
     return {p.split("\n", 1)[0].strip(): p.split("\n", 1)[-1] for p in parts}
 
 
-def lens_problems(page: Path) -> list[str]:
+def lens_problems(page: Path, pages: list[Path]) -> list[str]:
     text = page.read_text(encoding="utf-8")
     if re.search(r"^status: proposed", text, flags=re.M):
         return []
     name, out = page.name, []
     sections = split(text, "##")
-    missing = [s for s in ["范围", "问题", "判断", "冲突"] if s not in sections]
+    missing = [s for s in ["范围", "总结", "工作", "冲突"] if s not in sections]
     if missing:
         return [f"{name}: missing section {', '.join(missing)}"]
-    ids = Counter(re.findall(r"^### ([QC]\d+)", text, flags=re.M))
-    out += [f"{name}: duplicate {i}" for i, n in ids.items() if n > 1]
-    questions = {h.split()[0]: body for h, body in split(sections["问题"], "###").items()}
-    claims = {h.split()[0]: body for h, body in split(sections["判断"], "###").items()}
-    if not 2 <= len(questions) <= 5:
-        out.append(f"{name}: {len(questions)} questions, expected 2–5")
-    for q, body in questions.items():
-        answer = re.search(r"^当前答案：(.*)", body, flags=re.M)
-        if not answer:
-            out.append(f"{name}: {q} has no 当前答案")
-            continue
-        out += [f"{name}: {q} cites missing {c}" for c in re.findall(r"C\d+", answer.group(1)) if c not in claims]
-    for c, body in claims.items():
-        fields = dict(re.findall(r"^- (回答|支持|限定|反驳|推翻)：(.*)", body, flags=re.M))
-        absent = [f for f in ["回答", "支持", "限定", "反驳", "推翻"] if f not in fields]
-        if absent:
-            out.append(f"{name}: {c} missing {', '.join(absent)}")
-            continue
-        if fields["回答"].strip() not in questions:
-            out.append(f"{name}: {c} answers unknown {fields['回答'].strip()}")
-        if not re.search(r"^- 支持：\n  - ", body, flags=re.M):
-            out.append(f"{name}: {c} has no supporting evidence")
-        for item in re.findall(r"^  - (.*)", body, flags=re.M):
-            m = re.match(r"\[\[([^\]]+)\]\]（(自报|第三方)）", item)
-            if not m:
-                out.append(f"{name}: {c} evidence not '[[slug]]（自报|第三方）…': {item[:40]}")
-            elif not (ROOT / "wiki/sources" / f"{m.group(1)}.md").exists():
-                out.append(f"{name}: {c} evidence links non-source {m.group(1)}")
-    out += [f"{name}: conflict cites missing {c}" for c in re.findall(r"\[!contradiction\] (C\d+)", sections["冲突"]) if c not in claims]
+    listed = re.findall(r"^- \[\[([^\]|]+)\]\]：", sections["工作"], flags=re.M)
+    out += [f"{name}: duplicate row {s}" for s, n in Counter(listed).items() if n > 1]
+    owned = {p.stem for p in pages if f'"[[{page.stem}]]"' in p.read_text(encoding="utf-8").split("---")[1]}
+    out += [f"{name}: {s} has lens but no row" for s in sorted(owned - set(listed))]
+    out += [f"{name}: row {s} is not a source with this lens" for s in sorted(set(listed) - owned)]
     return out
 
 
@@ -90,7 +66,7 @@ def main() -> None:
             problems.append(f"{page.name}: no raw/{page.name} or no link to it")
 
     for lens in sorted((ROOT / "wiki/lenses").glob("*.md")):
-        problems += lens_problems(lens)
+        problems += lens_problems(lens, pages)
 
     broken = unresolved_links()
     if broken:

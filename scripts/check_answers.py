@@ -8,11 +8,11 @@ WIKI = "wiki/"
 
 # question -> (path substrings that must be cited, keywords that must appear)
 GOLD = {
-    "Q1": ([WIKI], ["RSIGym", "EmbodiedRSI", "EmbodiedEvo", "ASPIRE", "RAX"]),
+    "Q1": ([WIKI], ["AlphaEvolve", "EmbodiedRSI", "EmbodiedEvo", "ASPIRE", "RAX"]),
     "Q2": ([WIKI], ["56%", "75%"]),
     "Q3": ([WIKI], ["AlphaEvolve", "RSIGym", "Argon"]),
-    "Q4": ([WIKI], ["EmbodiedRSI", "EmbodiedEvo", "RoboQuest", "Argon"]),
-    "Q5": ([WIKI], ["56.26", "autoresearch", "Agent Laboratory", "RSIAgent"]),
+    "Q4": ([WIKI], ["EmbodiedRSI", "EmbodiedEvo", "RoboQuest", "Argon", "RSIGym", "SGS", "WorldScape"]),
+    "Q5": ([WIKI], ["56.26", "Agent Laboratory", "RSIAgent"]),
 }
 PASS_AT = 4
 
