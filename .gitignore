@@ -5,3 +5,5 @@
 .obsidian/
 # third-party full texts stay local; see LICENSE-CONTENT
 raw/
+.codex/
+wiki/log.md

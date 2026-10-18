@@ -26,7 +26,7 @@
 - **你的标签**（来源页 `tags:`）：丢链接时打的 `#tag`，LLM 用它决定先判哪个 lens，归属仍按内容定。
 - **新 lens**：两个以上无 lens 的来源共享一个标签时，LLM 起草候选 lens 等你处置。
 
-`raw/` 存原文，只在本地；`wiki/sources/` 一个来源一页；`wiki/log.md` 记每次操作。
+`wiki/sources/` 一个来源一页；`raw/` 存原文、`wiki/log.md` 记每次操作，这两样只在本地。
 
 现有 18 个来源、4 个 lens：`agentic-robotics`、`agent-loop`、`robotics-rl`、`jev`。
 设计理由见 [docs/design.md](docs/design.md)。

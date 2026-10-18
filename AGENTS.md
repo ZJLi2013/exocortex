@@ -12,7 +12,8 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
 | `wiki/lenses/<name>.md` | human 的研究问题：范围、当前判断、待批准草稿 | 范围与当前判断归 human；草稿与 `status: proposed` 的候选归 agent |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
-| `wiki/log.md` | 追加日志 | agent |
+| `wiki/lens-rejections.yaml` | human 否决过的候选 lens 与当时的簇内来源 | agent |
+| `wiki/log.md` | 审计日志，只追加，只在本地；按事件类型或来源名搜索，不整份读 | agent |
 
 不按主题建目录。分组靠 lens 与两种标签，都不是预设分类：
 
@@ -89,7 +90,7 @@ lens 外的来源成簇时，提议一个新研究问题，由 human 决定要�
 1. **找簇**：只看 `lenses: []` 的来源页。先比 `tags:`，≥ 2 个来源共享同一个 human 标签 → 成一簇；
    再比 `concepts:`，≥ 2 个来源共享同一个（或同义的）标签 → 成一簇。
    两簇共享任一来源就合并。不与任何其它无 lens 来源共享标签的来源不成簇。
-2. **跳过**：已有候选 lens 覆盖同一簇时只追加新来源；log 里该簇被否决过、且没有新来源加入时不提。
+2. **跳过**：已有候选 lens 覆盖同一簇时只追加新来源；簇内来源全部出现在 `wiki/lens-rejections.yaml` 某条记录的 `sources` 里时不提，有新来源加入才重提。
 3. **提议**：每簇写 `wiki/lenses/<name>.md`（name 小写短横线；簇由 human 标签成簇时默认用该标签）：
 
    ```markdown
@@ -123,7 +124,6 @@ lens 外的来源成簇时，提议一个新研究问题，由 human 决定要�
 1. 列 `wiki/sources/` 看有哪些来源，或全文搜 `wiki/`。
 2. 先读 lens 页，再按 `tags:` / `concepts:` 标签或全文搜索找来源页；细节不够才读 `raw/`。
 3. 每条事实引用页面路径（`wiki/sources/<slug>.md`）。查不到就说查不到。
-4. log 追加 `## [YYYY-MM-DD] query | <问题>`。
 
 ## 批准
 
@@ -133,4 +133,10 @@ human 说「批准 <lens> 的 <工作名> 草稿」时，把草稿内容并入�
 
 - 「批准 lens <name>」：删掉 `status` 与「为何提议」，对 `wiki/sources/` 全部来源做一遍收录第 5 步（只判这个 lens），keep 的同时把它加进来源页 `lenses`。
 - 「并入 <已有 lens>」：human 先改该 lens 的范围句；agent 删候选文件，对全部来源补判该 lens。
-- 「否决 lens <name>」：删候选文件，log 记 `## [YYYY-MM-DD] reject lens | <name>` 与簇内来源。
+- 「否决 lens <name>」：先在 `wiki/lens-rejections.yaml` 追加一条（文件不存在就新建），再删候选文件，log 记 `## [YYYY-MM-DD] reject lens | <name>`：
+
+  ```yaml
+  - name: <name>
+    rejected: YYYY-MM-DD
+    sources: [<簇内来源 slug，按字母序>]
+  ```
