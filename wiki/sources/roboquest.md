@@ -5,6 +5,10 @@ published: 2026-10
 ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, 主动探索取证, 自主判断何时提交, 失败归因]
+benchmarks: []
+methods: []
+models_used: []
+models_compared: ["[[GPT-6 Astra]]", "[[Claude Opus 5.5]]", "[[GPT-6.1 Sol]]", "[[Claude Fable 5.1]]", "[[Gemini 3.8 Flash]]", "[[π0.5]]"]
 lenses: ["[[agentic-robotics]]"]
 ---
 # RoboQuest
@@ -25,4 +29,5 @@ lenses: ["[[agentic-robotics]]"]
   - agent 只有 ARM / BASE / WAIT / STOP 四个工具，没有定位或抓取工具；上限 200 次决策，图像只留最近两帧。
   - 失败归因用每个任务的有序确定性规则逐个未满足条件打标签，规则与标签随 benchmark 发布。
 - **可信度**：作者自报；每个模型在每个实例上跑一次；归因规则、标签与示范数据集（LeRobot v2.1）随 benchmark 发布。
+- **模型**：评测 GPT-6 Astra、Opus 5.5、GPT-6.1 Sol、Fable 5.1、Gemini 3.8 Flash 五个前沿模型，另有 5,000 条示范 SFT 的 π0.5。
 - **原文**：[[raw/roboquest]]

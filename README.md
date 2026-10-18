@@ -10,7 +10,9 @@
 
 ## 怎么用
 
-在 agent 对话里：
+**浏览与看图谱用 Obsidian**：打开方式、图谱配置和常用看法见 [docs/obsidian.md](docs/obsidian.md)。
+
+其余在 agent 对话里：
 
 | 你想做 | 怎么做 |
 |---|---|

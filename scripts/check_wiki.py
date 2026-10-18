@@ -7,15 +7,28 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-FIELDS = ["type", "url", "published", "ingested", "tags", "concepts", "lenses"]
+NODE_FIELDS = ["benchmarks", "methods", "models_used", "models_compared"]
+FIELDS = ["type", "url", "published", "ingested", "tags", "concepts", *NODE_FIELDS, "lenses"]
+RELATIONS = ["基于", "对照", "相悖"]
 # raw/ is local-only (third-party full texts); fresh clones do not have it.
 HAS_RAW = (ROOT / "raw").is_dir()
 
 
-def unresolved_links() -> list[str]:
+def links(page: Path, field: str) -> list[str]:
+    m = re.search(rf"^{field}:\s*\[(.*)\]", page.read_text(encoding="utf-8"), flags=re.M)
+    return re.findall(r"\[\[([^\]]+)\]\]", m.group(1)) if m else []
+
+
+def model_names() -> set[str]:
+    text = (ROOT / "docs/model-names.md").read_text(encoding="utf-8")
+    return {re.sub(r"^\[\[|\]\]$", "", m) for m in re.findall(r"^\| ([^|]+?) \|", text, flags=re.M)}
+
+
+def unresolved_links(allowed: set[str]) -> list[str]:
     # Resolved like Obsidian: by file name or by vault-relative path, ignoring #heading and |alias.
+    # Benchmark, method and model nodes have no pages on purpose; they are shared nodes in the graph view.
     files = [p.relative_to(ROOT).with_suffix("").as_posix() for p in ROOT.rglob("*.md")]
-    targets = set(files) | {f.rsplit("/", 1)[-1] for f in files}
+    targets = set(files) | {f.rsplit("/", 1)[-1] for f in files} | allowed
     broken = []
     for page in sorted((ROOT / "wiki").rglob("*.md")):
         for link in re.findall(r"\[\[([^\]|#]+)", page.read_text(encoding="utf-8")):
@@ -64,11 +77,29 @@ def main() -> None:
             problems.append(f"{page.name}: missing {', '.join(missing)}")
         if f"[[raw/{page.stem}]]" not in text or (HAS_RAW and not (ROOT / "raw" / page.name).exists()):
             problems.append(f"{page.name}: no raw/{page.name} or no link to it")
+        related = split(text, "##").get("关联", "")
+        for line in related.strip().splitlines():
+            m = re.match(rf"- ({'|'.join(RELATIONS)}) \[\[([^\]|]+)\]\]：", line)
+            if not m:
+                problems.append(f"{page.name}: 关联 line not '- <{'/'.join(RELATIONS)}> [[slug]]：…': {line[:40]}")
+            elif m.group(2) == page.stem or not (ROOT / "wiki/sources" / f"{m.group(2)}.md").exists():
+                problems.append(f"{page.name}: 关联 links non-source {m.group(2)}")
 
     for lens in sorted((ROOT / "wiki/lenses").glob("*.md")):
         problems += lens_problems(lens, pages)
 
-    broken = unresolved_links()
+    canonical = model_names() | {p.stem for p in pages}
+    methods = Counter()
+    for page in pages:
+        for field in NODE_FIELDS:
+            values = links(page, field)
+            problems += [f"{page.name}: {field} lists {v} twice" for v, n in Counter(values).items() if n > 1]
+            if field.startswith("models_"):
+                problems += [f"{page.name}: {field} {v} not in docs/model-names.md" for v in values if v not in canonical]
+        methods.update(links(page, "methods"))
+    problems += [f"method {m} used by only one source" for m, n in methods.items() if n < 2]
+
+    broken = unresolved_links({v for p in pages for f in NODE_FIELDS for v in links(p, f)})
     if broken:
         problems.append("unresolved links: " + "; ".join(broken))
 

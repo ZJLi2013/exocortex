@@ -5,6 +5,10 @@ published: 2026-10-13
 ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, 自改进, 仿真孪生造数据, 基座接管人做的环节, 验证 agent]
+benchmarks: ["[[ERQA]]"]
+methods: []
+models_used: []
+models_compared: []
 lenses: ["[[llm-foundation-models]]"]
 ---
 # Gemini 4 Argon

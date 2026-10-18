@@ -4,7 +4,11 @@ url: https://arxiv.org/html/2609.15364v1
 published: 2026-09
 ingested: 2026-10-16
 tags: []
-concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 经验写成代码技能, 验证 agent, 课程式探索]
+concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 验证 agent, 课程式探索]
+benchmarks: ["[[OSWorld]]", "[[ALE]]", "[[GameCraft-Bench]]"]
+methods: []
+models_used: ["[[GLM-5.3]]", "[[Kimi-K3]]", "[[Kimi-K2.6]]", "[[glm-5-3-flash]]", "[[Qwen3.8-27B]]", "[[GPT-5.4]]", "[[GPT-4o]]"]
+models_compared: ["[[Kimi-K2.6]]", "[[MiMo-V2.5]]", "[[DeepSeek-V4-Pro]]", "[[Qwen3.8-Max]]", "[[Kimi-K3]]", "[[Claude Opus 4.8]]", "[[Gemini 3.8 Flash]]", "[[GPT-5.6 Sol]]", "[[muse-spark]]", "[[Claude Fable 5]]", "[[Claude Opus 5]]", "[[GPT-6 Astra]]"]
 lenses: ["[[agent-loop]]"]
 ---
 # RSIAgent
@@ -26,4 +30,5 @@ curriculum / actor / verifier 三个 agent 在新软件环境里先广（BRS）�
   - 人工介入：探索期无 gold label 与人监督；选题规则与报告口径由作者定。
   - 失败模式：verifier 在官方 rubric 下仍有错时返回 PASS；未充分验证的决定被写成规则（如把缺失数据标记当有效答案）并在后续复用；练习没覆盖目标的真正弱点（未测试获取不可得的用户信息）。
 - **可信度**：作者自报；OSWorld 结果标为 provisional，各次运行的预算与评测范围未完全对齐；代码开源。
+- **模型**：主系统 GLM-5.3 + Kimi-K3（verifier）；GameCraft-Bench 生成器含 Kimi-K2.6、GLM-5.3-Flash、Qwen3.8-27B；官方评估器用 GPT-5.4 评分、GPT-4o 模拟用户；OSWorld 对照表用各家 leaderboard 报告值。
 - **原文**：[[raw/rsiagent]]

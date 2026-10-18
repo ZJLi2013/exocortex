@@ -5,6 +5,10 @@ published: 2025-01
 ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, 选出集合与确认集合分离, LLM 自评偏高, 人工检查点]
+benchmarks: ["[[MLE-Bench]]"]
+methods: []
+models_used: ["[[GPT-4o]]", "[[o1-mini]]", "[[o1-preview]]"]
+models_compared: []
 lenses: ["[[agent-loop]]"]
 ---
 # Agent Laboratory
@@ -26,4 +30,5 @@ lenses: ["[[agent-loop]]"]
   - LLM 自评与人类评审的一致率低于人与人（53.3% vs 56.1%，引自 The AI Scientist）。
   - 失败模式：文献综述反复调用 summarize 直到步数耗尽（该阶段成功率 60–80%）；实验全 0% 准确率未被纠正；mle-solver 生成 `exit()` 终止进程，需人工检测删除；gpt-4o 报告虚构未发生的实验细节。
 - **可信度**：作者自报；人评样本小（15 篇、10 名评审）；MLE-Bench 对比剔除他方无效提交后取均值，mle-solver 跑几次未说明；框架开源。
+- **模型**：GPT-4o、o1-mini、o1-preview 分别作 agent 后端。
 - **原文**：[[raw/agent-laboratory]]

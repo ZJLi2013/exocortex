@@ -4,7 +4,11 @@ url: https://mmlab.hk/research/PhysicalRSI
 published: unknown
 ingested: 2026-10-18
 tags: [agentic-robotics]
-concepts: [harness 演化, 自改进, 经验写成代码技能, 进化式代码搜索, VLA 当技能调用]
+concepts: [自改进, VLA 当技能调用]
+benchmarks: ["[[RoboDojo]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]", "[[evolutionary code search]]"]
+models_used: ["[[π0.5]]"]
+models_compared: ["[[π0.5]]", "[[GPT-6 Astra]]", "[[DM0.5]]", "[[Liber-0 Lite]]", "[[Simate-beta]]"]
 lenses: ["[[agentic-robotics]]"]
 ---
 # PhysicalRSI 1.0
@@ -18,4 +22,5 @@ lenses: ["[[agentic-robotics]]"]
   - 52 个 task × layout 设定里 12 个未完成 rollout。
 - **评估与接纳**：分数取官方榜单；迭代内 `select_on_eval` 选优，选优用的集合与榜单评测是否不相交未说明；基座模型未说明。
 - **可信度**：项目页自报；无论文、无评测次数说明；代码称在 XPolicyLab。
+- **模型**：π0.5 是 harness 中的一个技能，System 2 基座未说明；对照取自官方榜单 2026-10-03 快照的 π0.5、GPT-6 Astra、DM0.5、Liber-0 Lite、Simate-beta。
 - **原文**：[[raw/physicalrsi]]

@@ -4,7 +4,11 @@ url: https://arxiv.org/abs/2610.18867
 published: 2026-10
 ingested: 2026-10-16
 tags: []
-concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 经验写成代码技能, 跨模型迁移]
+concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 跨模型迁移]
+benchmarks: ["[[RoboDojo]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]"]
+models_used: ["[[GPT-6 Astra]]", "[[GPT-5.6 Sol]]", "[[GPT-5.6 Luna]]"]
+models_compared: []
 lenses: ["[[agentic-robotics]]"]
 ---
 # EmbodiedEvo
@@ -19,4 +23,9 @@ coding agent 在每个任务的一个 Playground 场景里把物理反馈蒸馏�
 - **评估与接纳**：Playground 布局与 Test 布局不同；Playground 可 reset、可写 `skills/` `lessons/`，Test 只读、不能 reset、不回写经验。
   协议文件与执行记录对 agent 只读。
 - **可信度**：作者自报；对比用 2026-10-09 排行榜快照；需 RoboDojo / Isaac Sim。
+- **模型**：执行器为 GPT-6 Astra（xhigh / medium）、GPT-5.6 Sol 与 Luna（xhigh）；Astra 的经验迁给 Sol、Luna。
 - **原文**：[[raw/embodiedevo]]
+
+## 关联
+
+- 对照 [[physicalrsi]]：RoboDojo 全量表里 Score / SR 高出 8.21 / 6.44 个点

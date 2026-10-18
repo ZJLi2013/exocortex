@@ -4,7 +4,11 @@ url: https://github.com/robot-agent-exploration/rax
 published: 2026
 ingested: 2026-10-16
 tags: []
-concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 经验写成代码技能, 探索预算扩展, 把 agent 编译成程序]
+concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 探索预算扩展, 把 agent 编译成程序]
+benchmarks: ["[[RoboDojo]]", "[[BEHAVIOR-1K]]"]
+methods: ["[[code skills from experience]]"]
+models_used: []
+models_compared: []
 lenses: ["[[agentic-robotics]]"]
 ---
 # RAX
@@ -20,4 +24,5 @@ lenses: ["[[agentic-robotics]]"]
   真机由操作员复位场景后程序端到端运行；操作员 arm / disarm 目录 agent 不可写，recorder 只读。
   agent 沙箱只能经 MCP 工具碰机器人，模型冻结；skill 需两次无人值守成功才标 `verified`。
 - **可信度**：作者自报；预印本；评测次数未说明；代码按分支开源。
+- **模型**：agent 是 Codex CLI 或 Claude Code，底层模型未说明。
 - **原文**：[[raw/rax]]

@@ -5,6 +5,10 @@ published: 2026-09-04
 ingested: 2026-10-16
 tags: []
 concepts: [批不变推理, 推理非确定性, 逐层张量追踪定位发散]
+benchmarks: []
+methods: []
+models_used: ["[[π0]]"]
+models_compared: []
 lenses: []
 ---
 # Batch-Invariant VLAs
@@ -19,4 +23,5 @@ Cybernetic Physics 把 π0 推理做成批不变：同一输入在 batch = 1 与
   - 判据是 batch 1 参考与 batch 32 第 0 个样本的逐张量差，由作者自写的 tracer 记录。
   - 只跑 1 次试验；未在机器人上测对行为的影响。
 - **可信度**：公司博客，作者自报，单次；2026-09-22 修订；称代码在 GitHub；当前实现逐个矩阵乘、慢。
+- **模型**：研究对象是 π0 的推理路径。
 - **原文**：[[raw/batch-invariant-vlas]]

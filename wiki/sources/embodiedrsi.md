@@ -4,7 +4,11 @@ url: https://arxiv.org/abs/2610.10498
 published: 2026-10
 ingested: 2026-10-16
 tags: []
-concepts: [选出集合与确认集合分离, 人定义评估与验收, harness 演化, 自改进, 经验写成代码技能, 按信息价值选实验]
+concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 按信息价值选实验]
+benchmarks: ["[[RoboCasa365]]", "[[LIBERO-Pro]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]"]
+models_used: ["[[SmolVLA]]", "[[Qwen3.5-122B-A10B]]", "[[Qwen3-Embedding-0.6B]]"]
+models_compared: ["[[OpenVLA]]", "[[π0]]", "[[π0.5]]"]
 lenses: ["[[agentic-robotics]]"]
 ---
 # EmbodiedRSI
@@ -23,4 +27,5 @@ lenses: ["[[agentic-robotics]]"]
   - agent 不能改机器人基座模型：VLA 全程冻结，只改代码、技能与记忆。真机 SmolVLA 先用每任务 50 条遥操作示范全量微调 20,000 步，再冻结。
   - 假设靠 matched trial 判定：同一初始状态、其余调用及顺序不变，比较成功率差；消融时 VLA、任务集、物理实验预算与评估协议固定。
 - **可信度**：作者自报；未给多次运行或方差；基线数字是否复现未说明；代码是否开源未说明。
+- **模型**：真机底座 SmolVLA；冻结 Qwen3.5-122B-A10B 做更新算子，Qwen3-Embedding-0.6B 做编码；LIBERO-Pro 对照冻结 VLA OpenVLA、π0、π0.5。
 - **原文**：[[raw/embodiedrsi]]
