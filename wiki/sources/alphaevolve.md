@@ -6,7 +6,7 @@ ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, 选出集合与确认集合分离, 自改进, 评估级联]
 benchmarks: []
-methods: ["[[进化式代码搜索]]"]
+methods: ["[[evolutionary code search]]"]
 models_used: ["[[Gemini 2.0 Flash]]", "[[Gemini 2.0 Pro]]"]
 models_compared: []
 lenses: ["[[agent-loop]]"]

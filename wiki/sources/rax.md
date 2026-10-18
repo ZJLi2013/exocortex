@@ -6,7 +6,7 @@ ingested: 2026-10-16
 tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 探索预算扩展, 把 agent 编译成程序]
 benchmarks: ["[[RoboDojo]]", "[[BEHAVIOR-1K]]"]
-methods: ["[[经验写成代码技能]]"]
+methods: ["[[code skills from experience]]"]
 models_used: []
 models_compared: []
 lenses: ["[[agentic-robotics]]"]

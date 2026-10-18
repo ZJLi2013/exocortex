@@ -6,7 +6,7 @@ ingested: 2026-10-16
 tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 服务化研究预算]
 benchmarks: ["[[Terminal-Bench]]", "[[SkillsBench]]"]
-methods: ["[[harness 演化]]"]
+methods: ["[[harness evolution]]"]
 models_used: ["[[Claude Opus 5]]", "[[Claude Opus 5.5]]", "[[deepseek-v4-1-flash]]", "[[GPT-6 Astra]]", "[[GPT-6.1 Sol]]", "[[GPT-6 Sol]]", "[[Qwen3.5-35B-A3B-Base]]", "[[Qwen3.6-35B-A3B-Instruct]]", "[[Qwen3.8-27B]]"]
 models_compared: []
 lenses: ["[[agent-loop]]"]

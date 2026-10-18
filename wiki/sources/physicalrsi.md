@@ -6,7 +6,7 @@ ingested: 2026-10-18
 tags: [agentic-robotics]
 concepts: [自改进, VLA 当技能调用]
 benchmarks: ["[[RoboDojo]]"]
-methods: ["[[harness 演化]]", "[[经验写成代码技能]]", "[[进化式代码搜索]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]", "[[evolutionary code search]]"]
 models_used: ["[[π0.5]]"]
 models_compared: ["[[π0.5]]", "[[GPT-6 Astra]]", "[[DM0.5]]", "[[Liber-0 Lite]]", "[[Simate-beta]]"]
 lenses: ["[[agentic-robotics]]"]

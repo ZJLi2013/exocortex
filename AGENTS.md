@@ -78,7 +78,7 @@ tags: [jev]
    tags: [jev]                # inbox 行里的 human 标签，去掉 #；没打写 []
    concepts: [概念 A, 概念 B]  # agent 标签，纯文本；见第 4 步
    benchmarks: ["[[RoboDojo]]"]   # 报了数字的评测集，链接形式；见第 4 步；没有写 []
-   methods: ["[[进化式代码搜索]]"]     # 方法节点；见第 4 步；没有写 []
+   methods: ["[[evolutionary code search]]"]     # 方法节点；见第 4 步；没有写 []
    models_used: ["[[π0.5]]"]        # 用到的模型；见第 4 步；没有写 []
    models_compared: ["[[GPT-6 Astra]]"]   # 直接对照的模型；见第 4 步；没有写 []
    lenses: ["[[agentic-robotics]]"]   # keep 的 lens，链接形式；都不 keep 写 []
@@ -107,7 +107,8 @@ tags: [jev]
    - models_used 列这个工作用到的模型：底座、技能、裁判、被研究的对象。models_compared 只列它自己直接对照的模型；转载整张榜单不算，只取它点名比较的几个。
      同一模型可同时出现在两个字段。名字只用 [docs/model-names.md](docs/model-names.md) 左列的规范名，保留有意义的版本差别（Base / Instruct、π0.5 / π0.5-DROID）；
      原文写法是别名就换成规范名，表里没有就追加一行；模型有库内来源页时写来源页链接。角色写进正文「模型」一行，原文没说的写「未说明」。
-   - methods 只用至少两个来源共有、且原文能核实的方法：`harness 演化`（agent 改写调用模型的外层代码，权重不变）、`经验写成代码技能`、`进化式代码搜索`。
+   - methods 只用至少两个来源共有、且原文能核实的方法：`harness evolution`（agent 改写调用模型的外层代码，权重不变）、`code skills from experience`、`evolutionary code search`。
+     方法节点名用英文，与模型、评测集节点一致。
      新来源让某个 concepts 标签第一次被两个来源共有、且它是可核实的方法时，才新增方法节点。方法写进 methods 后不再重复写进 concepts。
    - 关联只连库内来源，关系三选一：`基于`（用了对方的方法、组件或是它的新版本）、`对照`（拿对方当基线或在同一张表里比）、
      `相悖`（同一件事两边的数字或说法不一致）。相关工作里顺带一提的不连；对方是模型、已写进 models_compared 的不再写对照。写在主动方的页面上，一对来源一种关系一行；没有就不写这一节。

@@ -6,7 +6,7 @@ ingested: 2026-10-16
 tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 按信息价值选实验]
 benchmarks: ["[[RoboCasa365]]", "[[LIBERO-Pro]]"]
-methods: ["[[harness 演化]]", "[[经验写成代码技能]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]"]
 models_used: ["[[SmolVLA]]", "[[Qwen3.5-122B-A10B]]", "[[Qwen3-Embedding-0.6B]]"]
 models_compared: ["[[OpenVLA]]", "[[π0]]", "[[π0.5]]"]
 lenses: ["[[agentic-robotics]]"]

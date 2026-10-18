@@ -6,7 +6,7 @@ ingested: 2026-10-16
 tags: []
 concepts: [选出集合与确认集合分离, 人定义评估与验收, 自改进, 跨模型迁移]
 benchmarks: ["[[RoboDojo]]"]
-methods: ["[[harness 演化]]", "[[经验写成代码技能]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]"]
 models_used: ["[[GPT-6 Astra]]", "[[GPT-5.6 Sol]]", "[[GPT-5.6 Luna]]"]
 models_compared: []
 lenses: ["[[agentic-robotics]]"]

@@ -6,7 +6,7 @@ ingested: 2026-10-18
 tags: [agentic-robotics]
 concepts: [自改进, 执行记录训练动作模型, 更新先过测试再发布]
 benchmarks: ["[[RoboDojo]]"]
-methods: ["[[harness 演化]]", "[[经验写成代码技能]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]"]
 models_used: ["[[WorldScape Policy]]"]
 models_compared: ["[[GPT-6 Astra]]", "[[GR00T-N1.7]]"]
 lenses: ["[[agentic-robotics]]"]
