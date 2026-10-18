@@ -47,7 +47,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
    ingested: YYYY-MM-DD
    tags: [jev]                # inbox 行里的 human 标签，去掉 #；没打写 []
    concepts: [概念 A, 概念 B]  # agent 标签，纯文本；见第 4 步
-   lenses: ["[[robotrsi]]"]   # keep 的 lens，链接形式；都不 keep 写 []
+   lenses: ["[[agentic-robotics]]"]   # keep 的 lens，链接形式；都不 keep 写 []
    ---
    # <工作名>
 

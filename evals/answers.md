@@ -16,7 +16,7 @@
 
 - **公开状态**：2026-10-13 的 Google 开发者博客；只有博客与 prompt 演示；模型闭源，经付费 Gemini API / AI Studio 提供。`wiki/sources/gemini-4-argon.md`
 - **已知读数**：ERQA 87%（纯推理，不是任务成功率）；一张照片建 MuJoCo 孪生、定义 77 个任务、生成 4,500+ 条 `reward == 1.0` 轨迹微调 VLA，真机成功率 56% → 75%（未给评测次数），完成时间 35 s → 24 s；SO-101 硬件自改进三轮 58.9 s → 22.9 s → 17.4 s；零样本控制只按 VLM 调用次数分档，未给成功率。`wiki/sources/gemini-4-argon.md`
-- **wiki 内状态**：robotrsi 判断 3 的支持草稿仍在「待批准」，未并入当前判断 `wiki/lenses/robotrsi.md`；agent-loop 判 reject `wiki/log.md`。
+- **wiki 内状态**：agentic-robotics 判断 3 的支持草稿仍在「待批准」，未并入当前判断 `wiki/lenses/agentic-robotics.md`；agent-loop 判 reject `wiki/log.md`。
 
 ## Q3
 

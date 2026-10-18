@@ -5,7 +5,7 @@ published: 2026-10
 ingested: 2026-10-16
 tags: []
 concepts: [人定义评估与验收, 主动探索取证, 自主判断何时提交, 失败归因]
-lenses: ["[[robotrsi]]"]
+lenses: ["[[agentic-robotics]]"]
 ---
 # RoboQuest
 
