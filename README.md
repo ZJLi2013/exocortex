@@ -18,7 +18,7 @@
 | 查询 | 直接提问，答案引用 `wiki/` 里的页面 |
 | 采纳判断 | 看 `wiki/lenses/<lens>.md` 的「待批准」，说「批准 <lens> 的 <工作名> 草稿」 |
 | 处置新 lens | 出现 `status: proposed` 的 lens 时，说「批准 lens <name>」「并入 <已有 lens>」或「否决 lens <name>」 |
-| 检查 | `python evals/check_wiki.py --sources <来源数>` |
+| 检查 | `python scripts/check_wiki.py --sources <来源数>` |
 
 ## 怎么组织
 

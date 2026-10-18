@@ -2,7 +2,7 @@
 
 ## 怎么验证的
 
-- [ ] `python evals/check_wiki.py --sources <N>` 退出 0
+- [ ] `python scripts/check_wiki.py --sources <N>` 退出 0
 
 ## AI 辅助
 

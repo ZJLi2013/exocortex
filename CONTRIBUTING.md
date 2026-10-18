@@ -5,13 +5,13 @@
 ## 流程
 
 1. Fork 或在本仓库开分支，分支名写改动内容（`fix-check-wiki-links`、`agents-md-fetch-rules`）。
-2. 提交前跑 `python evals/check_wiki.py --sources <来源数>`，退出 0。
+2. 提交前跑 `python scripts/check_wiki.py --sources <来源数>`，退出 0。
 3. 开 PR，按模板填写；维护者 review 后 squash merge。
 
 ## 欢迎的改动
 
 - `AGENTS.md` 的规则：收录、lint lenses、查询哪里不够用，最好附上 agent 实际卡住的例子。
-- `evals/`、`scripts/` 的修复与改进。
+- `scripts/` 的修复与改进。
 - 来源页的事实错误：指出原文出处（URL 与段落）。
 - 想推荐收录的链接：开 issue，不用 PR。
 

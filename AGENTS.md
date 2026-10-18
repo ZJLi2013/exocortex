@@ -80,7 +80,7 @@ human 丢链接、提问、批准判断；其余由 agent 按本文件执行。
 6. **log**：`wiki/log.md` 追加 `## [YYYY-MM-DD] ingest | <工作名>`，下面一行写 lens 判定结果。
 7. 处理完的 URL 从 `inbox/links.md` 删除。
 
-全部收录完做一遍下面的 lint lenses，再运行 `python evals/check_wiki.py --sources <来源总数>`。
+全部收录完做一遍下面的 lint lenses，再运行 `python scripts/check_wiki.py --sources <来源总数>`。
 
 ## lint lenses（收录批次结束后，或 human 说「lint lenses」）
 
