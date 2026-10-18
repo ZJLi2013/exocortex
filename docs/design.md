@@ -2,7 +2,7 @@
 
 **研究问题（lens）由人定，LLM 只写草稿；改变判断的那一步永远归人。** 来源平铺，不做人工分类。
 
-执行细节以 [AGENTS.md](../AGENTS.md) 为准，验收与进度见 [mvp.md](mvp.md)。
+执行细节以 [AGENTS.md](../AGENTS.md) 为准。
 
 ## lens：判断归人，证据归 LLM
 

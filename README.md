@@ -29,7 +29,7 @@
 `raw/` 存原文，只在本地；`wiki/sources/` 一个来源一页；`wiki/log.md` 记每次操作。
 
 现有 18 个来源、4 个 lens：`agentic-robotics`、`agent-loop`、`robotics-rl`、`jev`。
-设计理由见 [docs/design.md](docs/design.md)，验收与下一步见 [docs/mvp.md](docs/mvp.md)。
+设计理由见 [docs/design.md](docs/design.md)。
 
 ## 贡献与许可
 

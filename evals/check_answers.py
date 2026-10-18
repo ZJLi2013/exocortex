@@ -1,4 +1,4 @@
-"""Score an answers file against the query set in docs/mvp.md (t2 acceptance)."""
+"""Score an answers file against the query set below."""
 
 import re
 import sys
