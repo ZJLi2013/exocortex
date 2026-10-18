@@ -30,7 +30,7 @@
 
 `wiki/sources/` 一个来源一页；`raw/` 存原文、`wiki/log.md` 记每次操作，这两样只在本地。
 
-现有 25 个来源、5 个 lens：`agentic-robotics`、`agent-loop`、`robotics-rl`、`jev`、`llm-foundation-models`。
+现有 27 个来源、5 个 lens：`agentic-robotics`、`agent-loop`、`robotics-rl`、`jev`、`llm-foundation-models`。
 设计理由见 [docs/design.md](docs/design.md)。
 
 ## 贡献与许可

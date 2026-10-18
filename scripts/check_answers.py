@@ -11,7 +11,7 @@ GOLD = {
     "Q1": ([WIKI], ["AlphaEvolve", "EmbodiedRSI", "EmbodiedEvo", "ASPIRE", "RAX"]),
     "Q2": ([WIKI], ["56%", "75%"]),
     "Q3": ([WIKI], ["AlphaEvolve", "RSIGym", "Argon"]),
-    "Q4": ([WIKI], ["EmbodiedRSI", "EmbodiedEvo", "RoboQuest", "Argon", "RSIGym", "SGS", "WorldScape"]),
+    "Q4": ([WIKI], ["EmbodiedRSI", "EmbodiedEvo", "RoboQuest", "Argon", "RSIGym", "SGS", "WorldScape", "Harness"]),
     "Q5": ([WIKI], ["56.26", "Agent Laboratory", "RSIAgent"]),
 }
 PASS_AT = 4

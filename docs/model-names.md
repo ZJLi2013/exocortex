@@ -33,6 +33,7 @@
 | Qwen3.5-122B-A10B | — |
 | Qwen3-Embedding-0.6B | — |
 | GLM-5.3 | — |
+| GLM-5 | — |
 | GLM-5.2 | — |
 | GLM-4.5-Base | — |
 | GLM-5-Base | — |
@@ -42,9 +43,10 @@
 | DeepSeek-V4-Vision-Exp | — |
 | GPT-5.6 Terra | — |
 | Gemini 3.7 Flash | — |
+| Gemini 3.5 Flash | — |
 | MiMo-V2.5 | — |
-| π0 | pi0 |
-| π0.5 | π₀.₅、pi0.5、Pi-05 |
+| π0 | pi0、Pi_0 |
+| π0.5 | π₀.₅、pi0.5、Pi-05、Pi_05 |
 | π0.5-DROID | — |
 | OpenVLA | — |
 | SmolVLA | — |
