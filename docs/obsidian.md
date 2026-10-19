@@ -6,7 +6,7 @@
 
 1. 装 [Obsidian](https://obsidian.md)，「Open folder as vault」选仓库根目录。
 2. `Ctrl+G` 开全局图谱。
-3. `.obsidian/` 不进仓库，新 clone 要自己配一次图谱（见下节）；不配也能用，只是 `raw/`、文档也会混进图里。
+3. 仓库自带 vault 级排除规则，`raw/` 不会进入搜索、反向链接或图谱。图谱的显示范围和颜色仍需按下节配置一次。
 
 ## 配置图谱（一次）
 
@@ -15,7 +15,7 @@
 - **Filters → Search files** 粘贴：
 
   ```text
-  -path:raw -path:inbox -path:docs -path:scripts -path:wiki/lenses -file:log -file:README -file:AGENTS -file:CONTRIBUTING -file:LICENSE -file:index
+  -path:inbox -path:docs -path:scripts -path:wiki/lenses -file:log -file:README -file:AGENTS -file:CONTRIBUTING -file:LICENSE -file:index
   ```
 
 - **Filters**：不勾「Existing files only」。评测集、模型、方法都没有页面，勾上它们就消失了。
@@ -58,6 +58,7 @@
 
 - **边不带类型**：Obsidian 不按边的类型上色。「用了」还是「对照了」某个模型，要打开来源页看 frontmatter 和正文「模型」一行。
 - **连了很多边的灰点**（GPT-6 Astra、Kimi-K3）是被很多工作用到或拿来对照的模型，跨 lens 的边主要经过它们。
+- `raw/` 里的 README 常有指向子目录 README、图片和示例文件的相对链接。vault 级排除规则会连同这些出边一起隐藏，避免 `README` / `SKILL` 灰点和同名 raw/source 双节点。
 
 ## 常用看法
 

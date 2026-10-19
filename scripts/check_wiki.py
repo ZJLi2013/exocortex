@@ -1,6 +1,7 @@
 ﻿"""Structural check of the wiki: source pages, raw files, lens pages, unresolved links."""
 
 import argparse
+import json
 import re
 import sys
 from collections import Counter
@@ -65,6 +66,10 @@ def main() -> None:
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
     problems = []
+
+    app_config = json.loads((ROOT / ".obsidian/app.json").read_text(encoding="utf-8"))
+    if "raw/" not in app_config.get("userIgnoreFilters", []):
+        problems.append(".obsidian/app.json: raw/ must be excluded from Obsidian indexes")
 
     pages = sorted((ROOT / "wiki/sources").glob("*.md"))
     if len(pages) != args.sources:
