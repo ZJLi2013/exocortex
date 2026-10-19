@@ -68,8 +68,8 @@ def main() -> None:
     problems = []
 
     app_config = json.loads((ROOT / ".obsidian/app.json").read_text(encoding="utf-8"))
-    if "raw/" not in app_config.get("userIgnoreFilters", []):
-        problems.append(".obsidian/app.json: raw/ must be excluded from Obsidian indexes")
+    if "/^raw\\//" not in app_config.get("userIgnoreFilters", []):
+        problems.append(".obsidian/app.json: /^raw\\// must exclude raw/ from Obsidian indexes")
 
     pages = sorted((ROOT / "wiki/sources").glob("*.md"))
     if len(pages) != args.sources:
