@@ -4,9 +4,9 @@ url: https://feng.ifeng.com/c/8xIuPhHNWQl
 published: 2026-10-17
 ingested: 2026-10-18
 tags: [agentic-robotics]
-concepts: [自改进, 执行记录训练动作模型, 更新先过测试再发布]
+concepts: [自改进]
 benchmarks: ["[[RoboDojo]]"]
-methods: ["[[harness evolution]]", "[[code skills from experience]]"]
+methods: ["[[harness evolution]]", "[[code skills from experience]]", "[[execution trace training]]", "[[retest before release]]"]
 models_used: ["[[WorldScape Policy]]"]
 models_compared: ["[[GPT-6 Astra]]", "[[GR00T-N1.7]]"]
 lenses: ["[[agentic-robotics]]"]
