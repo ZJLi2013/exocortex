@@ -65,3 +65,4 @@
 | [[glm-5-3-flash]] | GLM-5.3-Flash |
 | [[mimo-v2-6]] | MiMo-V2.6 |
 | [[muse-spark]] | Muse Spark 1.3 |
+| [[sensenova-roborsi]] | SenseNova-RoboRSI-27B-Preview、RoboRSI-27B-Preview |

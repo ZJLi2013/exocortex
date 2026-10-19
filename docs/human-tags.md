@@ -7,3 +7,4 @@
 | `#agent-loop` | [[agent-loop]] | [[harness2]] |
 | `#agentic-robotics` | [[agentic-robotics]] | [[physicalrsi]]、[[robodojo]]、[[worldscape-r2si]] |
 | `#robotics-rl` | [[robotics-rl]] | — |
+| `#agentic-infra` | — | [[searxng]] |
