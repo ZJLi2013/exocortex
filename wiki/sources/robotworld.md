@@ -9,7 +9,7 @@ benchmarks: []
 methods: []
 models_used: []
 models_compared: []
-lenses: []
+lenses: ["[[agentic-robotics]]"]
 ---
 # RobotWorld
 
