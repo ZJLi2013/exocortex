@@ -1,20 +1,8 @@
 # 搜索候选来源
 
-Plan Revision: 1
-Plan Review: approved
-
-## Goal
-
 agent 用 SearXNG 按已批准的 lens 搜新工作，只写候选清单；收不收由 human 决定，`inbox/links.md` 仍只归 human 写。
 
-## 当前结论
-
-已实现，t10 通过：第一次运行的 10 条候选 human 收下 6 条。挑源权不变：搜索只把候选摆到 human 面前，进 inbox、收录、改 lens 都不由搜索触发。
-本机网络下只有 arXiv 引擎可用，候选全是论文；GitHub 与网页引擎不通，项目页与仓库搜不到。
-
-## 下一步决策
-
-无进行中的 task。当前只开 arXiv；GitHub 与网页引擎待后续支持（如 GitHub 改走已登录的 `gh api`），或换到不做 TLS 拦截的网络后再开，用来补上项目页与仓库。
+本机网络下只有 arXiv 引擎可用，候选全是论文，项目页与仓库搜不到。GitHub 与网页引擎待后续支持（如 GitHub 改走已登录的 `gh api`），或换到不做 TLS 拦截的网络后再开。
 
 ## 流程
 
@@ -103,18 +91,4 @@ arXiv 的 `abs/`、`html/`、`pdf/` 同一编号算同一来源。
  容器启动后会把配置目录改成容器用户所有，之后改配置用 `docker exec -i searxng sh -c 'cat >> /etc/searxng/settings.yml'`。
  网络做 TLS 拦截时，网页引擎报证书错误，要把拦截根证书拼进 CA 包，再设 `outgoing.verify`。
 - 搜索请求与去重由脚本做，查询改写、相关度排序与一句理由由 agent 写。
-
-## 验收（t10）
-
-- 一次运行写出 ≤ 10 条候选，每条链到一个已批准 lens；
-- 没有一条与 `raw/`、`inbox/links.md`、`wiki/search-rejections.yaml` 重复；
-- `inbox/links.md` 与 `raw/` 未被改动；
-- human 逐条判断，至少一半值得收。
-
-失败去向：SearXNG 连不上或返回 403 是环境问题，按上面的部署说明修；出现重复就改去重；值得收的不到一半，改查询生成，例如改用 lens 内来源的标题与「关联」里的工作名做查询。
-
-## Experiment Log
-
-| Exp | 假设 | 状态 | 关键结果 | 结论 / evidence |
-|---|---|---|---|---|
-| E1 | 18 条查询覆盖 6 个 lens，能搜出 ≥ 一半值得收的候选 | ✅ 6/10 收下 | 只有 arXiv 引擎能用。去重和 30 天过滤后剩 21 条（RAX 的论文靠工作名去重丢掉），挑 10 条写进 proposals：agentic-robotics 6、agent-loop 3、jev 1；agentic-3d、robotics-rl、llm-foundation-models 没有贴范围的结果。GitHub 引擎超时（API 10 秒后返回 403），网页引擎被 TLS 拦截；调大超时、补公司根证书两次自修都没修好。human 收下 agentic-robotics 4 条、agent-loop 2 条；否决 HexaShell、Encore、HarnessNet、OmniMed-Jev | `inbox/links.md`、`wiki/search-rejections.yaml` |
+- SearXNG 连不上或返回 403 是环境问题，按上面的部署说明修。
