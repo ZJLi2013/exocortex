@@ -7,6 +7,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+from search_candidates import known_keys, url_key
+
 ROOT = Path(__file__).resolve().parent.parent
 NODE_FIELDS = ["benchmarks", "methods", "models_used", "models_compared"]
 FIELDS = ["type", "url", "published", "ingested", "tags", "concepts", *NODE_FIELDS, "lenses"]
@@ -60,6 +62,28 @@ def lens_problems(page: Path, pages: list[Path]) -> list[str]:
     return out
 
 
+def proposal_problems() -> list[str]:
+    path = ROOT / "inbox/proposals.md"
+    if not path.exists():
+        return []
+    approved = {p.stem for p in (ROOT / "wiki/lenses").glob("*.md")
+                if not re.search(r"^status: proposed", p.read_text(encoding="utf-8"), flags=re.M)}
+    known = known_keys(exclude="inbox/proposals.md")
+    sections = split(path.read_text(encoding="utf-8"), "##")
+    out, keys = [], Counter()
+    for title, body in sections.items():
+        entries = re.findall(r"^\d+\. (\S+)(.*)$", body, flags=re.M)
+        for url, rest in entries:
+            keys[url_key(url)] += 1
+            if url_key(url) in known:
+                out.append(f"proposals.md: {url} already in raw/, sources, links.md or search-rejections.yaml")
+            if not set(re.findall(r"\[\[([^\]|]+)\]\]", rest)) & approved:
+                out.append(f"proposals.md: {url} links no approved lens")
+    if sections and len(re.findall(r"^\d+\. ", list(sections.values())[-1], flags=re.M)) > 10:
+        out.append("proposals.md: latest search has more than 10 candidates")
+    return out + [f"proposals.md: {k} proposed twice" for k, n in keys.items() if n > 1]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sources", type=int, required=True, help="expected number of source pages")
@@ -92,6 +116,7 @@ def main() -> None:
 
     for lens in sorted((ROOT / "wiki/lenses").glob("*.md")):
         problems += lens_problems(lens, pages)
+    problems += proposal_problems()
 
     canonical = model_names() | {p.stem for p in pages}
     methods = Counter()

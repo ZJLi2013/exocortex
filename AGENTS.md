@@ -8,11 +8,13 @@ human 丢链接、提问、定 lens 范围、裁决冲突；其余由 agent 按�
 | 路径 | 内容 | 谁写 |
 |---|---|---|
 | `inbox/links.md` | 待收录的 URL，一行一个，可跟 human 标签：`<URL> #jev #kernel` | human |
+| `inbox/proposals.md` | 搜索出的候选来源，等 human 处置 | agent |
 | `raw/<slug>.md` | 抓取的原文，写一次不改 | agent |
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
 | `wiki/lenses/<name>.md` | 一个研究方向：范围、总结、工作、冲突（格式见下节） | 范围归 human；总结与工作由 agent 维护；冲突由 human 裁决 |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/lens-rejections.yaml` | human 否决过的候选 lens 与当时的簇内来源 | agent |
+| `wiki/search-rejections.yaml` | human 否决过的搜索候选 URL | agent |
 | `wiki/log.md` | 审计日志，只追加，只在本地；按事件类型或来源名搜索，不整份读 | agent |
 
 不按主题建目录。分组靠 lens 与两种标签，都不是预设分类：
@@ -162,6 +164,32 @@ lens 外的来源成簇时，提议一个新研究方向，由 human 决定要�
 
    候选 lens 不改任何来源页的 `lenses`。
 4. **log**：`## [YYYY-MM-DD] lint | lenses`，每个候选一行（名字与来源）；没有候选也记一行。
+
+## 搜索候选（human 说「搜索候选」）
+
+只把候选摆到 human 面前：agent 不写 `inbox/links.md`，不触发收录，不改 lens 与来源页。SearXNG 部署见 [docs/search-proposal.md](docs/search-proposal.md)。
+
+1. **查询**：每个已批准 lens（跳过 `status: proposed`）写 2–5 条英文查询：范围句改写 2–3 条，lens 内来源共享的评测集各一条。
+ 写成临时文件，一行 `<lens> | <query>`。
+2. **搜索与去重**：`python scripts/search_candidates.py <查询文件>`（需环境变量 `SEARXNG_URL`）。
+ 脚本丢掉近 30 天以外的结果，以及 URL 已在 `raw/`、来源页、`inbox/links.md`、`inbox/proposals.md`、`wiki/search-rejections.yaml` 里的结果
+ （arXiv 同编号算同一来源），以及标题或摘要点名库内工作的结果。
+3. **写候选**：只读脚本给的标题与摘要，不抓全文。按与 lens 范围的相关度挑最多 10 条，在 `inbox/proposals.md` 末尾追加：
+
+ ```markdown
+ ## [YYYY-MM-DD] search
+
+ 1. <URL> #<已有标签> — <标题>。<一句：为什么可能属于 [[<lens>]]，依据是搜索摘要>（查询：`<query>`）
+ ```
+
+ 标签只从 [docs/human-tags.md](docs/human-tags.md) 已有写法里选，没有合适的不写。理由只写摘要里有的内容。
+4. 运行 `python scripts/check_wiki.py --sources <来源总数>`，它校验候选不重复、每条链到已批准 lens、最新一节不超过 10 条。
+
+human 处置：
+
+- 「收下 1、3」：那几行去掉标题、理由与查询，`<URL> #<标签>` 移到 `inbox/links.md`；
+- 「不要 2」「其余不要」：URL 追加进 `wiki/search-rejections.yaml`（`- url: <URL>` 下一行 `  rejected: YYYY-MM-DD`），从 proposals 删除；
+- 不处置的留在 proposals，下次不重复提。
 
 ## 查询
 
