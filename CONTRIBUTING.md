@@ -6,7 +6,11 @@
 
 1. Fork 或在本仓库开分支，分支名写改动内容（`fix-check-wiki-links`、`agents-md-fetch-rules`）。
 2. 提交前跑 `python scripts/check_wiki.py --sources <来源数>`，退出 0。
-3. 开 PR，按模板填写；维护者 review 后 squash merge。
+3. 开 PR，按模板填写；CI 跑 `check-wiki`，通过才能合并。维护者 review 后 squash merge。
+
+例外：维护者本地 agent 的收录类 PR 由 agent 开启 auto-merge，CI 通过即 squash merge，维护者事后看。
+收录类指 diff 只碰 `wiki/sources/`、`wiki/lenses/`、`inbox/`、`wiki/*-rejections.yaml`、`docs/human-tags.md`、`docs/model-names.md`；
+碰到 `AGENTS.md`、`scripts/`、`.github/` 或其它文件的仍由维护者合并。
 
 ## 欢迎的改动
 
