@@ -9,3 +9,4 @@ raw/
 .codex/
 __pycache__/
 wiki/log.md
+_site/

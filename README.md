@@ -10,7 +10,9 @@
 
 ## 怎么用
 
-**浏览与看图谱用 Obsidian**：打开方式、图谱配置和常用看法见 [docs/obsidian.md](docs/obsidian.md)。
+**在线浏览**：[zjli2013.github.io/exocortex](https://zjli2013.github.io/exocortex/)，合并到 `main` 后自动更新，构建方式见 [docs/github-pages.md](docs/github-pages.md)。
+
+**本地浏览与看图谱用 Obsidian**：打开方式、图谱配置和常用看法见 [docs/obsidian.md](docs/obsidian.md)。
 
 其余在 agent 对话里：
 
