@@ -58,7 +58,7 @@ def search(base: str, query: str, engines: str) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("queries", type=Path, help="file with one `<lens> | <query>` per line")
-    parser.add_argument("--engines", default="arxiv,github,duckduckgo")
+    parser.add_argument("--engines", default="arxiv")
     parser.add_argument("--days", type=int, default=30, help="drop results published longer ago; undated results are kept")
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")

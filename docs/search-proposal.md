@@ -14,7 +14,7 @@ agent 用 SearXNG 按已批准的 lens 搜新工作，只写候选清单；收�
 
 ## 下一步决策
 
-无进行中的 task。换到不做 TLS 拦截的网络后，再看 GitHub 与网页引擎能否补上项目页与仓库。
+无进行中的 task。当前只开 arXiv；GitHub 与网页引擎待后续支持（如 GitHub 改走已登录的 `gh api`），或换到不做 TLS 拦截的网络后再开，用来补上项目页与仓库。
 
 ## 流程
 
@@ -33,7 +33,7 @@ human 说「搜索候选」
 
 - 每个已批准 lens 的范围句改写成 2–3 条英文关键词查询；
 - lens 内来源共享的评测集节点（如 RoboDojo、LIBERO-Pro）各一条；
-- 每个 lens 最多 5 条；参数 `format=json`，引擎默认 `arxiv,github,duckduckgo`，可用 `--engines` 换。
+- 每个 lens 最多 5 条；参数 `format=json`。当前只开 `arxiv` 引擎（脚本默认），GitHub 与网页引擎待后续支持，或网络能访问后再开，可用 `--engines` 换。
 - 不传 `time_range`：SearXNG 会跳过不支持它的引擎（arXiv 就不支持），近 30 天由脚本按 `publishedDate` 过滤，没有日期的结果保留。
 
 `status: proposed` 的候选 lens 不生成查询。
