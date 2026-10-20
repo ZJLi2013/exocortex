@@ -10,7 +10,7 @@ tags: [agentic-robotics]
 
 ## 总结
 
-8 个系统让 agent 从执行反馈中把经验沉淀成模型外的技能、程序或 harness，3 个 benchmark 评测这类 agent，其中一个同时评 VLA 策略。常见评测是 RoboDojo、LIBERO-Pro、BEHAVIOR-1K、RoboCasa。全部是自报，没有第三方复现。
+9 个系统让 agent 从执行反馈中把经验沉淀成模型外的技能、程序、记忆或 harness，4 个 benchmark 评测这类 agent，其中一个同时评 VLA 策略。常见评测是 RoboDojo、LIBERO-Pro、BEHAVIOR-1K、RoboCasa。全部是自报，没有第三方复现。
 
 ## 工作
 
@@ -22,8 +22,10 @@ tags: [agentic-robotics]
 - [[embodiedrsi]]：冻结 VLA 外的 harness 按信息增益与实验成本选下一次物理实验；RoboCasa365 77.0%，真机 SmolVLA 46.0% → 71.3%。（自报）
 - [[roboquest]]：10 个需靠物理交互取证的移动操作 benchmark；最好的 GPT-6 Astra 成功率 23.2%，失败主要来自缺证据。（自报）
 - [[robotworld]]：多模态 agent 只用公开的观测与动作工具，在仿真里控制 18 种具身完成 84 个任务，成功由 agent 看不见的评测器判定；项目页未给总分。（自报）
+- [[robota-embed]]：视觉、语言、动作统一嵌入，检索未来经验片段作上下文；冻结 GPT-6 Astra 加演化出的任务内记忆，ManiSkill 五任务成功率 24% → 68%，策略 token −43.7%。（自报）
 - [[sensenova-roborsi]]：冻结权重，用执行反馈改 Harness；RoboDojo-Sim 平均分 60.08、成功率 54.17%，称正在提交官方榜。（自报）
 - [[worldscape-r2si]]：内层 agent 调 Skill 执行，外层 agent 复盘修 Skill 并用执行记录训练动作模型；称 RoboDojo 总榜第一，未给分数。（自报，公司发布稿）
+- [[embodied-first-exam]]：coding agent 写代码控制仿真机器人的 benchmark，31 个 suite、1,090 个任务；核心 449 题上 Codex + GPT-6 Astra 32.7%，privileged 75.5% 而 standard 33.8%。（自报）
 - [[physicalrsi]]：基座改写 harness 生成多个变体、按仿真表现选优继承，π₀.₅ 作为技能之一；RoboDojo-Sim 官方榜 Score 36.27、SR 31.38%。（自报）
 
 ## 冲突
