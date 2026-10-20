@@ -3,7 +3,7 @@ name: pages
 on:
   push:
     branches: [main]
-    paths: ["wiki/**", "site/**", "scripts/build_site.py", ".github/workflows/pages.yml"]
+    paths: ["wiki/**", "scripts/build_site.py", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:
@@ -20,29 +20,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
-        with:
-          repository: jackyzha0/quartz
-          ref: v4.5.2
-          path: quartz
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: quartz/package-lock.json
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: npm ci --no-audit --no-fund
-        working-directory: quartz
-      - run: |
-          cp site/quartz.config.ts site/quartz.layout.ts quartz/
-          python scripts/build_site.py quartz/content
-      - run: npx quartz build -d content -o public
-        working-directory: quartz
+      - run: python scripts/build_site.py _site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: quartz/public
+          path: _site
 
   deploy:
     needs: build
