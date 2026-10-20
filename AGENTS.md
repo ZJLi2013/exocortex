@@ -132,6 +132,8 @@ tags: [jev]
 7. 处理完的 URL 从 `inbox/links.md` 删除。human 标签若还不在 [docs/human-tags.md](docs/human-tags.md)，追加一行。不改已有写法，不把近义标签合并。
 
 全部收录完做一遍下面的 lint lenses，再运行 `python scripts/check_wiki.py --sources <来源总数>`。
+开 PR 后，diff 只碰 [CONTRIBUTING.md](CONTRIBUTING.md) 列出的收录类路径时运行 `gh pr merge --auto --squash`，CI 通过即合并；碰到其它文件就等 human 合并。
+「搜索候选」与 human 处置候选后的 PR 同样适用。
 
 ## lint lenses（收录批次结束后，或 human 说「lint lenses」）
 
