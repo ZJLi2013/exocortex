@@ -9,13 +9,13 @@ Plan Review: approved
 
 ## 当前结论
 
-r3 设计已批准，待实现。整个站点只有一个 `index.html`：按 lens 列出工作，下方嵌一张关系图。不用静态站生成器，`scripts/build_site.py` 直接写出这一页。
+已上线（t11 完成）：[zjli2013.github.io/exocortex](https://zjli2013.github.io/exocortex/) 只有一个 `index.html`，上方是关系图，下方按 lens 列出工作。不用静态站生成器，`scripts/build_site.py` 直接写出这一页，部署约 25 秒。
 来源页细节（关键数字、可信度）、评测集 / 方法 / 模型节点、全文搜索只在仓库与本地 Obsidian 里看。
 仓库公开，GitHub Pages 与 Actions 免费；Pages 来源已设为 GitHub Actions。设计讨论见 [issue #16](https://github.com/ZJLi2013/exocortex/issues/16)。
 
 ## 下一步决策
 
-按 r3 改 PR #17，本地打开页面核对验收；human 合并后在线上再核对一次，通过即关闭 t11。
+无进行中的 task。之后的收录 PR 合并后站点自动更新，不需要单独动作。
 
 ## 流程
 
