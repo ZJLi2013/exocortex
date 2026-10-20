@@ -57,6 +57,8 @@
 | Stable Video Diffusion | SVD |
 | DiffusionGemma 26B-A4B | DiffusionGemma |
 | WorldScape Policy | WSP |
+| WorldDreamer | — |
+| Codex | — |
 | Jev 1.13 | Jev 1.13.0 |
 | Kev-27B | — |
 | Muse Spark 1.2 | — |
