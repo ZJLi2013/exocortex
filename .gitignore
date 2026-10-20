@@ -7,4 +7,5 @@
 # third-party full texts stay local; see LICENSE-CONTENT
 raw/
 .codex/
+__pycache__/
 wiki/log.md
