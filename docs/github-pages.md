@@ -58,3 +58,4 @@ push 到 main（改动碰 wiki/ 或站点构建文件）
 |---|---|---|---|---|
 | E1 | r1：Quartz 多页站点（含 88 个节点页） | superseded by r2 | 151 个文件；human 认为页面太多，只关心各 lens 的工作与工作间关系 | PR #17 初版 |
 | E2 | r2：Quartz 只留首页、lens 页、来源页 | superseded by r3 | 未构建完；human 指出来源页会随时间增长，不要每个工作一页 | — |
+| E3 | r3：单个 index.html，按 lens 列工作 + 关系图 | ✅ 线上 | 6 个 lens 的工作行数与链接全部一致；38 个节点、38 条边（32 条 lens 收录 + 6 条关联）；无 `raw/` 链接；图约 3 秒内渲染完 | PR #17；pages workflow 部署 25 秒 |
