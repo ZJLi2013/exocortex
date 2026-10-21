@@ -9,3 +9,5 @@
 | `#robotics-rl` | [[robotics-rl]] | — |
 | `#agentic-infra` | — | [[searxng]] |
 | `#agentic-3d` | [[agentic-3d]] | [[artisan]]、[[aha-3d]]、[[articraft]]、[[4dcodebench]] |
+| `#wam` | — | [[prismwam]] |
+| `#un-category` | — | [[worldoracle]] |

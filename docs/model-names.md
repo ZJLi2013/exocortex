@@ -64,12 +64,21 @@
 | Muse Spark 1.2 | — |
 | GPT-6 Luna | — |
 | DreamZero | — |
-| Fast-WAM | — |
+| Fast-WAM | FastWAM |
 | SAM3 | — |
 | Qwen3-VL | — |
 | Gemini Embedding 2 | — |
 | CLIP ViT-L/14 | — |
 | Omni-Embed-Nemotron-3B | Omni |
+| Claude Code | — |
+| Wan2.1-14B | WAN-2.1-14B |
+| LingBot-Depth | — |
+| OpenWAM-α | OpenWAM |
+| Cosmos3-Nano-Policy | — |
+| Cosmos 3 Nano | Cosmos 3 |
+| GE-Sim 2.0 | — |
+| DreamDojo | — |
+| IRASim | — |
 | [[gemini-4-argon]] | Gemini 4 Argon |
 | [[deepseek-v4-1-flash]] | DeepSeek-V4.1-Flash、DeepSeek V4.1 Flash |
 | [[deepseek-v4-1-flash-1017]] | DeepSeek-V4.1-Flash-1017 |

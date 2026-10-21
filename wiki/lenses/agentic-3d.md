@@ -20,3 +20,6 @@ tags: [agentic-3d]
 - [[aha-3d]]：GPT-6 Astra 用工具把室内视频收成 Blender 里可编辑的场景；未给对照数字。（自报）
 
 ## 冲突
+
+> [!mismatch] Flora（2026-10-21）
+> 标签 #agentic-3d 指向本 lens，按内容 reject：给人与机器人操作视频标描述与奖励的标注模型，不生成或重建三维物体与场景。依据 [[flora]]
