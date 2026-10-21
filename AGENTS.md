@@ -8,7 +8,7 @@ human 丢链接、提问、定 lens 范围、裁决冲突；其余由 agent 按�
 | 路径 | 内容 | 谁写 |
 |---|---|---|
 | `inbox/links.md` | 待收录的 URL，一行一个，可跟 human 标签：`<URL> #jev #kernel` | human |
-| `inbox/proposals.md` | 搜索出的候选来源，等 human 处置 | agent |
+| `inbox/proposals.md` | 搜索与 feed 的候选来源，等 human 处置 | agent |
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
 | `wiki/lenses/<name>.md` | 一个研究方向：范围、总结、工作、冲突（格式见下节） | 范围归 human；总结与工作由 agent 维护；冲突由 human 裁决 |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
@@ -123,7 +123,7 @@ tags: [jev]
 
 全部收录完做一遍下面的 lint lenses，再运行 `python scripts/check_wiki.py --sources <来源总数>`。
 开 PR 后，diff 只碰 [CONTRIBUTING.md](CONTRIBUTING.md) 列出的收录类路径时运行 `gh pr merge --auto --squash`，CI 通过即合并；碰到其它文件就等 human 合并。
-「搜索候选」与 human 处置候选后的 PR 同样适用。
+「搜索候选」「feed 候选」与 human 处置候选后的 PR 同样适用。
 
 ## lint lenses（收录批次结束后，或 human 说「lint lenses」）
 
@@ -182,6 +182,26 @@ human 处置：
 - 「收下 1、3」：那几行去掉标题、理由与查询，`<URL> #<标签>` 移到 `inbox/links.md`；
 - 「不要 2」「其余不要」：URL 追加进 `wiki/search-rejections.yaml`（`- url: <URL>` 下一行 `  rejected: YYYY-MM-DD`），从 proposals 删除；
 - 不处置的留在 proposals，下次不重复提。
+
+## feed 候选（human 说「feed 候选」）
+
+两个源：human 的 GitHub feed（[embodied_radar](https://github.com/ZJLi2013/embodied_radar) 每天在私有机器上判定）与公司渠道（embodied_radar 周报 keep 的条目）。
+agent 不写 `inbox/links.md`，不触发收录，不改 lens 与来源页。
+
+1. `python scripts/feed_candidates.py`（需环境变量 `RADAR_FEED=<user@host>:<私有库路径>`）。脚本按「上升 → 公司渠道 → 判定」取前 10 条没见过的
+ （去重同搜索候选），在 `inbox/proposals.md` 末尾追加一节，剩下的下次再送：
+
+ ```markdown
+ ## [YYYY-MM-DD] feed
+
+ 1. <URL> — <名字>。<简介或判定理由>（上升：<N> 位关注者 | 公司渠道：<团队> | 判定）
+ ```
+
+ 不带 lens：收下后由收录第 5 步归类，归不上的 `lenses: []`，留给 lint lenses。
+2. 运行 `python scripts/check_wiki.py --sources <来源总数>`。
+
+human 处置写法与搜索候选相同。处置 `github.com` 的行后，对每一条运行 `python scripts/feed_candidates.py --label <URL> yes|no`（收下 yes，不要 no），
+把 human 的偏好写回私有库；不是 feed 判定过的仓库时脚本什么也不写。
 
 ## 查询
 
