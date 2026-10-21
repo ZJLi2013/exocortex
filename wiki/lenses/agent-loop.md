@@ -22,5 +22,3 @@ agent 自主提出改动、跑实验、按评估决定接纳的研究或自改�
 - [[harness2]]：权重不变，在同一任务上提改动、试跑、按执行对比合成新 harness，经验带到后续任务；单步 WorkBuddy-Bench 最多 +11.5 分。（自报）
 - [[sciencediscovery]]：本地科研工作台，沙箱跑代码并为每个结果记录来源；不报性能。（自报）
 - [[sol-pi]]：research agent 读执行 trace 提 harness 改动，按固定的能力与效率门槛筛出四个机制；EdgeBench 上 token 流量比 Pi 少 44.7–49.0%，平均分 42.0 对 44.8。（自报）
-
-## 冲突

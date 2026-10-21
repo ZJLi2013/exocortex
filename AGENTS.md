@@ -1,7 +1,7 @@
 ﻿# exocortex
 
 研究领域的个人知识库，按 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 组织。整个仓库是一个 Obsidian vault。
-human 丢链接、提问、定 lens 范围、裁决冲突；其余由 agent 按本文件执行。
+human 丢链接、提问、定 lens 范围、处置候选 lens；其余由 agent 按本文件执行。
 
 ## 目录
 
@@ -10,7 +10,7 @@ human 丢链接、提问、定 lens 范围、裁决冲突；其余由 agent 按�
 | `inbox/links.md` | 待收录的 URL，一行一个，可跟 human 标签：`<URL> #jev #kernel` | human |
 | `inbox/proposals.md` | 搜索出的候选来源，等 human 处置 | agent |
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
-| `wiki/lenses/<name>.md` | 一个研究方向：范围、总结、工作、冲突（格式见下节） | 范围归 human；总结与工作由 agent 维护；冲突由 human 裁决 |
+| `wiki/lenses/<name>.md` | 一个研究方向：范围、总结、工作（格式见下节） | 范围归 human；总结与工作由 agent 维护 |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/lens-rejections.yaml` | human 否决过的候选 lens 与当时的簇内来源 | agent |
 | `wiki/search-rejections.yaml` | human 否决过的搜索候选 URL | agent |
@@ -41,8 +41,6 @@ tags: [jev]
 ## 工作
 
 - [[<slug>]]：<一两句 highlight：做了什么、最重要的结果（带评测集）>（自报）
-
-## 冲突
 ```
 
 - 范围只描述方向，不写用途。
@@ -108,12 +106,8 @@ tags: [jev]
 
 5. **lens 判定**：逐个读 `wiki/lenses/*.md` 的「范围」，判这条来源 keep 还是 reject。跳过 `status: proposed` 的候选 lens。
    human 标签是线索不是归属：lens frontmatter `tags` 含来源某个标签时先判这个 lens，但仍按内容判。
-   - reject：不写 lens 页，log 里记 lens 名与一句理由。标签指向这个 lens 却被 reject 时，在该 lens 的「冲突」下写：
-
-     ```markdown
-     > [!mismatch] <工作名>（YYYY-MM-DD）
-     > 标签 #<tag> 指向本 lens，按内容 reject：<一句理由>。依据 [[<slug>]]
-     ```
+   - reject：不写 lens 页，log 里记 lens 名与一句理由；标签指向这个 lens 时理由前加 `标签指向，`。
+     来源页 `tags` 照旧保留 human 标签；都不 keep 的来源留在 `lenses: []`，交给 lint lenses 成簇。
 
    - keep：把 lens 加进来源页 `lenses`，把来源的 human 标签补进该 lens 的 `tags`（已有则不加），在「工作」加一行。
      来源带来新的一类工作或新的共同局限时，改「总结」里对应的那一句；否则总结不动。
@@ -191,14 +185,11 @@ human 处置：
 
 ## 裁决
 
-「冲突」里只有 `[!mismatch]` 块，只由 human 处置：「<lens> 收下 <工作名>」把 lens 加进来源页 `lenses`，删除该块，再按收录第 5 步加一行；
-「<lens> 不收 <工作名>」删除该块。
-
 human 直接改总结或工作时，agent 不改回。human 改范围句后，agent 对全部来源补判该 lens：新 keep 的加行，不再 keep 的删行并从来源页 `lenses` 去掉，再重写总结。
 
-候选 lens 同样只由 human 处置：
+候选 lens 只由 human 处置：
 
-- 「批准 lens <name>」：删掉 `status` 与「为何提议」，补上「总结」「工作」「冲突」三节；
+- 「批准 lens <name>」：删掉 `status` 与「为何提议」，补上「总结」「工作」两节；
   再对 `wiki/sources/` 全部来源做一遍收录第 5 步（只判这个 lens），keep 的同时把它加进来源页 `lenses`。
 - 「并入 <已有 lens>」：human 先改该 lens 的范围句；agent 删候选文件，对全部来源补判该 lens。
 - 「否决 lens <name>」：先在 `wiki/lens-rejections.yaml` 追加一条（文件不存在就新建），再删候选文件，log 记 `## [YYYY-MM-DD] reject lens | <name>`：

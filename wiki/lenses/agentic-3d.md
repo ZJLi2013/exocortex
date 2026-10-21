@@ -18,8 +18,3 @@ tags: [agentic-3d]
 - [[4dcodebench]]：编码 agent 看视频写图形程序重建动态场景；18 个 agent、200 个任务，运动重建是短板。（自报）
 - [[artisan]]：设计、编码、审查三个智能体加物理验证生成铰接资产；GPT-6 Astra 下单关节碰撞率 1.7%。（自报）
 - [[aha-3d]]：GPT-6 Astra 用工具把室内视频收成 Blender 里可编辑的场景；未给对照数字。（自报）
-
-## 冲突
-
-> [!mismatch] Flora（2026-10-21）
-> 标签 #agentic-3d 指向本 lens，按内容 reject：给人与机器人操作视频标描述与奖励的标注模型，不生成或重建三维物体与场景。依据 [[flora]]

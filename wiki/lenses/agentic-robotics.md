@@ -30,5 +30,3 @@ tags: [agentic-robotics]
 - [[hexashell]]：coding agent 只用一条命令行与三路 RGB 驱动机器人，失败后由第二个 agent 写或修工具；RoboDojo 隐藏种子官方评测 SR 46.9%、进度分 53.2。（第三方，RoboDojo 官方评测）
 - [[astranomy]]：GPT-6 Astra 当原生机器人策略的三种用法；RoboLab-120 上 Codex 会话里的 Agentic Policy 74.8%，每个成功回合约 $36.40。（自报）
 - [[robodoctor]]：agent 审查、修正或接管冻结 PrismWAM 的动作，按 Warmup 分数选控制方式，再更新干预经验；RoboDojo 54 个任务本地 Refinement 57.10 / 49.44%。（自报）
-
-## 冲突
