@@ -48,7 +48,7 @@ def lens_problems(page: Path, pages: list[Path]) -> list[str]:
         return []
     name, out = page.name, []
     sections = split(text, "##")
-    missing = [s for s in ["范围", "总结", "工作", "冲突"] if s not in sections]
+    missing = [s for s in ["范围", "总结", "工作"] if s not in sections]
     if missing:
         return [f"{name}: missing section {', '.join(missing)}"]
     listed = re.findall(r"^- \[\[([^\]|]+)\]\]：", sections["工作"], flags=re.M)

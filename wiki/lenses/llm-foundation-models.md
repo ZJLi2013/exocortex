@@ -20,5 +20,3 @@ agent 可用的前沿基础模型发布。
 - [[mimo-v2-6]]：小米开源全模态系列，加大可验证任务上的 RL 算力；held-out DeepSWE v1.1 Pro 58.4 → 72.57。（自报）
 - [[gemini-4-argon]]：Google 物理推理基座；仿真造数据后真机成功率 56% → 75%，未给评测次数。（自报，博客）
 - [[deepseek-v4-1-flash-1017]]：V4.1-Flash 小版本更新，输出更短；Terminal-Bench 4.0 31.2 → 42.3。（自报）
-
-## 冲突
