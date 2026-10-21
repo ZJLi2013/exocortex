@@ -79,6 +79,17 @@
 | GE-Sim 2.0 | — |
 | DreamDojo | — |
 | IRASim | — |
+| V-JEPA 2.1 | V-JEPA 2.1 ViT-G、V-JEPA 2.1-G |
+| π0-FAST | pi0-FAST |
+| LIV | — |
+| ProcVLM | — |
+| Robo-Dopamine | — |
+| RoboFAC | — |
+| Robometer | RoboMeter |
+| RoboReward | — |
+| RynnValue | — |
+| TOPReward | — |
+| VLAC | — |
 | [[gemini-4-argon]] | Gemini 4 Argon |
 | [[deepseek-v4-1-flash]] | DeepSeek-V4.1-Flash、DeepSeek V4.1 Flash |
 | [[deepseek-v4-1-flash-1017]] | DeepSeek-V4.1-Flash-1017 |
