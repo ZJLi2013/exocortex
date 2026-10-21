@@ -10,7 +10,7 @@ tags: [agentic-robotics]
 
 ## 总结
 
-9 个系统让 agent 从执行反馈中把经验沉淀成模型外的技能、程序、记忆或 harness，4 个 benchmark 评测这类 agent，其中一个同时评 VLA 策略。常见评测是 RoboDojo、LIBERO-Pro、BEHAVIOR-1K、RoboCasa。全部是自报，没有第三方复现。
+11 个系统让 agent 从执行反馈中把经验沉淀成模型外的技能、程序、记忆或 harness，4 个 benchmark 评测这类 agent，其中一个同时评 VLA 策略；另有一项实证研究比较前沿模型直接出动作、在 agent 会话里出动作、监督学习策略三种用法。常见评测是 RoboDojo、LIBERO-Pro、BEHAVIOR-1K、RoboCasa。只有一个系统的分数由 benchmark 方在隐藏种子上复评，其余都是自报。
 
 ## 工作
 
@@ -27,5 +27,8 @@ tags: [agentic-robotics]
 - [[worldscape-r2si]]：内层 agent 调 Skill 执行，外层 agent 复盘修 Skill 并用执行记录训练动作模型；称 RoboDojo 总榜第一，未给分数。（自报，公司发布稿）
 - [[embodied-first-exam]]：coding agent 写代码控制仿真机器人的 benchmark，31 个 suite、1,090 个任务；核心 449 题上 Codex + GPT-6 Astra 32.7%，privileged 75.5% 而 standard 33.8%。（自报）
 - [[physicalrsi]]：基座改写 harness 生成多个变体、按仿真表现选优继承，π₀.₅ 作为技能之一；RoboDojo-Sim 官方榜 Score 36.27、SR 31.38%。（自报）
+- [[hexashell]]：coding agent 只用一条命令行与三路 RGB 驱动机器人，失败后由第二个 agent 写或修工具；RoboDojo 隐藏种子官方评测 SR 46.9%、进度分 53.2。（第三方，RoboDojo 官方评测）
+- [[astranomy]]：GPT-6 Astra 当原生机器人策略的三种用法；RoboLab-120 上 Codex 会话里的 Agentic Policy 74.8%，每个成功回合约 $36.40。（自报）
+- [[robodoctor]]：agent 审查、修正或接管冻结 PrismWAM 的动作，按 Warmup 分数选控制方式，再更新干预经验；RoboDojo 54 个任务本地 Refinement 57.10 / 49.44%。（自报）
 
 ## 冲突
