@@ -18,3 +18,19 @@
   rejected: 2026-10-20
 - url: https://arxiv.org/abs/2609.37950
   rejected: 2026-10-20
+- url: https://github.com/deepseek-ai/DeepInfer
+  rejected: 2026-10-21
+- url: https://github.com/deepseek-ai/deepseek-recipe
+  rejected: 2026-10-21
+- url: https://huggingface.co/lerobot/so101-tabletop-isaac
+  rejected: 2026-10-21
+- url: https://huggingface.co/lerobot/so101-tabletop-mujoco
+  rejected: 2026-10-21
+- url: https://huggingface.co/nvidia/ARDY-SOMA-RP-30FPS-KimodoRep-Horizon60
+  rejected: 2026-10-21
+- url: https://huggingface.co/nvidia/Kimodo-SOMA-RP-ArdyRep-v1.2
+  rejected: 2026-10-21
+- url: https://huggingface.co/nvidia/Kimodo-SOMA-RP-v1.2
+  rejected: 2026-10-21
+- url: https://huggingface.co/datasets/lerobot/FineART
+  rejected: 2026-10-21
