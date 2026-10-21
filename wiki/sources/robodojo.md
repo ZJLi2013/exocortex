@@ -26,4 +26,3 @@ lenses: ["[[agentic-robotics]]"]
   - 策略经 XPolicyLab 接一次即可在仿真与真机上评测。
 - **可信度**：项目页自报；每任务评测次数只在 DeepSeek-Flash 一条上写明（10 次）；代码开源；论文 arXiv 2607.04434 未收录。
 - **模型**：π0.5、π0、GR00T-N1.7、SmolVLA 在首发榜的 30 个策略里，GPT-6 Astra 与 GPT-5.5 由 RoboDojo 团队加测；都是被评测的对象。
-- **原文**：[[raw/robodojo]]

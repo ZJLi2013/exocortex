@@ -11,7 +11,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-KNOWN = ["raw/*.md", "wiki/sources/*.md", "inbox/links.md", "inbox/proposals.md", "wiki/search-rejections.yaml"]
+KNOWN = ["wiki/sources/*.md", "inbox/links.md", "inbox/proposals.md", "wiki/search-rejections.yaml"]
 
 
 def url_key(url: str) -> str:
@@ -27,7 +27,7 @@ def url_key(url: str) -> str:
 
 
 def known_keys(exclude: str | None = None) -> set[str]:
-    # Only URLs that open a line or a `url:` field count; URLs cited inside raw full texts are fair candidates.
+    # Only URLs that open a line or a `url:` field count; URLs cited in page bodies are fair candidates.
     keys = set()
     for pattern in KNOWN:
         for f in ROOT.glob(pattern):

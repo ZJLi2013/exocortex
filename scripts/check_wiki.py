@@ -1,7 +1,6 @@
-﻿"""Structural check of the wiki: source pages, raw files, lens pages, unresolved links."""
+﻿"""Structural check of the wiki: source pages, lens pages, unresolved links."""
 
 import argparse
-import json
 import re
 import sys
 from collections import Counter
@@ -13,8 +12,6 @@ ROOT = Path(__file__).resolve().parent.parent
 NODE_FIELDS = ["benchmarks", "methods", "models_used", "models_compared"]
 FIELDS = ["type", "url", "published", "ingested", "tags", "concepts", *NODE_FIELDS, "lenses"]
 RELATIONS = ["基于", "对照", "相悖"]
-# raw/ is local-only (third-party full texts); fresh clones do not have it.
-HAS_RAW = (ROOT / "raw").is_dir()
 
 
 def links(page: Path, field: str) -> list[str]:
@@ -35,7 +32,7 @@ def unresolved_links(allowed: set[str]) -> list[str]:
     broken = []
     for page in sorted((ROOT / "wiki").rglob("*.md")):
         for link in re.findall(r"\[\[([^\]|#]+)", page.read_text(encoding="utf-8")):
-            if link.strip() not in targets and (HAS_RAW or not link.startswith("raw/")):
+            if link.strip() not in targets:
                 broken.append(f"{link} (in {page.relative_to(ROOT).as_posix()})")
     return broken
 
@@ -76,7 +73,7 @@ def proposal_problems() -> list[str]:
         for url, rest in entries:
             keys[url_key(url)] += 1
             if url_key(url) in known:
-                out.append(f"proposals.md: {url} already in raw/, sources, links.md or search-rejections.yaml")
+                out.append(f"proposals.md: {url} already in sources, links.md or search-rejections.yaml")
             if not set(re.findall(r"\[\[([^\]|]+)\]\]", rest)) & approved:
                 out.append(f"proposals.md: {url} links no approved lens")
     if sections and len(re.findall(r"^\d+\. ", list(sections.values())[-1], flags=re.M)) > 10:
@@ -91,10 +88,6 @@ def main() -> None:
     sys.stdout.reconfigure(encoding="utf-8")
     problems = []
 
-    app_config = json.loads((ROOT / ".obsidian/app.json").read_text(encoding="utf-8"))
-    if "/^raw\\//" not in app_config.get("userIgnoreFilters", []):
-        problems.append(".obsidian/app.json: /^raw\\// must exclude raw/ from Obsidian indexes")
-
     pages = sorted((ROOT / "wiki/sources").glob("*.md"))
     if len(pages) != args.sources:
         problems.append(f"{len(pages)} source pages, expected {args.sources}")
@@ -104,8 +97,6 @@ def main() -> None:
         missing = [f for f in FIELDS if not re.search(rf"^{f}:", front, flags=re.M)]
         if missing:
             problems.append(f"{page.name}: missing {', '.join(missing)}")
-        if f"[[raw/{page.stem}]]" not in text or (HAS_RAW and not (ROOT / "raw" / page.name).exists()):
-            problems.append(f"{page.name}: no raw/{page.name} or no link to it")
         related = split(text, "##").get("关联", "")
         for line in related.strip().splitlines():
             m = re.match(rf"- ({'|'.join(RELATIONS)}) \[\[([^\]|]+)\]\]：", line)

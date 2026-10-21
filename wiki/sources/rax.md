@@ -25,4 +25,3 @@ lenses: ["[[agentic-robotics]]"]
   agent 沙箱只能经 MCP 工具碰机器人，模型冻结；skill 需两次无人值守成功才标 `verified`。
 - **可信度**：作者自报；预印本；评测次数未说明；代码按分支开源。
 - **模型**：agent 是 Codex CLI 或 Claude Code，底层模型未说明。
-- **原文**：[[raw/rax]]

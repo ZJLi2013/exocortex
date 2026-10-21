@@ -19,4 +19,3 @@ Meta 面向长程 agent 与编码的模型，有 max 推理档，视觉推理走
 - **评估与接纳**：未说明谁跑的表、跑了几次。Agentic IF Index 标明 Internal。页面链到 2026-09-02 的公告，模型页本身没写日期。
 - **可信度**：作者自报；参数量未说明。
 - **模型**：发布表对照 Muse Spark 1.2（xhigh）、GPT-5.6 Sol（max）、Opus 5（max）。
-- **原文**：[[raw/muse-spark]]

@@ -23,7 +23,6 @@ lenses: ["[[agentic-robotics]]"]
 - **评估与接纳**：作者自报。LIBERO / LIBERO-PRO 的 50-seed 评测含演化用过的 15 个 seed。
 - **可信度**：arXiv:2609.29166v1，2026-09-24；作者自报。编码 agent 的底座未说明。
 - **模型**：π0.5 是被程序调用的动作模型，也是对照基线。WorldDreamer 是另一被包裹的动作模型。
-- **原文**：[[raw/harnesspai]]
 
 ## 关联
 

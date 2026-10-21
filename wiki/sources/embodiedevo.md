@@ -24,7 +24,6 @@ coding agent 在每个任务的一个 Playground 场景里把物理反馈蒸馏�
   协议文件与执行记录对 agent 只读。
 - **可信度**：作者自报；对比用 2026-10-09 排行榜快照；需 RoboDojo / Isaac Sim。
 - **模型**：执行器为 GPT-6 Astra（xhigh / medium）、GPT-5.6 Sol 与 Luna（xhigh）；Astra 的经验迁给 Sol、Luna。
-- **原文**：[[raw/embodiedevo]]
 
 ## 关联
 

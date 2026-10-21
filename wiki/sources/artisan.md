@@ -19,4 +19,3 @@ lenses: ["[[agentic-3d]]"]
 - **评估与接纳**：项目页排名表，13 个受评配置；碰撞用物理检查标出错误运动。评测次数未说明。
 - **可信度**：作者自报；项目页；默认 GPT-6 Astra、high reasoning、每例 15 美元预算。
 - **模型**：GPT-6 Astra 是默认生成 agent。对照 Claude Fable 5.1（单关节碰撞 39.9%）和 Codex。
-- **原文**：[[raw/artisan]]

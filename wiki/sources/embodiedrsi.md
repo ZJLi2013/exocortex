@@ -28,4 +28,3 @@ lenses: ["[[agentic-robotics]]"]
   - 假设靠 matched trial 判定：同一初始状态、其余调用及顺序不变，比较成功率差；消融时 VLA、任务集、物理实验预算与评估协议固定。
 - **可信度**：作者自报；未给多次运行或方差；基线数字是否复现未说明；代码是否开源未说明。
 - **模型**：真机底座 SmolVLA；冻结 Qwen3.5-122B-A10B 做更新算子，Qwen3-Embedding-0.6B 做编码；LIBERO-Pro 对照冻结 VLA OpenVLA、π0、π0.5。
-- **原文**：[[raw/embodiedrsi]]

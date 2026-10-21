@@ -21,4 +21,3 @@ Manifold AI 的双层 agent：内层 Robot Agent 按任务加载 Skill 执行（
 - **评估与接纳**：更新须通过测试才自动发布并纳入版本管理；测试内容与谁判定未说明。push_T 修订在同一布局上做，冻结后在随机布局上报告。
 - **可信度**：公司发布稿（机器之心转载）；无论文；单任务单次案例；外层用哪个模型未说明。
 - **模型**：动作模型是 WorldScape Policy；称 RoboDojo 上超过 GPT-6-Astra 与 GR00T-N1.7。
-- **原文**：[[raw/worldscape-r2si]]

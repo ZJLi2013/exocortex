@@ -22,4 +22,3 @@ lenses: ["[[agentic-robotics]]"]
 - **评估与接纳**：Embed2Evolve 先在开发回合里演化记忆与上下文配方并选出最优，再冻结，在新初始化上测试；GPT 与嵌入权重全程不变。谁执行演化未说明。成功判定由各仿真任务给出。
 - **可信度**：作者自报（NVIDIA 技术报告）；ManiSkill 任务为作者选定的 5 个；去掉某模态是对训练好的模型做推理时缺失输入，不是重训消融；代码、模型与 benchmark 标注 coming soon。
 - **模型**：GPT-6 Astra 是 Embed2Evolve 中的冻结策略；DreamZero（冻结）与 Fast-WAM（微调）是 Embed2ICL 的两个策略；SAM3 裁剪物体，Qwen3-VL 做训练数据质量门；Gemini Embedding 2、CLIP ViT-L/14 是检索基线，Omni-Embed-Nemotron-3B 是演化对照的嵌入。
-- **原文**：[[raw/robota-embed]]

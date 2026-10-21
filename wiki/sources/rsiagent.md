@@ -31,4 +31,3 @@ curriculum / actor / verifier 三个 agent 在新软件环境里先广（BRS）�
   - 失败模式：verifier 在官方 rubric 下仍有错时返回 PASS；未充分验证的决定被写成规则（如把缺失数据标记当有效答案）并在后续复用；练习没覆盖目标的真正弱点（未测试获取不可得的用户信息）。
 - **可信度**：作者自报；OSWorld 结果标为 provisional，各次运行的预算与评测范围未完全对齐；代码开源。
 - **模型**：主系统 GLM-5.3 + Kimi-K3（verifier）；GameCraft-Bench 生成器含 Kimi-K2.6、GLM-5.3-Flash、Qwen3.8-27B；官方评估器用 GPT-5.4 评分、GPT-4o 模拟用户；OSWorld 对照表用各家 leaderboard 报告值。
-- **原文**：[[raw/rsiagent]]

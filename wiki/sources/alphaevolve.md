@@ -31,4 +31,3 @@ Gemini 2.0 Flash + Pro 对用户标记的代码块提 diff，按用户写的评�
   - 主要局限：只适用于能写出自动评估器的问题，需人工实验的任务不在范围内。
 - **可信度**：Google DeepMind 白皮书，作者自报；生产部署结果无外部复现；数学结果附 Colab；AlphaEvolve 本身是否开源未说明。
 - **模型**：Gemini 2.0 Flash（多出候选）与 Gemini 2.0 Pro（少量高质量候选）组合生成代码。
-- **原文**：[[raw/alphaevolve]]

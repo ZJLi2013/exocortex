@@ -23,7 +23,6 @@ lenses: ["[[agentic-robotics]]"]
 - **评估与接纳**：候选改动在相同任务条件下复测，验证通过才带入下一版。谁实现评分、评测次数未说明。真机有演示，无成功率。
 - **可信度**：作者自报；RoboDojo 分数尚未上官方榜；27B 权重与技术报告未发布；未给评测次数。
 - **模型**：Harness 结果的底座是 GPT-6 Astra。27B-Preview 把验证过的交互经验变成多模态监督，基座是 Qwen3.8-27B。对照点名 GPT-6 Astra、Simate-beta、Qwen3.8-27B。
-- **原文**：[[raw/sensenova-roborsi]]
 
 ## 关联
 
