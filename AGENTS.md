@@ -9,7 +9,6 @@ human 丢链接、提问、定 lens 范围、裁决冲突；其余由 agent 按�
 |---|---|---|
 | `inbox/links.md` | 待收录的 URL，一行一个，可跟 human 标签：`<URL> #jev #kernel` | human |
 | `inbox/proposals.md` | 搜索出的候选来源，等 human 处置 | agent |
-| `raw/<slug>.md` | 抓取的原文，写一次不改 | agent |
 | `wiki/sources/<slug>.md` | 一个来源一页 | agent |
 | `wiki/lenses/<name>.md` | 一个研究方向：范围、总结、工作、冲突（格式见下节） | 范围归 human；总结与工作由 agent 维护；冲突由 human 裁决 |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
@@ -55,21 +54,13 @@ tags: [jev]
 
 对 `inbox/links.md` 里每个 URL：
 
-1. **去重**：在 `raw/` 里搜 `url: <URL>`（`rg` 或文件搜索工具），命中则跳过，log 记一行。
-2. **抓原文**写 `raw/<slug>.md`。slug 用工作名的小写短横线形式（`embodiedevo`、`gemini-4-argon`）。
-   arXiv 抓 `https://arxiv.org/html/<id>` 全文，抓不到再退到 abs 页。
-   GitHub 仓库页只返回导航壳，改抓 `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/README.md`；
+1. **去重**：在 `wiki/sources/` 里搜 `url: <URL>`（`rg` 或文件搜索工具），命中则跳过，log 记一行。
+2. **读原文**，不落盘。arXiv 读 `https://arxiv.org/html/<id>` 全文，读不到再退到 abs 页。
+   GitHub 仓库页只返回导航壳，改读 `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/README.md`；
    文件名可能是 `readme.md`，分支可能是 `master`。
-   正文靠 JavaScript 填充的页面，下载 HTML 抽文本。存之前去掉导航、页脚、营销滚动条等站点外壳；存之后不改。
-   README / 项目页没有数字但链了自己的论文时，把论文全文接在同一个 raw 文件后面。存原文用 `python scripts/save_raw.py --url <URL> --slug <slug> --title <标题> --from <抓到的文件>`。frontmatter：
-
-   ```yaml
-   url: <原 URL>
-   fetched: YYYY-MM-DD
-   title: <标题>
-   ```
-
-3. **写来源页** `wiki/sources/<slug>.md`：
+   页面上的数字靠 JavaScript 填充时，读页面 `<script src>` 加载的数据文件（如 `data.js`、JSON）。
+   README / 项目页没有数字但链了自己的论文时，接着读论文。
+3. **写来源页** `wiki/sources/<slug>.md`，slug 用工作名的小写短横线形式（`embodiedevo`、`gemini-4-argon`）：
 
    ```markdown
    ---
@@ -93,7 +84,6 @@ tags: [jev]
    - **评估与接纳**：谁评、在哪个集合上评、谁宣布成功
    - **可信度**：作者自报 / 单次 / 未给评测次数 / 未开源 等
    - **模型**：每个模型的角色与版本，例「π0.5 是 harness 中的一个技能」；两个模型字段都空时不写
-   - **原文**：[[raw/<slug>]]
 
    ## 关联
 
@@ -114,7 +104,7 @@ tags: [jev]
      新来源让某个 concepts 标签第一次被两个来源共有、且它是可核实的方法时，才新增方法节点。方法写进 methods 后不再重复写进 concepts。
    - 关联只连库内来源，关系三选一：`基于`（用了对方的方法、组件或是它的新版本）、`对照`（拿对方当基线或在同一张表里比）、
      `相悖`（同一件事两边的数字或说法不一致）。相关工作里顺带一提的不连；对方是模型、已写进 models_compared 的不再写对照。写在主动方的页面上，一对来源一种关系一行；没有就不写这一节。
-     双向查：新来源原文提到的库内工作，以及已有来源原文里提到新来源的（`rg` 搜 `raw/`，命中就给那个来源页补一行）。
+     双向查：新来源原文提到的库内工作，以及已有来源页里提到新来源工作名的（`rg` 搜 `wiki/sources/`，命中后打开那个来源的 `url` 核实，再给它的来源页补一行）。
 
 5. **lens 判定**：逐个读 `wiki/lenses/*.md` 的「范围」，判这条来源 keep 还是 reject。跳过 `status: proposed` 的候选 lens。
    human 标签是线索不是归属：lens frontmatter `tags` 含来源某个标签时先判这个 lens，但仍按内容判。
@@ -174,7 +164,7 @@ lens 外的来源成簇时，提议一个新研究方向，由 human 决定要�
 1. **查询**：每个已批准 lens（跳过 `status: proposed`）写 2–5 条英文查询：范围句改写 2–3 条，lens 内来源共享的评测集各一条。
  写成临时文件，一行 `<lens> | <query>`。
 2. **搜索与去重**：`python scripts/search_candidates.py <查询文件>`（需环境变量 `SEARXNG_URL`；SearXNG 不常驻，跑前 `docker start searxng`，跑完 `docker stop searxng`）。
- 脚本丢掉近 30 天以外的结果，以及 URL 已在 `raw/`、来源页、`inbox/links.md`、`inbox/proposals.md`、`wiki/search-rejections.yaml` 里的结果
+ 脚本丢掉近 30 天以外的结果，以及 URL 已在来源页、`inbox/links.md`、`inbox/proposals.md`、`wiki/search-rejections.yaml` 里的结果
  （arXiv 同编号算同一来源），以及标题或摘要点名库内工作的结果。
 3. **写候选**：只读脚本给的标题与摘要，不抓全文。按与 lens 范围的相关度挑最多 10 条，在 `inbox/proposals.md` 末尾追加：
 
@@ -196,7 +186,7 @@ human 处置：
 ## 查询
 
 1. 列 `wiki/sources/` 看有哪些来源，或全文搜 `wiki/`。
-2. 先读 lens 页：「总结」给方向概貌，「工作」给每个来源的 highlight；再按 `tags:` / `concepts:` 标签或全文搜索找来源页；细节不够才读 `raw/`。
+2. 先读 lens 页：「总结」给方向概貌，「工作」给每个来源的 highlight；再按 `tags:` / `concepts:` 标签或全文搜索找来源页；细节不够才打开来源页的 `url`。
 3. 每条事实引用页面路径（`wiki/sources/<slug>.md`）。查不到就说查不到。
 
 ## 裁决

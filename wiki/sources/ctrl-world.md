@@ -26,4 +26,3 @@ lenses: []
   - 作者声明：能评测指令遵循，但物理交互建模可能不准；接触丰富与可变形物体任务需在下游任务上后训练世界模型（VLAW）。
 - **可信度**：ICLR 2026；代码与 checkpoint 开源；数字在论文 arXiv 2510.10125，README 只给用法。
 - **模型**：世界模型基于 Stable Video Diffusion；被评测与后训练的策略是 π0.5-DROID。
-- **原文**：[[raw/ctrl-world]]

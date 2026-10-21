@@ -23,4 +23,3 @@ lenses: ["[[agentic-robotics]]"]
 - **评估与接纳**：分数取官方榜单；迭代内 `select_on_eval` 选优，选优用的集合与榜单评测是否不相交未说明；基座模型未说明。
 - **可信度**：项目页自报；无论文、无评测次数说明；代码称在 XPolicyLab。
 - **模型**：π0.5 是 harness 中的一个技能，System 2 基座未说明；对照取自官方榜单 2026-10-03 快照的 π0.5、GPT-6 Astra、DM0.5、Liber-0 Lite、Simate-beta。
-- **原文**：[[raw/physicalrsi]]

@@ -19,4 +19,3 @@ lenses: ["[[llm-foundation-models]]"]
 - **评估与接纳**：DeepSWE 称为 held-out。机械臂一段是多视角闭环抓取演示，未给成功率。技术报告、训练环境与 RL 代码称已开源。
 - **可信度**：作者自报；参数量未说明；Intelligence Index 未给评测次数。
 - **模型**：AA Index 上称超过 Kimi K3 与 Qwen3.8 Max。
-- **原文**：[[raw/mimo-v2-6]]

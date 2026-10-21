@@ -30,7 +30,7 @@ human 说「搜索候选」
 
 候选 URL 命中下面任一处就丢弃：
 
-- `raw/` 里的 `url:`（同收录第 1 步）；
+- 来源页的 `url:`（同收录第 1 步）；
 - `inbox/links.md`、`inbox/proposals.md` 里已有的行；
 - `wiki/search-rejections.yaml` 里 human 否决过的 URL。
 

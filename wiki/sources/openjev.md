@@ -26,4 +26,3 @@ lenses: ["[[jev]]"]
   - 某个槽熵 > 0.1 时自动再读 3 次取平均。
 - **可信度**：性能为作者自测；无质量评测；Apache-2.0 开源；声明与 TypeSafe 无关联。
 - **模型**：默认模型 openjev-latest 基于 DiffusionGemma 26B-A4B。
-- **原文**：[[raw/openjev]]

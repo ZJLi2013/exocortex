@@ -25,4 +25,3 @@ lenses: ["[[agent-loop]]"]
   - README 提醒执行器联网不受限，公开 rubric 可能被查到，需自行配置网络限制。
 - **可信度**：作者自报；README 未给评测次数；代码开源（Apache 2.0）；论文 arXiv 2610.14224 未收录。
 - **模型**：GLM-5 与 Gemini 3.5 Flash 是被改进 harness 的底座；执行器是 OpenCode 或 Codex，其底层模型未说明。
-- **原文**：[[raw/harness2]]

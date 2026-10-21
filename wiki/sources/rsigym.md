@@ -23,4 +23,3 @@ lenses: ["[[agent-loop]]"]
   final evaluation 复用开发期可见的任务。
 - **可信度**：作者自报；每个研究配置只跑一次；研究 agent 推理与官方评测不计入 \$500。
 - **模型**：六个研究 agent：Opus 5、Opus 5.5、DeepSeek V4.1 Flash、GPT-6 Astra、GPT-6.1 Sol、GPT-6 Sol；被改进的目标模型从 Qwen3.5-35B-A3B-Base 等起步，harness 迭代实验固定 Qwen3.6-35B-A3B-Instruct；另一实验让 Qwen3.8-27B 同时当研究者与目标。
-- **原文**：[[raw/rsigym]]

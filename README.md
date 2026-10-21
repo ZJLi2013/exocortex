@@ -30,7 +30,7 @@
 - **你的标签**（来源页 `tags:`）：丢链接时打的 `#tag`，先用 [已有写法](docs/human-tags.md)。LLM 照抄，不把近义标签并成一个；它只用来决定先判哪个 lens，归属仍按内容定。
 - **新 lens**：两个以上无 lens 的来源共享一个标签时，LLM 起草候选 lens 等你处置。
 
-`wiki/sources/` 一个来源一页；`raw/` 存原文、`wiki/log.md` 记每次操作，这两样只在本地。
+`wiki/sources/` 一个来源一页，原文只在收录时读、不保存；`wiki/log.md` 记每次操作，只在本地。
 
 现有 27 个来源、5 个 lens：`agentic-robotics`、`agent-loop`、`robotics-rl`、`jev`、`llm-foundation-models`。
 设计理由见 [docs/design.md](docs/design.md)。

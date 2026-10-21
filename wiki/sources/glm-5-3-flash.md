@@ -19,4 +19,3 @@ lenses: ["[[llm-foundation-models]]"]
 - **评估与接纳**：发布前以 ox-alpha 在 OpenCode 与 OpenRouter 匿名试用。Toolathlon Verified 为官方服务上 3 次 pass@1 的平均；GDPval-AA v2 由 Artificial Analysis 评；HLE 用 GPT-5.6-luna (medium) 做裁判。DeepSeek-V4-Flash-Base 的基座数字用智谱内部框架重跑。权重在 Hugging Face，推理支持 SGLang、vLLM、TokenSpeed。
 - **可信度**：作者自报。多数基准未给次数。「同价十分之一」「与 NVIDIA 每 token 成本相当」未给对方单价。
 - **模型**：HLE 用 GPT-5.6 Luna（medium）当裁判；发布表对照 GLM-5.2、Opus 4.8、DeepSeek-V4-Vision-Exp、GPT-5.6 Terra、Gemini 3.7 Flash；架构对照 GLM-5.3、DeepSeek-V4-Flash、Kimi-K3；Base 表对照 GLM-4.5-Base、GLM-5-Base、DeepSeek-V4-Flash-Base。
-- **原文**：[[raw/glm-5-3-flash]]

@@ -29,4 +29,3 @@ System 1 决策模型的开源训练与部署框架：输入状态、问题与�
   - 机器人只出现在 playground：Franka 插销由 PyBullet 接触物理判成功，GIF 是旧 checkpoint 的回放，未给机器人成功率。
 - **可信度**：作者自报；评测次数与方差未说明；代码与起步数据 Apache-2.0 开源，权重发布在 Hugging Face。
 - **模型**：默认发布模型基于 Qwen3.8-27B（LoRA）；基线 Jev 1.13.0、Kev-27B。
-- **原文**：[[raw/jevany]]
