@@ -13,8 +13,9 @@ human 丢链接、提问、定 lens 范围、处置候选 lens；其余由 agent
 | `wiki/lenses/<name>.md` | 一个研究方向：范围、总结、工作（格式见下节） | 范围归 human；总结与工作由 agent 维护 |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/lens-rejections.yaml` | human 否决过的候选 lens 与当时的簇内来源 | agent |
-| `wiki/search-rejections.yaml` | human 否决过的搜索候选与撤销的来源 URL；embodied_radar 每天读作负例 | agent |
+| `wiki/search-rejections.yaml` | human 否决过的搜索候选与撤销的来源 URL；`feed/` 的判定每天读作负例 | agent |
 | `wiki/log.md` | 审计日志，只追加，只在本地；按事件类型或来源名搜索，不整份读 | agent |
+| `feed/` | 感知与判定代码：读 GitHub feed 与公司渠道，产出「feed 收录」读的候选文件（见 [feed/README.md](feed/README.md)） | agent |
 
 不按主题建目录。分组靠 lens 与两种标签，都不是预设分类：
 
@@ -179,14 +180,14 @@ human 处置：
 
 ## feed 收录（human 说「feed 收录」）
 
-[embodied_radar](https://github.com/ZJLi2013/embodied_radar) 每天在私有机器上把 human 的 GitHub feed 与公司渠道按工作合并、判定，写一个候选文件。agent 直接收录，human 只撤销不要的（见「删 X」）。
+[`feed/`](feed/README.md) 每天在私有机器上把 human 的 GitHub feed 与公司渠道按工作合并、判定，写一个候选文件。agent 直接收录，human 只撤销不要的（见「删 X」）。
 
 1. `python scripts/feed_candidates.py`（需环境变量 `RADAR_FEED=<user@host>:<私有库路径>`）：把候选文件里前 5 条没见过的 URL（去重同搜索候选）追加到 `inbox/links.md`，剩下的下次再收。
 2. 接着按「收录」处理 `inbox/links.md`。feed 来的 URL 没有 human 标签，`tags: []`；归不上 lens 的 `lenses: []`，留给 lint lenses。
 
 ## 删 X（human 说「删 <来源>」）
 
-撤销一条收录；它同时是给 embodied_radar 的负例。
+撤销一条收录；它同时是给 `feed/` 判定的负例。
 
 1. 删 `wiki/sources/<slug>.md`；删各 lens「工作」里它那一行，总结里的某一句只靠它成立时改那一句；删其它来源页「关联」里指向它的行。
 2. URL 追加进 `wiki/search-rejections.yaml`（写法同搜索候选的「不要」），以后不再收。
