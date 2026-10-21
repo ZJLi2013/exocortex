@@ -69,11 +69,12 @@ arXiv 的 `abs/`、`html/`、`pdf/` 同一编号算同一来源。
 ## 边界
 
 - agent 不写 `inbox/links.md`，不触发收录，不改 lens 与来源页。
-- SearXNG 在本机 WSL 的 Docker 里跑，不需要另一台服务器；镜像 265 MB，空闲内存约 100 MB。实例地址放本地环境变量 `SEARXNG_URL`，不进仓库。部署：
+- SearXNG 在本机 WSL 的 Docker 里按需跑，不常驻，不需要另一台服务器；镜像 265 MB，运行时内存约 100 MB。实例地址放本地环境变量 `SEARXNG_URL`，不进仓库。
+ 每次「搜索候选」前 `docker start searxng`，跑完 `docker stop searxng`。部署（只做一次）：
 
  ```bash
  mkdir -p ~/searxng/config   # 写入下面的 settings.yml
- docker run -d --name searxng --restart unless-stopped -p 127.0.0.1:8888:8080 \
+ docker run -d --name searxng --restart no -p 127.0.0.1:8888:8080 \
    -v ~/searxng/config:/etc/searxng searxng/searxng:latest
  ```
 
