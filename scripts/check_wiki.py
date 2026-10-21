@@ -74,7 +74,10 @@ def proposal_problems() -> list[str]:
             keys[url_key(url)] += 1
             if url_key(url) in known:
                 out.append(f"proposals.md: {url} already in sources, links.md or search-rejections.yaml")
-            if not set(re.findall(r"\[\[([^\]|]+)\]\]", rest)) & approved:
+            if title.endswith("feed"):
+                if not re.search(r"（(上升|公司渠道|判定)", rest):
+                    out.append(f"proposals.md: {url} names no feed origin")
+            elif not set(re.findall(r"\[\[([^\]|]+)\]\]", rest)) & approved:
                 out.append(f"proposals.md: {url} links no approved lens")
     if sections and len(re.findall(r"^\d+\. ", list(sections.values())[-1], flags=re.M)) > 10:
         out.append("proposals.md: latest search has more than 10 candidates")
