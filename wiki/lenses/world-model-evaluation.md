@@ -11,5 +11,5 @@ tags: [un-category]
 
 ## 为何提议
 
-- 来源：[[ctrl-world]]、[[worldoracle]]
-- 共享标签：世界模型内策略评测 ≈ 动作条件世界模型对照真机执行
+- 来源：[[ctrl-world]]、[[worldoracle]]、[[robovalue]]
+- 共享标签：世界模型内策略评测 ≈ 动作条件世界模型对照真机执行；隐藏评测器、公开排行榜（worldoracle 与 robovalue）
