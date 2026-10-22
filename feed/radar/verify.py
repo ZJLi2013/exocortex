@@ -70,10 +70,12 @@ def check_daily(store: Path) -> list[str]:
     return problems
 
 
-def check_feed_judge(store: Path) -> list[str]:
+def check_feed_judge(store: Path, rejections: Path | None = None) -> list[str]:
     """Every work from the feed and company channels judged once or skipped, keyed by work;
-    candidates.json matches the judgments; company signals accumulate; star labels complete."""
-    from radar.feed_judge import aggregate, candidates, feed_key, snapshot_name
+    candidates.json matches the judgments; company signals accumulate; star labels complete;
+    own repos, rejection labels and the star hit rate as the latest run recorded them."""
+    from radar.feed_judge import (COMPANY_FRESH_DAYS, OWN_ACTIVE_DAYS, aggregate, candidates, display, feed_key,
+                                  is_fresh, sha, snapshot_name, star_hits)
 
     runs = read_rows(store / "judge_runs.jsonl")
     if not runs:
@@ -103,13 +105,46 @@ def check_feed_judge(store: Path) -> list[str]:
         if "lens" in j:
             problems.append(f"{j['key']}: judgment carries a lens (judged before r4?)")
 
-    queue = json.loads((store / "candidates.json").read_text(encoding="utf-8"))["works"]
-    if queue != json.loads(json.dumps(candidates(works, judgments), ensure_ascii=False)):
+    queue_doc = json.loads((store / "candidates.json").read_text(encoding="utf-8"))
+    queue, run_at = queue_doc["works"], datetime.strptime(queue_doc["run"], "%Y%m%dT%H%M%SZ")
+    if queue != json.loads(json.dumps(candidates(works, judgments, run_at.date()), ensure_ascii=False)):
         problems.append("candidates.json differs from the eligibility and order rules applied to the judgments")
+    if stale := [c["key"] for c in queue if not is_fresh(works[c["key"]], run_at.date())]:
+        problems.append(f"{len(stale)} company-only candidates published or first seen over {COMPANY_FRESH_DAYS} days ago, first: {stale[0]}")
+
+    rejected = {l["key"] for l in labels if l["from"] == "rejection"}
+    if runs:
+        own = json.loads((store / "own_repos.json").read_text(encoding="utf-8"))
+        latest_run = runs[-1]["run"]
+        if own["run"] != latest_run:
+            problems.append(f"own_repos.json from run {own['run']}, latest run {latest_run}")
+        for r in own["repos"]:
+            if r["fork"] or (run_at - datetime.fromisoformat(r["pushed_at"].replace("Z", "+00:00")).replace(tzinfo=None)).days > OWN_ACTIVE_DAYS:
+                problems.append(f"own repo {r['repo']}: fork {r['fork']}, pushed {r['pushed_at']}")
+        bare = {f"- {display(k)}" for k in rejected}
+        latest = [j for j in judgments if j["run"] == latest_run]
+        for j in latest:
+            request = store / "snapshots" / latest_run / "calls" / f"{snapshot_name(j['key'])}.request.json"
+            context = json.loads(request.read_text(encoding="utf-8"))["messages"][1]["content"].split("\n\n## 待判工作")[0]
+            if sha(context) != j["context_sha"] or not all(f"- {r['repo']}" in context for r in own["repos"]):
+                problems.append(f"{j['key']}: context_sha does not cover the own repos of run {latest_run}")
+            if shown := bare & set(context.splitlines()):
+                problems.append(f"{j['key']}: rejection examples without text: {sorted(shown)[:3]}")
+        if (hits := star_hits(labels, judgments)) != {k: runs[-1].get(k) for k in hits}:
+            problems.append(f"run {latest_run}: star hit rate {[runs[-1].get(k) for k in hits]}, recomputed {hits}")
+        print(f"own repos {len(own['repos'])}; judged in run {latest_run}: {len(latest)}; star hit rate {hits}")
+
+    if rejections:
+        import yaml
+
+        from radar.urls import normalize
+
+        listed = {normalize(r["url"]) for r in yaml.safe_load(rejections.read_text(encoding="utf-8")) or []}
+        if listed != rejected:
+            problems.append(f"rejection labels differ from {rejections.name}: missing {sorted(listed - rejected)[:3]}, "
+                            f"extra {sorted(rejected - listed)[:3]}")
     from_feed = [c for c in queue if works[c["key"]]["followers"] or works[c["key"]]["trending"]]
     from_company = [c for c in queue if works[c["key"]]["channels"]]
-    if not from_feed or not from_company:
-        problems.append(f"candidates.json has {len(from_feed)} feed and {len(from_company)} company works; expected both")
 
     if dup := [k for k, n in Counter((c["key"], c["entity"]) for c in company).items() if n > 1]:
         problems.append(f"{len(dup)} duplicate company signals, first: {dup[0]}")
@@ -133,7 +168,8 @@ def read_rows(path: Path) -> list[dict]:
 def main(kind: str, path: str, prev_path: str | None = None) -> int:
     if kind in ("feed-replay", "daily", "feed-judge"):
         checks = {"feed-replay": lambda: check_feed_replay(Path(path), Path(prev_path)),
-                  "daily": lambda: check_daily(Path(path)), "feed-judge": lambda: check_feed_judge(Path(path))}
+                  "daily": lambda: check_daily(Path(path)),
+                  "feed-judge": lambda: check_feed_judge(Path(path), Path(prev_path) if prev_path else None)}
         problems = checks[kind]()
         for line in problems:
             print(f"FAIL {line}")
