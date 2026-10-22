@@ -1,4 +1,4 @@
-"""Write a single-page site from wiki/: works per approved lens and a graph of lenses, sources and their relations."""
+"""Write a single-page site from wiki/: insight and works per approved lens, and a graph of lenses, sources and their relations."""
 
 import argparse
 import html
@@ -23,6 +23,8 @@ body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; 
 h2 { margin-top: 2.5rem; border-bottom: 1px solid #eee; }
 .scope { font-weight: 600; }
 li { margin: .3rem 0; }
+.insight { background: #f7fafc; border-left: 3px solid #2c5282; padding: .2rem 1rem; margin: 1rem 0; }
+.insight table { border-collapse: collapse; } .insight td, .insight th { border: 1px solid #ddd; padding: .2rem .5rem; }
 footer { margin: 3rem 0 1rem; color: #888; font-size: .9em; }
 </style>
 </head>
@@ -67,6 +69,39 @@ def plain(text: str) -> str:
     return re.sub(r"\[\[(?:[^\]|]+\|)?([^\]]+)\]\]", r"\1", html.escape(text, quote=False))
 
 
+def inline(text: str, sources: dict) -> str:
+    def link(m):
+        s = sources.get(m.group(1))
+        return f'<a href="{html.escape(s["url"])}">{html.escape(s["name"])}</a>' if s else html.escape(m.group(2) or m.group(1))
+    out = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", html.escape(text, quote=False))
+    return re.sub(r"\[\[([^\]|]+)(?:\|([^\]]+))?\]\]", link, out)
+
+
+def insight_html(text: str, sources: dict) -> str:
+    """The small markdown subset agents/insight.md uses: ## / ### headings, bullets, one table, paragraphs."""
+    body = text.split("---", 2)[2].split("\n", 2)[2] if text.startswith("---") else text
+    out, rows = [], []
+    for line in body.splitlines() + [""]:
+        if line.startswith("|"):
+            cells = [c.strip() for c in line.strip("|").split("|")]
+            if not all(set(c) <= set("-: ") for c in cells):
+                rows.append(cells)
+            continue
+        if rows:
+            tag = lambda r, t: "<tr>" + "".join(f"<{t}>{inline(c, sources)}</{t}>" for c in r) + "</tr>"
+            out.append("<table>" + tag(rows[0], "th") + "".join(tag(r, "td") for r in rows[1:]) + "</table>")
+            rows = []
+        if line.startswith("### "):
+            out.append(f"<h4>{inline(line[4:], sources)}</h4>")
+        elif line.startswith("## "):
+            out.append(f"<h3>{inline(line[3:], sources)}</h3>")
+        elif line.startswith("- "):
+            out.append(f"<li>{inline(line[2:], sources)}</li>")
+        elif line.strip():
+            out.append(f"<p>{inline(line, sources)}</p>")
+    return '<div class="insight">\n' + re.sub(r"((?:<li>.*?</li>\n?)+)", r"<ul>\1</ul>", "\n".join(out)) + "\n</div>"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("out", type=Path, help="output directory for index.html")
@@ -90,8 +125,10 @@ def main() -> None:
             kept.add(slug)
             edges.append({"from": page.stem, "to": slug, "color": "#cbd5e0"})
             rows.append(f'<li><a href="{html.escape(s["url"])}">{html.escape(s["name"])}</a>：{plain(highlight)}</li>')
+        insight = ROOT / "wiki/insights" / page.name
+        judged = insight_html(insight.read_text(encoding="utf-8"), sources) + "\n" if insight.exists() else ""
         sections.append(f'<h2 id="{page.stem}">{page.stem}</h2>\n<p class="scope">{plain(section(text, "范围"))}</p>\n'
-                        f'<p>{plain(section(text, "总结"))}</p>\n<ul>\n' + "\n".join(rows) + "\n</ul>")
+                        f'{judged}<p>{plain(section(text, "总结"))}</p>\n<ul>\n' + "\n".join(rows) + "\n</ul>")
 
     for slug in sorted(kept):
         s = sources[slug]

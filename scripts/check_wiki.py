@@ -1,4 +1,4 @@
-﻿"""Structural check of the wiki: source pages, lens pages, unresolved links."""
+﻿"""Structural check of the wiki: source pages, lens pages, insight pages, unresolved links."""
 
 import argparse
 import re
@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parent.parent
 NODE_FIELDS = ["benchmarks", "methods", "models_used", "models_compared"]
 FIELDS = ["type", "url", "published", "ingested", "tags", "concepts", *NODE_FIELDS, "lenses"]
 RELATIONS = ["基于", "对照", "相悖"]
+RESULTS = ["pending", "hit", "miss", "unclear"]
 
 
 def links(page: Path, field: str) -> list[str]:
@@ -56,6 +57,29 @@ def lens_problems(page: Path, pages: list[Path]) -> list[str]:
     owned = {p.stem for p in pages if f'"[[{page.stem}]]"' in p.read_text(encoding="utf-8").split("---")[1]}
     out += [f"{name}: {s} has lens but no row" for s in sorted(owned - set(listed))]
     out += [f"{name}: row {s} is not a source with this lens" for s in sorted(set(listed) - owned)]
+    return out
+
+
+def insight_problems(page: Path, approved: set[str], sources: set[str]) -> list[str]:
+    text = page.read_text(encoding="utf-8")
+    front = text.split("---")[1] if text.startswith("---") else ""
+    name, out = page.name, []
+    if not re.search(r"^type: insight$", front, flags=re.M) or not re.search(r"^updated: \d{4}-\d{2}-\d{2}$", front, flags=re.M):
+        out.append(f"{name}: frontmatter needs type: insight and updated: YYYY-MM-DD")
+    if not re.search(rf'^lens: "\[\[{re.escape(page.stem)}\]\]"$', front, flags=re.M) or page.stem not in approved:
+        out.append(f"{name}: lens must be the approved lens of the same name")
+    sections = split(text, "##")
+    missing = [s for s in ["Directions", "Open problems", "Predictions"] if s not in sections]
+    if missing:
+        return out + [f"{name}: missing section {', '.join(missing)}"]
+    cites = lambda body: set(re.findall(r"\[\[([^\]|#]+)", body)) & sources
+    out += [f"{name}: direction cites no source: {t[:40]}" for t, b in split(sections["Directions"], "###").items() if not cites(b)]
+    out += [f"{name}: open problem cites no source: {l[:40]}" for l in re.findall(r"^- .*$", sections["Open problems"], flags=re.M)
+            if not cites(l)]
+    for row in re.findall(r"^\|(.+)\|$", sections["Predictions"], flags=re.M)[2:]:
+        cells = [c.strip() for c in row.split("|")]
+        if len(cells) != 4 or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", cells[1]) or cells[3] not in RESULTS or not cites(cells[2]):
+            out.append(f"{name}: prediction row needs | text | YYYY-MM-DD | [[source]] | {'/'.join(RESULTS)} |: {row[:40]}")
     return out
 
 
@@ -107,6 +131,10 @@ def main() -> None:
 
     for lens in sorted((ROOT / "wiki/lenses").glob("*.md")):
         problems += lens_problems(lens, pages)
+    approved = {p.stem for p in (ROOT / "wiki/lenses").glob("*.md")
+                if not re.search(r"^status: proposed", p.read_text(encoding="utf-8"), flags=re.M)}
+    for insight in sorted((ROOT / "wiki/insights").glob("*.md")):
+        problems += insight_problems(insight, approved, {p.stem for p in pages})
     problems += proposal_problems()
 
     canonical = model_names() | {p.stem for p in pages}
