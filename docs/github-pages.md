@@ -19,7 +19,7 @@ push 到 main（改动碰 wiki/ 或站点构建文件）
 - **关系图**：节点是已批准 lens 与它们收的来源（`lenses: []` 的来源不画）；边有两类：lens → 它收的来源，来源之间的「关联」（基于 / 对照 / 相悖，按颜色区分）。
   点来源节点打开原 URL，点 lens 节点跳到它那一节。节点名用来源页的一级标题。图用 [vis-network](https://visjs.github.io/vis-network/) 固定版本，从 CDN 加载。
 
-不发布：来源页正文、`inbox/`、`docs/`、`wiki/log.md`、`wiki/*-rejections.yaml`、`wiki/index.base`、`.agent-loop/`。
+不发布：来源页正文、`inbox/`、`docs/`、`wiki/*-rejections.yaml`、`wiki/index.base`。
 
 ## 边界
 
