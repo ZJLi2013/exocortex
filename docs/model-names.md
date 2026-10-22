@@ -31,6 +31,7 @@
 | Qwen3.6-35B-A3B-Instruct | — |
 | Qwen3.5-35B-A3B-Base | — |
 | Qwen3.5-122B-A10B | — |
+| Qwen3.5-0.8B | — |
 | Qwen3-Embedding-0.6B | — |
 | GLM-5.3 | — |
 | GLM-5 | — |
@@ -49,8 +50,14 @@
 | π0.5 | π₀.₅、pi0.5、Pi-05、Pi_05 |
 | π0.5-DROID | — |
 | OpenVLA | — |
+| OpenVLA-OFT | — |
+| Octo | — |
+| ACT | — |
+| Diffusion Policy | DP |
 | SmolVLA | — |
 | GR00T-N1.7 | GROOT-N1.7 |
+| GR00T-N1.6 | GR00T N1.6 |
+| GR00T-N1.5 | GR00T N1.5 |
 | DM0.5 | — |
 | Liber-0 Lite | — |
 | Simate-beta | — |
