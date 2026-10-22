@@ -73,7 +73,7 @@ def test_feed_and_company_works_filtered_judged_and_queued(tmp_path):
              "e/notext": FRESH | {"description": ""}}
     readmes = {"a/rising": "# A\n\nRising work.", "c/one": "<p><img src='x'></p>\n# C one\n\nA tool for robot learning."}
     pages = {"lab.org/blog/robot": ("<p>A robot policy that folds laundry.</p>", None), "lab.org/blog/empty": ("", None)}
-    seen, provider = [], Provider(yes={"lab.org/blog/robot", "c/one"})
+    seen, provider = [], Provider(yes={"lab.org/blog/robot", "c/one", "a/rising"})
     row = feed_judge.run(store, fake_github(metas, readmes, seen), provider, "m", RUN, NOW, fetch=fake_pages(pages))
 
     judged = {j["key"]: j for j in read_rows(store / "judgments.jsonl")}
@@ -86,7 +86,7 @@ def test_feed_and_company_works_filtered_judged_and_queued(tmp_path):
     assert judged["lab.org/blog/robot"]["meta"]["description"] == "Robot post"
     assert "公司渠道 lab（rss，发布于 2026-10-10）" in provider.prompts["c/one"] and "1 位关注者 star" in provider.prompts["c/one"]
     queue = json.loads((store / "candidates.json").read_text(encoding="utf-8"))["works"]
-    assert [c["key"] for c in queue] == ["github.com/a/rising", "github.com/b/trend", "github.com/c/one", "lab.org/blog/robot"]
+    assert [c["key"] for c in queue] == ["github.com/a/rising", "github.com/c/one", "lab.org/blog/robot"]
     assert (store / "snapshots" / RUN / "readme" / "a__rising.md").exists()
     assert row["errors"] == []
     assert check_feed_judge(store) == []
