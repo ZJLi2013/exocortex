@@ -104,3 +104,12 @@
 | [[mimo-v2-6]] | MiMo-V2.6 |
 | [[muse-spark]] | Muse Spark 1.3 |
 | [[sensenova-roborsi]] | SenseNova-RoboRSI-27B-Preview、RoboRSI-27B-Preview |
+| Wan2.2-5B | — |
+| Wan2.2-14B | — |
+| LTX-2.5 | LTX 2.5 |
+| MiniMax-H3 | MiniMax H3 |
+| DINOv3 | — |
+| LingBot-VLA | — |
+| HY-Embodied-0.5-VLA | HY-Embodied |
+| Spatial Forcing | — |
+| Motus | — |
