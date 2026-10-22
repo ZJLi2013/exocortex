@@ -1,0 +1,6 @@
+name: embodied
+title: 具身机器人技术雷达
+
+# Page-date fetches per run, shared by all page channels; links beyond it stay pending for later runs.
+page:
+  date_fetch_budget: 150

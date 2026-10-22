@@ -1,4 +1,4 @@
-"""Append the top works from embodied_radar's candidates.json that the wiki has not seen to inbox/links.md for ingest."""
+"""Append the top works from feed/'s candidates.json that the wiki has not seen to inbox/links.md for ingest."""
 
 import json
 import os
