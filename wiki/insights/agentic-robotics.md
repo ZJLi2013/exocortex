@@ -19,12 +19,6 @@ updated: 2026-10-22
 - **Gap**: No work compares the three amortization targets (compiled program, fine-tuned VLA, distilled VLM) under one trace budget on held-out layouts, with cost per success reported.
 - **First experiment**: From one agent run's verified traces, build all three and evaluate them on the same held-out RoboDojo layouts; report success rate and dollars per success.
 
-### Choose physical experiments by information value
-
-- **Why**: In [[rax]], success on unseen layouts rises from 25% to 79% as exploration grows from 4 to 128 episodes. [[embodiedrsi]] picks the next physical experiment by information gain per unit cost and reaches 72.9% after 50 episodes, against 27.1% with random exploration. Both self-reported.
-- **Gap**: RAX's exploration is untargeted and EmbodiedRSI's curve stops at 50 episodes; nobody has shown whether targeted selection changes the slope of the budget curve or only its starting point.
-- **First experiment**: Rerun RAX's 4–128 episode sweep with EmbodiedRSI-style hypothesis selection on the same tasks and compare the two curves.
-
 ### Hand contact-rich steps to a learned policy
 
 - **Why**: Agents are weakest where contact precision matters: [[hexashell]] scores 32.0% on RoboDojo Precision against 81.0% on Memory (official), and [[embodiedevo]] reports fine insertion and liquid handling as still hard. Hybrids already call VLAs as skills ([[harnesspai]], [[physicalrsi]], [[sensenova-roborsi]]) or let the agent supervise a policy, but [[robodoctor]] picks the controller per task from a fixed warmup threshold, and [[astranomy]]'s Orchestrated mode (66.5%) trails pure Agentic (74.8%).

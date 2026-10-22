@@ -43,7 +43,7 @@ insight 的可信度靠事后可核对的战绩，不靠一次成稿的文笔。
 
 现在一页 insight 是单次写成，质量靠 LLM 自评，而 LLM 自评偏高（`wiki/sources/agent-laboratory.md`）。
 
-- **候选池加两两排序**：先生成 15–20 条候选方向，两两比较排序，留前 3–5 条，借 AI co-scientist 的锦标赛做法。
+- **候选池加两两排序**：先生成 15–20 条候选方向，两两比较排序，留前 3 条，借 AI co-scientist 的锦标赛做法。
 - **查新**：每条方向保留前搜一遍是否已有人做（借 AI Scientist 的 Semantic Scholar 查新），只保证库里没人做不够。
 
 ### collector 要收到什么
