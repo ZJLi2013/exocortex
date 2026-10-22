@@ -1,7 +1,7 @@
 ﻿# exocortex
 
 研究领域的个人知识库，按 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 组织。整个仓库是一个 Obsidian vault。
-目标是给领域 researcher 方向 insight：下一个值得做的方向、未解决的问题与可证伪的预测。
+目标是给领域 researcher 方向 insight：下一个值得做的方向与未解决的问题。
 human 丢链接、提问、定 lens 范围、处置候选 lens；其余由两个 agent 执行，规则各在一个文件里。
 
 ## 两个 agent
@@ -9,7 +9,7 @@ human 丢链接、提问、定 lens 范围、处置候选 lens；其余由两个
 | agent | 做什么 | human 说 | 规则 |
 |---|---|---|---|
 | collector | 持续收录新工作，维护中立的证据层（来源页、lens 页、否决记录） | 「收录 inbox」「feed 收录」「lint lenses」「搜索候选」「删 X」、处置候选 lens | [agents/collector.md](agents/collector.md) |
-| insight | 读证据层，为每个方向写判断，到期核对预测 | 「写 insight <lens>」「核对预测」 | [agents/insight.md](agents/insight.md) |
+| insight | 读证据层，为每个方向写判断 | 「写 insight <lens>」 | [agents/insight.md](agents/insight.md) |
 
 接到上面任一句话，先读对应的规则文件再动手。证据层只记事实，判断只写进 `wiki/insights/`；两边不互相搬运。
 
@@ -21,7 +21,7 @@ human 丢链接、提问、定 lens 范围、处置候选 lens；其余由两个
 | `inbox/proposals.md` | 搜索出的候选来源，等 human 处置 | collector |
 | `wiki/sources/<slug>.md` | 一个来源一页 | collector |
 | `wiki/lenses/<name>.md` | 一个研究方向：范围、总结、工作 | 范围归 human；总结与工作由 collector 维护 |
-| `wiki/insights/<lens>.md` | 一个方向的判断：方向、未解决问题、预测 | insight agent 起草，human 改 |
+| `wiki/insights/<lens>.md` | 一个方向的判断：方向、未解决问题 | insight agent 起草，human 改 |
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/lens-rejections.yaml` | human 否决过的候选 lens 与当时的簇内来源 | collector |
 | `wiki/search-rejections.yaml` | human 否决过的搜索候选与撤销的来源 URL；`feed/` 的判定每天读作负例 | collector |
