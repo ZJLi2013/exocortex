@@ -10,11 +10,11 @@
 
 例外：维护者本地 agent 的收录类 PR 由 agent 开启 auto-merge，CI 通过即 squash merge，维护者事后看。
 收录类指 diff 只碰 `wiki/sources/`、`wiki/lenses/`、`inbox/`、`wiki/*-rejections.yaml`、`docs/human-tags.md`、`docs/model-names.md`；
-碰到 `AGENTS.md`、`scripts/`、`.github/` 或其它文件的仍由维护者合并。
+碰到 `AGENTS.md`、`agents/`、`wiki/insights/`、`scripts/`、`.github/` 或其它文件的仍由维护者合并。
 
 ## 欢迎的改动
 
-- `AGENTS.md` 的规则：收录、lint lenses、查询哪里不够用，最好附上 agent 实际卡住的例子。
+- `AGENTS.md` 与 `agents/` 的规则：收录、lint lenses、insight、查询哪里不够用，最好附上 agent 实际卡住的例子。
 - `scripts/` 的修复与改进。
 - 来源页的事实错误：指出原文出处（URL 与段落）。
 - 想推荐收录的链接：开 issue，不用 PR。

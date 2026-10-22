@@ -63,4 +63,4 @@ Obsidian 不按边的类型上色；关系类型要打开来源页看「关联�
 
 ## 改动在 agent 对话里做
 
-来源页、lens 页由 agent 按 [AGENTS.md](../AGENTS.md) 维护。在 Obsidian 里能直接改的只有 lens 的范围、总结和工作行，agent 不改回；其余改动在 agent 对话里说。
+来源页、lens 页由 collector 按 [agents/collector.md](../agents/collector.md) 维护。在 Obsidian 里能直接改的只有 lens 的范围、总结和工作行，agent 不改回；其余改动在 agent 对话里说。

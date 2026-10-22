@@ -2,8 +2,9 @@
 
 **研究方向（lens 的范围句）由人定；每个方向一段中立总结和每个工作一行的 highlight，由 LLM 维护；只有建立新方向时才等人。** 来源平铺，不做人工分类。
 来源除了 human 丢的链接，还有 `feed/` 每天从 human 的关注网络里挑出的工作：直接收录，human 只撤销不要的。
+在这层中立证据之上，insight agent 为每个方向写判断：下一个值得做的方向、未解决的问题与可证伪的预测。
 
-执行细节以 [AGENTS.md](../AGENTS.md) 为准。
+执行细节以 [AGENTS.md](../AGENTS.md) 与 `agents/` 下两个 agent 的规则为准。
 
 ## 全流程与 human 决策点
 
@@ -125,9 +126,15 @@ human 每天在 GitHub feed 上看到的项目和头部团队发布的东西，�
 - 判定的输入里 human 上下文（star、自己的仓库、标注例子）放在待判工作之前，跨调用前缀相同，所以多数命中缓存；开销只随每天的新工作数增长，代码上限每天 80 次。
 - 记账：每次运行在私有目录的 `cost.jsonl` 写一行 token 与折算的人民币，单价按调用时段（DeepSeek 高峰价是空闲价的两倍）；DeepSeek 余额另记一行对账。预算：每月目标 ≤ ¥20、上限 ¥40。
 
+## 判断层：insight 与中立证据分开
+
+- **为什么分两个 agent**：收录要中立、可复核，判断要有立场；写在同一页里，判断会渗进事实行，事实也会被挑来支撑判断。collector 只管证据层，insight agent 只写 `wiki/insights/`，各有一份规则。
+- **和放弃过的「问题 → 判断 → 证据」的区别**：那次的问题由 LLM 起草、判断重复来源页、反驳从未触发。insight 页由 human 署名、agent 起草；自检删掉复述单篇工作的条目；预测带到期日，到期必须核对成 hit / miss / unclear，判断会被证伪。
+- **校验**：`check_wiki.py` 查 insight 页三节齐全、每条方向与问题链到库内来源、预测行有到期日与合法结果；判断本身对不对由 researcher 读后评，不进校验。
+
 ## 结构与校验
 
-- **两层**：`wiki/` 每条事实可追回来源页的 `url`；`AGENTS.md` 是 agent 唯一操作手册。原文只在收录时读，不落盘。
+- **两层**：`wiki/` 每条事实可追回来源页的 `url`；`AGENTS.md` 把指令分给两个 agent，每个 agent 的规则在 `agents/` 下一个文件里。原文只在收录与写 insight 时读，不落盘。
 - **不分主题文件夹、不手写 index。** 手写分类会混轴且要人维护（3dgen_tracker 的 9 类留一法一致性仅 0.42–0.93）；索引由 Obsidian Bases 从 frontmatter 生成。
 - **校验不依赖 Obsidian 运行**：`check_wiki.py` 直接解析文件，lens 页查三节齐全，且「工作」的行与来源页 `lenses` 一一对应。
 
