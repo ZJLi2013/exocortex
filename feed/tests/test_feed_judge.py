@@ -141,28 +141,10 @@ def test_own_active_repos_enter_the_context(tmp_path):
     assert check_feed_judge(store) == []
 
 
-def test_library_lenses_and_sources_lead_the_context(tmp_path):
-    wiki = tmp_path / "wiki"
-    (wiki / "lenses").mkdir(parents=True)
-    (wiki / "sources").mkdir()
-    (wiki / "lenses" / "robots.md").write_text("---\ntype: lens\n---\n# robots\n\n## 范围\n\nAgents that drive robots.\n", encoding="utf-8")
-    (wiki / "lenses" / "maybe.md").write_text("---\ntype: lens\nstatus: proposed\n---\n# maybe\n\n## 范围\n\nCandidate.\n", encoding="utf-8")
-    (wiki / "sources" / "rax.md").write_text("---\ntype: source\n---\n# RAX\n\nCompiles exploration into programs.\n\n- more\n",
-                                             encoding="utf-8")
-    (wiki / "search-rejections.yaml").write_text("", encoding="utf-8")
-    store = make_store(tmp_path, [("star", "u1", "a/x")])
-    provider = Provider()
-    feed_judge.run(store, fake_github({}, {}, []), provider, "m", RUN, NOW, wiki=wiki)
-    assert provider.prompts["a/x"].startswith(
-        "## 库里的方向（lens 范围）\n- robots：Agents that drive robots.\n\n## 库里的工作（1 项）\n- rax：Compiles exploration into programs.\n\n")
-
-
 def test_rejections_become_no_labels_once_and_examples_only_with_text(tmp_path):
     store = make_store(tmp_path, [("star", "u1", "a/x"), ("star", "u1", "b/judged")])
     feed_judge.run(store, fake_github({"b/judged": FRESH | {"description": "Judged repo"}}, {}, []), Provider(), "m", RUN, NOW)
-    wiki = tmp_path / "wiki"
-    wiki.mkdir()
-    rejections = wiki / "search-rejections.yaml"
+    rejections = tmp_path / "search-rejections.yaml"
     rejections.write_text("- url: https://arxiv.org/abs/2610.00001v2\n  rejected: 2026-10-20\n"
                           "- url: https://lab.org/bad/\n  rejected: 2026-10-20\n"
                           "- url: https://github.com/b/judged\n  rejected: 2026-10-21\n", encoding="utf-8")
@@ -175,7 +157,7 @@ def test_rejections_become_no_labels_once_and_examples_only_with_text(tmp_path):
             raise RuntimeError("http_502")
         return "<p>body</p>", "A paper title"
     for run_id in ("20261022T000000Z", "20261023T000000Z"):
-        row = feed_judge.run(store, fake_github({}, {}, []), provider, "m", run_id, NOW, fetch=fetch, wiki=wiki)
+        row = feed_judge.run(store, fake_github({}, {}, []), provider, "m", run_id, NOW, fetch=fetch, rejections=rejections)
     assert fetched == ["arxiv.org/abs/2610.00001", "lab.org/bad"] and row["new_rejection_labels"] == 0
     assert sorted(l["key"] for l in read_rows(store / "labels.jsonl") if l["from"] == "rejection") == [
         "arxiv.org/abs/2610.00001", "github.com/b/judged", "lab.org/bad"]

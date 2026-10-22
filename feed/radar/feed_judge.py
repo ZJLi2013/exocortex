@@ -30,9 +30,9 @@ MAX_EXAMPLES = 60
 HUMAN_LABELS = {"gold", "batch", "proposal", "spot_check", "rejection"}
 OUTPUT_KEYS = {"verdict", "reason", "confidence"}
 
-SYSTEM = """你判断一个工作（GitHub 仓库、论文、博客或模型页）是否给 human 关注的研究方向带来新的研究 idea：新方法、新主张、新评测（新 benchmark 算）或新方向。论文的官方代码仓库按论文本身的 idea 判，不算复现。只是工具、应用、产品、第三方复现、封装、合集、教程的判 no，主题再相关也一样。
-human 关注哪些方向，看他的 star、标注与 lens 范围；lens 范围只是参考，star 与标注里出现的方向同样算。库里已有哪些工作，看「库里的工作」。和库里某项工作做的是同一件事、没有新东西的判 no；库里没有的新方向算新。只依据下面给的内容，不要猜。
-只输出 JSON：{"verdict": "yes|no", "reason": "<一句：新在哪里，或它只是什么；点名库里最接近的工作，没有就写「库里无相近工作」>", "confidence": <0-1，对 verdict 的把握>}"""
+SYSTEM = """exocortex 是一个研究知识库，目的是给领域 researcher 方向 insight：下一个值得做的方向、未解决的问题、可证伪的预测。你决定一个工作（GitHub 仓库、论文、博客或模型页）值不值得收进这个库，也就是它能不能成为这类 insight 的证据或启发。
+下面 human 的 star、在做的仓库与标注，帮你了解他关心什么，不必局限于此。只依据给的内容，不要猜。
+只输出 JSON：{"verdict": "yes|no", "reason": "<一句：收它能给库带来什么，或为什么不值得>", "confidence": <0-1，对 verdict 的把握>}"""
 
 
 def sha(text: str) -> str:
@@ -200,28 +200,12 @@ def star_hits(labels: list[dict], judgments: list[dict]) -> dict:
     return {"star_after_judge": len(hits), "judged_yes": sum(hits)}
 
 
-def library_block(wiki: Path) -> str:
-    """Approved lens scopes and the first line under each source page's title."""
-    lenses, sources = [], []
-    for p in sorted((wiki / "lenses").glob("*.md")):
-        text = p.read_text(encoding="utf-8")
-        if not re.search(r"^status: proposed", text, flags=re.M):
-            scope = re.search(r"^## 范围\n+(.+)", text, flags=re.M)
-            lenses.append(f"- {p.stem}：{scope.group(1).strip() if scope else ''}")
-    for p in sorted((wiki / "sources").glob("*.md")):
-        first = re.search(r"^# .+\n+(.+)", p.read_text(encoding="utf-8"), flags=re.M)
-        sources.append(f"- {p.stem}：{first.group(1).strip() if first else ''}")
-    return (f"## 库里的方向（lens 范围）\n" + "\n".join(lenses)
-            + f"\n\n## 库里的工作（{len(sources)} 项）\n" + "\n".join(sources) + "\n\n")
-
-
-def context_block(stars: list[tuple[str, str]], own: list[dict], examples: list[tuple[str, str]], described: dict, key: str,
-                  library: str = "") -> str:
+def context_block(stars: list[tuple[str, str]], own: list[dict], examples: list[tuple[str, str]], described: dict, key: str) -> str:
     """The work under judgment never appears among its own examples."""
     def line(k, d):
         return f"- {display(k)}：{d}" if d else f"- {display(k)}"
     shown = [(k, label) for k, label in examples if k != key]
-    text = library + f"## human 最近 star 的 {len(stars)} 个仓库（越靠前越新）\n" + "\n".join(line(k, d) for k, d in stars)
+    text = f"## human 最近 star 的 {len(stars)} 个仓库（越靠前越新）\n" + "\n".join(line(k, d) for k, d in stars)
     text += "\n\n## human 最近 3 个月在做的仓库（越靠前越新）\n" + (
         "\n".join(line(feed_key(r["repo"]), " ".join(filter(None, (r["description"], r["readme"])))) for r in own) or "（无）")
     text += f"\n\n## human 标过的工作（最近 {len(shown)} 条）"
@@ -310,9 +294,9 @@ def material(key: str, w: dict, get, fetch, now: datetime) -> tuple[str | None, 
 
 
 def run(store: Path, get, provider, model: str, run_id: str, now: datetime, fetch=None,
-        user: str = "ZJLi2013", wiki: Path | None = None) -> dict:
+        user: str = "ZJLi2013", rejections: Path | None = None) -> dict:
     """`get(path, raw=False)` is a GitHub API GET returning JSON (or text when raw), None on 404;
-    `fetch(key, url)` returns a page's (text, title); `wiki` is exocortex's wiki/ (lenses, sources, search-rejections.yaml)."""
+    `fetch(key, url)` returns a page's (text, title); `rejections` is exocortex's wiki/search-rejections.yaml."""
     from radar.cost import openai_tokens, record
     from radar.judge import HTTP_RETRY_BUDGET, call_once
 
@@ -326,8 +310,7 @@ def run(store: Path, get, provider, model: str, run_id: str, now: datetime, fetc
     skipped = {r["key"] for r in read_rows(skipped_path)}
     works = aggregate(read_rows(store / "signals.jsonl"), read_rows(store / "company" / "signals.jsonl"))
     errors, calls, retries_left = [], 0, HTTP_RETRY_BUDGET
-    new_rejections = import_rejections(store, wiki / "search-rejections.yaml", judgments, get, fetch) if wiki else 0
-    library = library_block(wiki) if wiki else ""
+    new_rejections = import_rejections(store, rejections, judgments, get, fetch) if rejections else 0
     try:
         own = own_repos(get, user, now)
     except Exception as e:  # noqa: BLE001 - recorded in judge_runs, the verifier fails the run
@@ -360,7 +343,7 @@ def run(store: Path, get, provider, model: str, run_id: str, now: datetime, fetc
             break
         w = works[key]
         url = w["url"] or f"https://{key}"
-        context = context_block(stars, own, examples, described, key, library)
+        context = context_block(stars, own, examples, described, key)
         messages = build_messages(context, url, w, info, text)
         name = snapshot_name(key)
         for sub in ("readme", "calls"):
@@ -421,12 +404,12 @@ def main() -> int:
 
     parser = argparse.ArgumentParser(description="Judge the works from the human's feed and the company channels")
     parser.add_argument("store")
-    parser.add_argument("--wiki", type=Path, help="exocortex wiki/")
+    parser.add_argument("--rejections", type=Path, help="exocortex wiki/search-rejections.yaml")
     args = parser.parse_args()
     provider, model = make_provider()
     now = datetime.now(timezone.utc)
     row = run(Path(args.store), github_get(os.environ["GITHUB_TOKEN"]), provider, model,
-              now.strftime("%Y%m%dT%H%M%SZ"), now, user=os.environ.get("GITHUB_USER", "ZJLi2013"), wiki=args.wiki)
+              now.strftime("%Y%m%dT%H%M%SZ"), now, user=os.environ.get("GITHUB_USER", "ZJLi2013"), rejections=args.rejections)
     print(json.dumps(row, ensure_ascii=False))
     return 1 if row["errors"] else 0
 

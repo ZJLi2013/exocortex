@@ -12,7 +12,7 @@
    - `hf`：Hugging Face 组织下新建的模型与数据集。
 3. **判定**（`radar/feed_judge.py`）：
    - 过滤：GitHub 推荐卡与 fork 副本不算信号；创建或发布超过 180 天的不收；既无简介又无正文的不收。
-   - 每个新工作调一次 DeepSeek，问它是否给 human 关注的方向带来新的研究 idea（新方法、新主张、新评测或新方向）；工具、应用、复现、封装、合集判 no。上下文是库里已批准 lens 的范围句与每个来源页的一句话、human 最近 star 的仓库、他最近 90 天推送过的自己的仓库（非 fork，最多 15 个）和他标过 yes / no 的工作；材料是仓库简介与 README，或网页正文。
+   - 每个新工作调一次 DeepSeek，判它值不值得收进库：能不能成为方向 insight 的证据或启发。human 最近 star 的仓库、他最近 90 天推送过的自己的仓库（非 fork，最多 15 个）和他标过 yes / no 的工作放进上下文，帮模型了解他关心什么，不当边界；材料是仓库简介与 README，或网页正文。
    - `wiki/search-rejections.yaml` 里的每个 URL 记一次 no 标注，标题取一次缓存；取不到内容的不进例子。
    - `candidates.json`：判 yes 的工作；≥ 2 位关注者或 trending 的排前面，其余按置信度。只有公司信号的工作，发布（没有日期时取首次采到）后 14 天内才进候选。
    - `judge_runs.jsonl` 每次记「以后 star 命中率」：判定之后才被 human star 的工作数，与其中当时判 yes 的数。
@@ -28,7 +28,7 @@ cd feed
 pip install ".[test]" ./LLMProvider
 pytest
 python -m radar.collect --domain embodied --out <store>/company/latest --state <store>/company/state --signals <store>/company/signals.jsonl
-DEEPSEEK_API_KEY=... GITHUB_TOKEN=... python -m radar.feed_judge <store> --wiki ../wiki
+DEEPSEEK_API_KEY=... GITHUB_TOKEN=... python -m radar.feed_judge <store> --rejections ../wiki/search-rejections.yaml
 python -m radar.verify feed-judge <store> ../wiki/search-rejections.yaml
 python -m radar.cost <store> month      # 本月开销（人民币）
 python -m radar.cost <store> balance    # 把 DeepSeek 余额记进 cost.jsonl，对账用
@@ -46,4 +46,4 @@ GitHub feed 需要浏览器登录 cookie，见 `radar/daily.py`。
 - 前端渲染的页面取不到链接（如 Meta 的 `/research/`），只能改用能直接解析的列表页。
 - GitHub 渠道只看新建仓库，不跟踪 release；Hugging Face 只看新建的模型与数据集。
 - GitHub feed 带浏览器登录 cookie 读 github.com 的非公开接口：cookie 过期后该次运行记为错误、要人工换 cookie；GitHub 改版也可能让解析失效。feed 只保留约两天，连续停跑超过两天会漏掉中间的信号。
-- 判定没有常设评测门：human 的标注少且有噪声，判得好不好靠撤销的比例与以后的 star 观察；改判定问题时在已有标注上回测一次。
+- 偏好判定没有评测门：human 的标注少且有噪声，判得好不好靠撤销的比例与以后的 star 观察。
