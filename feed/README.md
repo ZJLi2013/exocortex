@@ -16,6 +16,7 @@
    - `wiki/search-rejections.yaml` 里的每个 URL 记一次 no 标注，标题取一次缓存；取不到内容的不进例子。
    - `candidates.json`：≥ 2 位关注者或 trending 的工作，加上判 yes 的工作；上升的在前，其余按置信度。只有公司信号的工作，发布（没有日期时取首次采到）后 14 天内才进候选。
    - `judge_runs.jsonl` 每次记「以后 star 命中率」：判定之后才被 human star 的工作数，与其中当时判 yes 的数。
+   - `cost.jsonl` 每次记一行开销：缓存命中 / 未命中 / 输出 token，按调用时段的 DeepSeek 单价折成人民币（`radar/cost.py`）。收录的运行也记进这里。
 4. **收录**：「feed 收录」读 `candidates.json`，把还没见过的前 5 条直接收录；human 「删 X」撤销，撤销的 URL 进 `wiki/search-rejections.yaml`。
 
 判定、正文快照与标注都留在运行者自己的私有目录，不进本仓库。
@@ -29,6 +30,8 @@ pytest
 python -m radar.collect --domain embodied --out <store>/company/latest --state <store>/company/state --signals <store>/company/signals.jsonl
 DEEPSEEK_API_KEY=... GITHUB_TOKEN=... python -m radar.feed_judge <store> --rejections ../wiki/search-rejections.yaml
 python -m radar.verify feed-judge <store> ../wiki/search-rejections.yaml
+python -m radar.cost <store> month      # 本月开销（人民币）
+python -m radar.cost <store> balance    # 把 DeepSeek 余额记进 cost.jsonl，对账用
 ```
 
 GitHub feed 需要浏览器登录 cookie，见 `radar/daily.py`。
