@@ -31,9 +31,9 @@
 - **你的标签**（来源页 `tags:`）：丢链接时打的 `#tag`，先用 [已有写法](docs/human-tags.md)。LLM 照抄，不把近义标签并成一个；它只用来决定先判哪个 lens，归属仍按内容定。
 - **新 lens**：两个以上无 lens 的来源共享一个标签时，LLM 起草候选 lens 等你处置。
 
-`wiki/sources/` 一个来源一页，原文只在收录时读、不保存；`wiki/log.md` 记每次操作，只在本地。
+`wiki/sources/` 一个来源一页，原文只在收录时读、不保存。
 
-现有的 lens 与各自收的工作见 [网页](https://zjli2013.github.io/exocortex/)。设计理由与 token 开销见 [docs/design.md](docs/design.md)。
+现有的 lens 与各自收的工作见 [网页](https://zjli2013.github.io/exocortex/)。设计理由与 token 开销见 [docs/design.md](docs/design.md)，接下来要做什么见 [docs/roadmap.md](docs/roadmap.md)。
 
 ## 贡献与许可
 
