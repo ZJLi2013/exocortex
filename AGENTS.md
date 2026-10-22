@@ -14,7 +14,6 @@ human 丢链接、提问、定 lens 范围、处置候选 lens；其余由 agent
 | `wiki/index.base` | Bases 视图，从 frontmatter 生成 | 不手改 |
 | `wiki/lens-rejections.yaml` | human 否决过的候选 lens 与当时的簇内来源 | agent |
 | `wiki/search-rejections.yaml` | human 否决过的搜索候选与撤销的来源 URL；`feed/` 的判定每天读作负例 | agent |
-| `wiki/log.md` | 审计日志，只追加，只在本地；按事件类型或来源名搜索，不整份读 | agent |
 | `feed/` | 感知与判定代码：读 GitHub feed 与公司渠道，产出「feed 收录」读的候选文件（见 [feed/README.md](feed/README.md)） | agent |
 
 不按主题建目录。分组靠 lens 与两种标签，都不是预设分类：
@@ -53,7 +52,7 @@ tags: [jev]
 
 对 `inbox/links.md` 里每个 URL：
 
-1. **去重**：在 `wiki/sources/` 里搜 `url: <URL>`（`rg` 或文件搜索工具），命中则跳过，log 记一行。
+1. **去重**：在 `wiki/sources/` 里搜 `url: <URL>`（`rg` 或文件搜索工具），命中则跳过。
 2. **读原文**，不落盘。arXiv 读 `https://arxiv.org/html/<id>` 全文，读不到再退到 abs 页。
    GitHub 仓库页只返回导航壳，改读 `https://raw.githubusercontent.com/<owner>/<repo>/<branch>/README.md`；
    文件名可能是 `readme.md`，分支可能是 `master`。
@@ -107,13 +106,13 @@ tags: [jev]
 
 5. **lens 判定**：逐个读 `wiki/lenses/*.md` 的「范围」，判这条来源 keep 还是 reject。跳过 `status: proposed` 的候选 lens。
    human 标签是线索不是归属：lens frontmatter `tags` 含来源某个标签时先判这个 lens，但仍按内容判。
-   - reject：不写 lens 页，log 里记 lens 名与一句理由；标签指向这个 lens 时理由前加 `标签指向，`。
+   - reject：不写 lens 页；标签指向这个 lens 却 reject 时，PR 描述里写一句理由。
      来源页 `tags` 照旧保留 human 标签；都不 keep 的来源留在 `lenses: []`，交给 lint lenses 成簇。
 
    - keep：把 lens 加进来源页 `lenses`，把来源的 human 标签补进该 lens 的 `tags`（已有则不加），在「工作」加一行。
      来源带来新的一类工作或新的共同局限时，改「总结」里对应的那一句；否则总结不动。
 
-6. **log**：`wiki/log.md` 追加 `## [YYYY-MM-DD] ingest | <工作名>`，下面一行写 lens 判定结果。
+6. **PR 描述**：每条来源一行，写它 keep 的 lens；都不 keep 写 `lenses: []`。
 7. 处理完的 URL 从 `inbox/links.md` 删除。human 标签若还不在 [docs/human-tags.md](docs/human-tags.md)，追加一行。不改已有写法，不把近义标签合并。
 
 全部收录完做一遍下面的 lint lenses，再运行 `python scripts/check_wiki.py --sources <来源总数>`。
@@ -150,7 +149,7 @@ lens 外的来源成簇时，提议一个新研究方向，由 human 决定要�
    ```
 
    候选 lens 不改任何来源页的 `lenses`。
-4. **log**：`## [YYYY-MM-DD] lint | lenses`，每个候选一行（名字与来源）；没有候选也记一行。
+4. **PR 描述**：每个候选一行（名字与来源）。
 
 ## 搜索候选（human 说「搜索候选」）
 
@@ -191,7 +190,7 @@ human 处置：
 
 1. 删 `wiki/sources/<slug>.md`；删各 lens「工作」里它那一行，总结里的某一句只靠它成立时改那一句；删其它来源页「关联」里指向它的行。
 2. URL 追加进 `wiki/search-rejections.yaml`（写法同搜索候选的「不要」），以后不再收。
-3. log 记 `## [YYYY-MM-DD] remove | <工作名>`，再运行 `python scripts/check_wiki.py --sources <来源总数>`。
+3. 运行 `python scripts/check_wiki.py --sources <来源总数>`。
 
 ## 查询
 
@@ -208,7 +207,7 @@ human 直接改总结或工作时，agent 不改回。human 改范围句后，ag
 - 「批准 lens <name>」：删掉 `status` 与「为何提议」，补上「总结」「工作」两节；
   再对 `wiki/sources/` 全部来源做一遍收录第 5 步（只判这个 lens），keep 的同时把它加进来源页 `lenses`。
 - 「并入 <已有 lens>」：human 先改该 lens 的范围句；agent 删候选文件，对全部来源补判该 lens。
-- 「否决 lens <name>」：先在 `wiki/lens-rejections.yaml` 追加一条（文件不存在就新建），再删候选文件，log 记 `## [YYYY-MM-DD] reject lens | <name>`：
+- 「否决 lens <name>」：先在 `wiki/lens-rejections.yaml` 追加一条（文件不存在就新建），再删候选文件：
 
   ```yaml
   - name: <name>

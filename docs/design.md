@@ -15,7 +15,7 @@ flowchart TD
     subgraph ingest["收录（每个链接）"]
         dedupe[去重] --> read[读原文，不落盘] --> page["写来源页<br/>tags 照抄 · concepts 由 agent 打"]
         page --> judge{"逐个已批准 lens<br/>判 keep / reject<br/>标签只决定先判哪个"}
-        judge -- reject --> log1["记 log<br/>都不 keep 则留在 lenses: []"]
+        judge -- reject --> log1["都不 keep 则留在 lenses: []"]
         judge -- keep --> owned["来源页 lenses 加上它<br/>「工作」加一行"]
         owned --> summary{"新做法 / 新评测 /<br/>新的共同局限？"}
         summary -- 否 --> done[到此为止]
@@ -84,7 +84,7 @@ flowchart TD
 - 候选不参与收录判定，未批准的问题不吸新来源。
 - **agent 发现方向，人建立方向。** 只有人能批准 / 并入 / 否决；批准后全库补判，否决过的簇没有新来源加入就不再提。
   这是全流程唯一的事前人工门：一个 lens 会持续吸收来源、决定总结怎么写，错建的代价随来源数增长；归属判错只影响一个来源，所以交给 agent。
-- **规则要读的状态不放 log。** 否决记录是 lint 唯一要查的状态，单独存 `wiki/lens-rejections.yaml`；log 只作审计，按事件或来源名搜索，避免随规模增长被整份读进上下文；它不承载状态，所以只留本地，不进仓库，也免去每次收录追加带来的合并冲突。
+- **规则要读的状态单独存，不记操作日志。** 否决记录是 lint 唯一要查的状态，存 `wiki/lens-rejections.yaml`；每次收录与 lens 判定写在 PR 描述里，审计靠 git 历史。曾有一份本地审计日志，没有规则读它，删掉。
 
 ## feed：替 human 读关注网络，撤销制收录
 
@@ -129,7 +129,7 @@ human 每天在 GitHub feed 上看到的项目和头部团队发布的东西，�
 
 - **两层**：`wiki/` 每条事实可追回来源页的 `url`；`AGENTS.md` 是 agent 唯一操作手册。原文只在收录时读，不落盘。
 - **不分主题文件夹、不手写 index。** 手写分类会混轴且要人维护（3dgen_tracker 的 9 类留一法一致性仅 0.42–0.93）；索引由 Obsidian Bases 从 frontmatter 生成。
-- **校验不依赖 Obsidian 运行**：`check_wiki.py` 直接解析文件，lens 页查三节齐全，且「工作」的行与来源页 `lenses` 一一对应；查询由无上下文 agent 作答，题目见 [query-eval.md](query-eval.md)。
+- **校验不依赖 Obsidian 运行**：`check_wiki.py` 直接解析文件，lens 页查三节齐全，且「工作」的行与来源页 `lenses` 一一对应。
 
 ## 放弃的方案
 

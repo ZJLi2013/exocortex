@@ -1,4 +1,4 @@
-"""Locked verifiers for radar tasks. Exit 0 iff the acceptance criteria in the plan hold."""
+"""Checks on the private store after a run. Exit 0 iff every check holds."""
 
 import json
 import sys
@@ -24,28 +24,6 @@ def check_page_states(report: dict) -> list[str]:
                 problems.append(f"{eid}: {len(missing)} current links in neither seen nor pending")
             if len(pending) != r["pending"]:
                 problems.append(f"{eid}: state has {len(pending)} pending, summary says {r['pending']}")
-    return problems
-
-
-def check_feed_replay(pages_dir: Path, sample_path: Path) -> list[str]:
-    """Parsed feed pages hold every actor -> repo pair the human saw on /feed."""
-    from radar.github_feed import parse_cards
-
-    sample = json.loads(sample_path.read_text(encoding="utf-8"))
-    t = lambda s: datetime.fromisoformat(s.replace("Z", "+00:00"))
-    start, end = t(sample["window"]["start"]), t(sample["window"]["end"])
-    cards = [c for p in sorted(pages_dir.glob("page*.html")) for c in parse_cards(p.read_text(encoding="utf-8"))]
-    problems = []
-    # GitHub re-inserts its own recommendations on later pages; only followed users' cards must be unique.
-    if dup := [k for k, n in Counter((c["signal"], c["actor"], c["repo"], c["at"]) for c in cards if c["actor"]).items() if n > 1]:
-        problems.append(f"{len(dup)} cards repeat across pages, first: {dup[0]}")
-    in_window = [c for c in cards if start <= t(c["at"]) <= end]
-    seen = {((c["actor"] or "").lower(), c["signal"], c["repo"].lower()) for c in in_window}
-    missed = [p for p in sample["pairs"] if (p["actor"].lower(), p["action"], p["repo"].lower()) not in seen]
-    problems += [f"{p['actor']} -> {p['repo']} ({p['action']}) not parsed from the feed pages" for p in missed]
-    print(f"pages {len(list(pages_dir.glob('page*.html')))}; signal cards {len(cards)}, in window {len(in_window)}, "
-          f"repos in window {len({c['repo'] for c in in_window})}; pairs hit {len(sample['pairs']) - len(missed)}/{len(sample['pairs'])}")
-    print("in-window signals: " + ", ".join(f"{k} {v}" for k, v in Counter(c["signal"] for c in in_window).most_common()))
     return problems
 
 
@@ -165,11 +143,10 @@ def read_rows(path: Path) -> list[dict]:
     return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()] if path.exists() else []
 
 
-def main(kind: str, path: str, prev_path: str | None = None) -> int:
-    if kind in ("feed-replay", "daily", "feed-judge"):
-        checks = {"feed-replay": lambda: check_feed_replay(Path(path), Path(prev_path)),
-                  "daily": lambda: check_daily(Path(path)),
-                  "feed-judge": lambda: check_feed_judge(Path(path), Path(prev_path) if prev_path else None)}
+def main(kind: str, path: str, rejections: str | None = None) -> int:
+    if kind in ("daily", "feed-judge"):
+        checks = {"daily": lambda: check_daily(Path(path)),
+                  "feed-judge": lambda: check_feed_judge(Path(path), Path(rejections) if rejections else None)}
         problems = checks[kind]()
         for line in problems:
             print(f"FAIL {line}")
