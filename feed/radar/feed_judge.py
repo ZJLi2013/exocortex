@@ -241,7 +241,7 @@ def github_get(token: str):
         accept = "application/vnd.github.raw" if raw else "application/vnd.github+json"
         request = urllib.request.Request(f"{API}/{path}", headers={
             "Authorization": f"Bearer {token}", "Accept": accept, "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "embodied-radar"})
+            "User-Agent": "exocortex-feed"})
         try:
             with urllib.request.urlopen(request, timeout=30) as resp:
                 body = resp.read()

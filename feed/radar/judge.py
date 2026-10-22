@@ -16,7 +16,7 @@ import trafilatura
 HTTP_RETRY_BUDGET = 3
 # requests' read timeout counts gaps between bytes; DeepSeek keep-alive bytes defeat it, so cap each call's wall time.
 CALL_DEADLINE_SECONDS = 120
-UA = {"User-Agent": "Mozilla/5.0 (compatible; embodied-radar/0.1)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; exocortex-feed/0.1)"}
 
 
 def evidence_url(item: dict) -> str:

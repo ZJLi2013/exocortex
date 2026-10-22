@@ -43,7 +43,7 @@ def github_starred(user: str, token: str):
         request = urllib.request.Request(
             f"{API}/users/{user}/starred?per_page=100&page={page}",
             headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github.star+json",
-                     "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "embodied-radar"})
+                     "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "exocortex-feed"})
         with urllib.request.urlopen(request, timeout=30) as resp:
             return json.loads(resp.read())
     return get
