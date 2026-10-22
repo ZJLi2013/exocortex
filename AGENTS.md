@@ -181,7 +181,7 @@ human 处置：
 
 [`feed/`](feed/README.md) 每天在私有机器上把 human 的 GitHub feed 与公司渠道按工作合并、判定，写一个候选文件。agent 直接收录，human 只撤销不要的（见「删 X」）。
 
-1. `python scripts/feed_candidates.py`（需环境变量 `RADAR_FEED=<user@host>:<私有库路径>`）：把候选文件里前 5 条没见过的 URL（去重同搜索候选）追加到 `inbox/links.md`，剩下的下次再收。
+1. `python scripts/feed_candidates.py`（需环境变量 `RADAR_FEED=<私有库路径>`，不在私有机器上时写 `<user@host>:<私有库路径>`）：把候选文件里前 5 条没见过的 URL（去重同搜索候选）追加到 `inbox/links.md`，剩下的下次再收。
 2. 接着按「收录」处理 `inbox/links.md`。feed 来的 URL 没有 human 标签，`tags: []`；归不上 lens 的 `lenses: []`，留给 lint lenses。
 
 ## 删 X（human 说「删 <来源>」）

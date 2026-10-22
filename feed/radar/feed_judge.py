@@ -297,9 +297,11 @@ def run(store: Path, get, provider, model: str, run_id: str, now: datetime, fetc
         user: str = "ZJLi2013", rejections: Path | None = None) -> dict:
     """`get(path, raw=False)` is a GitHub API GET returning JSON (or text when raw), None on 404;
     `fetch(key, url)` returns a page's (text, title); `rejections` is exocortex's wiki/search-rejections.yaml."""
+    from radar.cost import openai_tokens, record
     from radar.judge import HTTP_RETRY_BUDGET, call_once
 
     started = time.time()
+    spent = {"hit": 0, "miss": 0, "out": 0}
     snap = store / "snapshots" / run_id
     fetch = fetch or page_fetch(snap / "evidence")
     judgments_path, skipped_path, labels_path = store / "judgments.jsonl", store / "skipped.jsonl", store / "labels.jsonl"
@@ -353,6 +355,8 @@ def run(store: Path, get, provider, model: str, run_id: str, now: datetime, fetc
         while True:
             calls += 1
             content, response, error = call_once(provider, messages, model)
+            for k, v in openai_tokens((response or {}).get("usage") or {}).items():
+                spent[k] += v
             if error is None:
                 try:
                     verdict = parse_judgment(content)
@@ -385,6 +389,8 @@ def run(store: Path, get, provider, model: str, run_id: str, now: datetime, fetc
             labelled.add((feed_key(a["repo"]), "star"))
             new_stars.append({"key": feed_key(a["repo"]), "label": "yes", "from": "star", "at": a["starred_at"]})
     append_rows(labels_path, new_stars)
+    if calls:
+        record(store, "judge", run_id, spent, now)
 
     row = {"run": run_id, "seconds": round(time.time() - started, 1), "calls": calls, "judged": len(judged),
            "skipped": len(skipped), "candidates": len(queue), "new_star_labels": len(new_stars),
