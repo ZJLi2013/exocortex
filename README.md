@@ -19,6 +19,8 @@
 | 你想做 | 怎么做 |
 |---|---|
 | 收录 | 把 URL 写进 `inbox/links.md`，标签先查 [docs/human-tags.md](docs/human-tags.md) 里已有的写法（`<URL> #jev`），说「收录 inbox」 |
+| 收录关注网络的新工作 | 说「feed 收录」：[feed/](feed/README.md) 每天从 GitHub feed 与头部团队渠道挑出的工作直接收录，每次最多 5 条 |
+| 撤销 | 说「删 <来源>」，以后不再收，也成为 feed 判定的负例 |
 | 查询 | 直接提问，答案引用 `wiki/` 里的页面 |
 | 处置新 lens | 出现 `status: proposed` 的 lens 时，说「批准 lens <name>」「并入 <已有 lens>」或「否决 lens <name>」 |
 | 检查 | `python scripts/check_wiki.py --sources <来源数>` |
@@ -31,8 +33,7 @@
 
 `wiki/sources/` 一个来源一页，原文只在收录时读、不保存；`wiki/log.md` 记每次操作，只在本地。
 
-现有 27 个来源、5 个 lens：`agentic-robotics`、`agent-loop`、`robotics-rl`、`jev`、`llm-foundation-models`。
-设计理由见 [docs/design.md](docs/design.md)。
+现有的 lens 与各自收的工作见 [网页](https://zjli2013.github.io/exocortex/)。设计理由与 token 开销见 [docs/design.md](docs/design.md)。
 
 ## 贡献与许可
 

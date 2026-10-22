@@ -2,10 +2,7 @@
 .agent-loop/
 .harness/
 # Obsidian UI state
-.obsidian/*
-!.obsidian/app.json
-# third-party full texts stay local; see LICENSE-CONTENT
-raw/
+.obsidian/
 .codex/
 __pycache__/
 wiki/log.md
