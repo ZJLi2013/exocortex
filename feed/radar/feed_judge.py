@@ -99,11 +99,11 @@ def signal_parts(w: dict) -> list[str]:
 
 
 def candidates(works: dict, judgments: list[dict], today: date) -> list[dict]:
-    """Rising works first (more followers first), then the rest judged yes by confidence."""
+    """Works judged yes: rising ones first (more followers first), then by confidence."""
     rows = []
     for j in judgments:
         w = works.get(j["key"])
-        if w is None or not (is_rising(w) or j["verdict"] == "yes") or not is_fresh(w, today):
+        if w is None or j["verdict"] != "yes" or not is_fresh(w, today):
             continue
         repo = repo_of(j["key"])
         rows.append({"key": j["key"], "url": j["url"], "name": repo.split("/")[1] if repo else j["meta"].get("title") or j["key"],
