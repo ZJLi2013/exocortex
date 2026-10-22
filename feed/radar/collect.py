@@ -14,7 +14,7 @@ from radar.channels import COLLECTORS
 from radar.channels.common import Context
 from radar.daily import append_rows, read_rows
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; embodied-radar/0.1)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; exocortex-feed/0.1)"}
 
 
 def make_context(run_date: date, state_dir: Path, date_fetch_budget: int) -> Context:

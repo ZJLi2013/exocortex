@@ -6,7 +6,7 @@ import urllib.request
 
 FEED = "https://github.com/conduit/for_you_feed?initial_per_page=5&page={page}&source=feed_page&button="
 HEADERS = {"Accept": "text/html", "X-Requested-With": "XMLHttpRequest", "GitHub-Verified-Fetch": "true",
-           "User-Agent": "embodied-radar"}
+           "User-Agent": "exocortex-feed"}
 CARD_START = re.compile(r'<[a-z-]+ [^>]*class="js-feed-item-component ')
 FEED_CARD = re.compile(r'"feed_card":(\{.*?\})')
 GITHUB_PICKS = {"REPOSITORY_RECOMMENDATION", "TRENDING_REPOSITORY"}

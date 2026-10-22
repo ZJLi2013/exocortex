@@ -3,7 +3,7 @@ import json
 import requests
 import trafilatura
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; embodied-radar/0.1)"}
+UA = {"User-Agent": "Mozilla/5.0 (compatible; exocortex-feed/0.1)"}
 THIN_CHARS = 500
 
 
