@@ -12,7 +12,7 @@
    - `hf`：Hugging Face 组织下新建的模型与数据集。
 3. **判定**（`radar/feed_judge.py`）：
    - 过滤：GitHub 推荐卡与 fork 副本不算信号；创建或发布超过 180 天的不收；既无简介又无正文的不收。
-   - 每个新工作调一次 DeepSeek，依据 human 最近 star 的仓库、他最近 90 天推送过的自己的仓库（非 fork，最多 15 个）和他标过 yes / no 的工作判 yes / no；材料是仓库简介与 README，或网页正文。
+   - 每个新工作调一次 DeepSeek，判它值不值得收进库：能不能成为方向 insight 的证据或启发。human 最近 star 的仓库、他最近 90 天推送过的自己的仓库（非 fork，最多 15 个）和他标过 yes / no 的工作放进上下文，帮模型了解他关心什么，不当边界；材料是仓库简介与 README，或网页正文。
    - `wiki/search-rejections.yaml` 里的每个 URL 记一次 no 标注，标题取一次缓存；取不到内容的不进例子。
    - `candidates.json`：判 yes 的工作；≥ 2 位关注者或 trending 的排前面，其余按置信度。只有公司信号的工作，发布（没有日期时取首次采到）后 14 天内才进候选。
    - `judge_runs.jsonl` 每次记「以后 star 命中率」：判定之后才被 human star 的工作数，与其中当时判 yes 的数。

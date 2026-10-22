@@ -30,9 +30,9 @@ MAX_EXAMPLES = 60
 HUMAN_LABELS = {"gold", "batch", "proposal", "spot_check", "rejection"}
 OUTPUT_KEYS = {"verdict", "reason", "confidence"}
 
-SYSTEM = """你替 human 判断一个工作（GitHub 仓库、论文、博客或模型页）值不值得他花时间看。依据只有他自己的选择：最近 star 的仓库、最近在做的自己的仓库，和他标过 yes / no 的工作。
-主题相近不等于值得看：对照他标 no 的工作，判断待判工作更像哪一边。只依据下面给的内容，不要猜。
-只输出 JSON：{"verdict": "yes|no", "reason": "<一句，说明它像哪个标过的工作或 star，引用简介或正文原话>", "confidence": <0-1，对 verdict 的把握>}"""
+SYSTEM = """exocortex 是一个研究知识库，目的是给领域 researcher 方向 insight：下一个值得做的方向、未解决的问题、可证伪的预测。你决定一个工作（GitHub 仓库、论文、博客或模型页）值不值得收进这个库，也就是它能不能成为这类 insight 的证据或启发。
+下面 human 的 star、在做的仓库与标注，帮你了解他关心什么，不必局限于此。只依据给的内容，不要猜。
+只输出 JSON：{"verdict": "yes|no", "reason": "<一句：收它能给库带来什么，或为什么不值得>", "confidence": <0-1，对 verdict 的把握>}"""
 
 
 def sha(text: str) -> str:
