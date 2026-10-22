@@ -1,6 +1,6 @@
 # exocortex
 
-给领域 researcher 的方向 insight：两个 agent 共用一个 Obsidian wiki。collector 持续收录新工作，按研究方向汇总各工作的事实；insight agent 在此之上写下一个值得做的方向、未解决的问题与可证伪的预测。
+给领域 researcher 的方向 insight：两个 agent 共用一个 Obsidian wiki。collector 持续收录新工作，按研究方向汇总各工作的事实；insight agent 在此之上写下一个值得做的方向与未解决的问题。
 你只挑源、定方向、提问，不做分类。
 
 ## 准备
@@ -21,7 +21,7 @@
 | 收录 | 把 URL 写进 `inbox/links.md`，标签先查 [docs/human-tags.md](docs/human-tags.md) 里已有的写法（`<URL> #jev`），说「收录 inbox」 |
 | 收录关注网络的新工作 | 说「feed 收录」：[feed/](feed/README.md) 每天从 GitHub feed 与头部团队渠道挑出的工作直接收录，每次最多 5 条 |
 | 撤销 | 说「删 <来源>」，以后不再收，也成为 feed 判定的负例 |
-| 写方向判断 | 说「写 insight <lens>」：方向、未解决问题与预测写进 `wiki/insights/<lens>.md`，显示在网页该 lens 一节最前面；到期说「核对预测」 |
+| 写方向判断 | 说「写 insight <lens>」：方向与未解决问题写进 `wiki/insights/<lens>.md`，显示在网页该 lens 一节最前面 |
 | 查询 | 直接提问，答案引用 `wiki/` 里的页面 |
 | 处置新 lens | 出现 `status: proposed` 的 lens 时，说「批准 lens <name>」「并入 <已有 lens>」或「否决 lens <name>」 |
 | 检查 | `python scripts/check_wiki.py --sources <来源数>` |

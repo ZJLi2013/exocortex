@@ -12,7 +12,6 @@ ROOT = Path(__file__).resolve().parent.parent
 NODE_FIELDS = ["benchmarks", "methods", "models_used", "models_compared"]
 FIELDS = ["type", "url", "published", "ingested", "tags", "concepts", *NODE_FIELDS, "lenses"]
 RELATIONS = ["基于", "对照", "相悖"]
-RESULTS = ["pending", "hit", "miss", "unclear"]
 
 
 def links(page: Path, field: str) -> list[str]:
@@ -69,17 +68,13 @@ def insight_problems(page: Path, approved: set[str], sources: set[str]) -> list[
     if not re.search(rf'^lens: "\[\[{re.escape(page.stem)}\]\]"$', front, flags=re.M) or page.stem not in approved:
         out.append(f"{name}: lens must be the approved lens of the same name")
     sections = split(text, "##")
-    missing = [s for s in ["Directions", "Open problems", "Predictions"] if s not in sections]
+    missing = [s for s in ["Directions", "Open problems"] if s not in sections]
     if missing:
         return out + [f"{name}: missing section {', '.join(missing)}"]
     cites = lambda body: set(re.findall(r"\[\[([^\]|#]+)", body)) & sources
     out += [f"{name}: direction cites no source: {t[:40]}" for t, b in split(sections["Directions"], "###").items() if not cites(b)]
     out += [f"{name}: open problem cites no source: {l[:40]}" for l in re.findall(r"^- .*$", sections["Open problems"], flags=re.M)
             if not cites(l)]
-    for row in re.findall(r"^\|(.+)\|$", sections["Predictions"], flags=re.M)[2:]:
-        cells = [c.strip() for c in row.split("|")]
-        if len(cells) != 4 or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", cells[1]) or cells[3] not in RESULTS or not cites(cells[2]):
-            out.append(f"{name}: prediction row needs | text | YYYY-MM-DD | [[source]] | {'/'.join(RESULTS)} |: {row[:40]}")
     return out
 
 
