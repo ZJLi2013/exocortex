@@ -1,12 +1,11 @@
-"""Model spend ledger: one row per judge or ingest run in <store>/cost.jsonl, priced at DeepSeek's rates."""
+"""Model spend ledger: one row per judge or ingest run in <store>/cost.jsonl, priced at DeepSeek's rates. Standard library only."""
 import argparse
 import json
 import os
 import sys
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-
-import requests
 
 from radar.daily import append_rows, read_rows
 
@@ -56,10 +55,11 @@ def month_total(store: Path, now: datetime) -> float:
 
 
 def balance() -> float:
-    r = requests.get("https://api.deepseek.com/user/balance", timeout=30,
-                     headers={"Authorization": f"Bearer {os.environ['DEEPSEEK_API_KEY']}"})
-    r.raise_for_status()
-    return next(float(b["total_balance"]) for b in r.json()["balance_infos"] if b["currency"] == "CNY")
+    req = urllib.request.Request("https://api.deepseek.com/user/balance",
+                                 headers={"Authorization": f"Bearer {os.environ['DEEPSEEK_API_KEY']}"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        infos = json.load(r)["balance_infos"]
+    return next(float(b["total_balance"]) for b in infos if b["currency"] == "CNY")
 
 
 def main() -> int:
