@@ -11,6 +11,9 @@ from radar.verify import check_feed_judge
 NOW = datetime(2026, 10, 21, tzinfo=timezone.utc)
 RUN = "20261021T000000Z"
 FRESH = {"created_at": "2026-10-10T00:00:00Z", "description": "desc", "stargazers_count": 1, "language": "Python"}
+OWN = [{"full_name": "me/stale", "fork": False, "pushed_at": "2026-05-01T00:00:00Z", "description": "Old"},
+       {"full_name": "me/active", "fork": False, "pushed_at": "2026-10-01T00:00:00Z", "description": "My robot repo"},
+       {"full_name": "me/forked", "fork": True, "pushed_at": "2026-10-20T00:00:00Z", "description": "Fork"}]
 
 
 class Provider:
@@ -41,6 +44,8 @@ def make_store(tmp_path, signals, stars=(), company=()):
 
 def fake_github(metas, readmes, seen):
     def get(path, raw=False):
+        if path.startswith("users/"):
+            return OWN
         repo = path.removeprefix("repos/").removesuffix("/readme")
         seen.append(repo)
         return readmes.get(repo) if raw else metas.get(repo, FRESH)
@@ -108,6 +113,70 @@ def test_second_run_judges_nothing_and_star_labels_once(tmp_path):
     assert len(read_rows(store / "judgments.jsonl")) == 2
     assert sorted((l["key"], l["from"]) for l in read_rows(store / "labels.jsonl")) == [
         ("github.com/a/x", "star"), ("github.com/z/z", "star")]
+
+
+def test_company_only_works_leave_the_queue_after_14_days(tmp_path):
+    store = make_store(tmp_path, [("star", "u1", "a/both")], company=[
+        ("lab.org/p/fresh", "Fresh", "2026-10-10", "lab"), ("lab.org/p/stale", "Stale", "2026-10-01", "lab"),
+        ("github.com/a/both", "Both", "2026-09-01", "lab")])
+    append_rows(store / "company" / "signals.jsonl", [
+        {"key": k, "url": f"https://{k}", "title": k, "published": None, "entity": "lab", "type": "page", "run_date": d}
+        for k, d in (("lab.org/p/new", "2026-10-15"), ("lab.org/p/undated", "2026-10-01"))])
+    pages = {k: ("<p>A robot post.</p>", None) for k in ("lab.org/p/fresh", "lab.org/p/stale", "lab.org/p/new", "lab.org/p/undated")}
+    provider = Provider(yes={"a/both", *pages})
+    feed_judge.run(store, fake_github({}, {}, []), provider, "m", RUN, NOW, fetch=fake_pages(pages))
+    assert len(read_rows(store / "judgments.jsonl")) == 5
+    queue = json.loads((store / "candidates.json").read_text(encoding="utf-8"))["works"]
+    assert sorted(c["key"] for c in queue) == ["github.com/a/both", "lab.org/p/fresh", "lab.org/p/new"]
+    assert check_feed_judge(store) == []
+
+
+def test_own_active_repos_enter_the_context(tmp_path):
+    store = make_store(tmp_path, [("star", "u1", "a/x")])
+    provider = Provider()
+    feed_judge.run(store, fake_github({}, {"me/active": "# Active\n\nA harness for robot policies."}, []), provider, "m", RUN, NOW)
+    own = json.loads((store / "own_repos.json").read_text(encoding="utf-8"))["repos"]
+    assert [r["repo"] for r in own] == ["me/active"]
+    assert "## human 最近 3 个月在做的仓库（越靠前越新）\n- me/active：My robot repo A harness for robot policies." in provider.prompts["a/x"]
+    assert check_feed_judge(store) == []
+
+
+def test_rejections_become_no_labels_once_and_examples_only_with_text(tmp_path):
+    store = make_store(tmp_path, [("star", "u1", "a/x"), ("star", "u1", "b/judged")])
+    feed_judge.run(store, fake_github({"b/judged": FRESH | {"description": "Judged repo"}}, {}, []), Provider(), "m", RUN, NOW)
+    rejections = tmp_path / "search-rejections.yaml"
+    rejections.write_text("- url: https://arxiv.org/abs/2610.00001v2\n  rejected: 2026-10-20\n"
+                          "- url: https://lab.org/bad/\n  rejected: 2026-10-20\n"
+                          "- url: https://github.com/b/judged\n  rejected: 2026-10-21\n", encoding="utf-8")
+    append_rows(store / "signals.jsonl", [{"signal": "star", "actor": "u1", "repo": "c/new", "at": "x", "run": "r1"}])
+    fetched, provider = [], Provider()
+
+    def fetch(key, url):
+        fetched.append(key)
+        if key == "lab.org/bad":
+            raise RuntimeError("http_502")
+        return "<p>body</p>", "A paper title"
+    for run_id in ("20261022T000000Z", "20261023T000000Z"):
+        row = feed_judge.run(store, fake_github({}, {}, []), provider, "m", run_id, NOW, fetch=fetch, rejections=rejections)
+    assert fetched == ["arxiv.org/abs/2610.00001", "lab.org/bad"] and row["new_rejection_labels"] == 0
+    assert sorted(l["key"] for l in read_rows(store / "labels.jsonl") if l["from"] == "rejection") == [
+        "arxiv.org/abs/2610.00001", "github.com/b/judged", "lab.org/bad"]
+    examples = provider.prompts["c/new"].split("## 待判工作")[0]
+    assert "- arxiv.org/abs/2610.00001：A paper title" in examples and "- b/judged：Judged repo" in examples
+    assert "lab.org/bad" not in examples
+    assert check_feed_judge(store, rejections) == []
+    rejections.write_text(rejections.read_text(encoding="utf-8") + "- url: https://lab.org/new\n  rejected: 2026-10-22\n", encoding="utf-8")
+    assert any("rejection labels differ" in p for p in check_feed_judge(store, rejections))
+
+
+def test_star_hit_rate_counts_stars_after_judgment(tmp_path):
+    store = make_store(tmp_path, [("star", "u1", "a/x"), ("star", "u1", "b/y")])
+    feed_judge.run(store, fake_github({}, {}, []), Provider(yes={"a/x"}), "m", RUN, NOW)
+    append_rows(store / "adoptions.jsonl", [{"repo": r, "starred_at": t, "run": "r1"} for r, t in (
+        ("a/x", "2026-10-22T00:00:00Z"), ("b/y", "2026-10-23T00:00:00Z"), ("c/z", "2026-10-20T00:00:00Z"))])
+    row = feed_judge.run(store, fake_github({}, {}, []), Provider(), "m", "20261024T000000Z", NOW)
+    assert (row["star_after_judge"], row["judged_yes"]) == (2, 1)
+    assert check_feed_judge(store) == []
 
 
 def test_unjudged_work_and_repo_keyed_rows_fail_the_check(tmp_path):
