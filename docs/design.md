@@ -8,7 +8,7 @@
 
 ## 与 3dgen_tracker 的配合
 
-3dgen_tracker 是另一个仓库里的每日 arXiv 筛选管线，攒下约 3k 篇论文（含摘要与向量）。两边互通三处：exocortex 收录的 arXiv 来源每天导入它的兴趣语料；insight 写方向前在它的库里查新；全 arXiv 检索给 insight 线索，库外的重叠工作回到 proposals 等 human 处置。
+3dgen_tracker 是另一个仓库里的每日 arXiv 筛选管线，攒下约 3k 篇论文（含摘要与向量）。两边互通四处：exocortex 收录的 arXiv 来源每天导入它的兴趣语料；它每天的精选（评审分 ≥ 0.85，篇数不固定）作为 feed 的第三路信号，与关注网络、公司渠道走同一个偏好判定和收录额度；insight 写方向前在它的库里查新；全 arXiv 检索给 insight 线索，库外的重叠工作回到 proposals 等 human 处置。
 
 ```mermaid
 flowchart LR
@@ -18,7 +18,7 @@ flowchart LR
     ed --> top["当天精选清单"]
   end
   subgraph E["exocortex"]
-    feed["feed：关注网络 + 公司渠道"] --> col["collector 收录"]
+    feed["feed：关注网络 + 公司渠道 + tracker 精选<br/>偏好判定"] --> col["collector 收录"]
     srch["搜索候选（alphaXiv）"] --> prop["inbox/proposals.md"] --> hum{{"human 收下"}} --> col
     col --> wiki[("wiki 证据层")] --> ins["insight：方向与问题"]
   end
@@ -26,7 +26,7 @@ flowchart LR
   db -- "查新：query_papers.py prior，只读" --> ins
   srch -. "库外线索" .-> ins
   ins -- "库外重叠工作" --> prop
-  top -. "未做：送进 feed 候选" .-> col
+  ed -- "精选：tracker/signals.jsonl" --> feed
 ```
 
 ## 全流程与 human 决策点

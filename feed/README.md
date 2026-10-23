@@ -1,6 +1,6 @@
 # feed
 
-替 human 读他的关注网络：GitHub feed 与一份头部团队清单的官方渠道。两个源的信号按「工作」（规范化 URL）合在一起，每个工作用同一个偏好判定判一次，结果写进一个候选文件，由 [agents/collector.md](../agents/collector.md) 的「feed 收录」读取。
+替 human 读他的关注网络：GitHub feed 与一份头部团队清单的官方渠道，外加 3dgen_tracker 每天的精选 arXiv 论文（评审分 ≥ 0.85，篇数不固定）。各源的信号按「工作」（规范化 URL）合在一起，每个工作用同一个偏好判定判一次，结果写进一个候选文件，由 [agents/collector.md](../agents/collector.md) 的「feed 收录」读取。
 
 ## 每天的流程
 
@@ -10,6 +10,7 @@
    - `page`：博客 / 团队列表页的链接快照比对；
    - `github`：组织下新建的仓库；
    - `hf`：Hugging Face 组织下新建的模型与数据集。
+   - `tracker`：3dgen_tracker 写的 `tracker/signals.jsonl`（行格式同上，单文件只读挂载进 store），信号写「3dgen_tracker 精选」，新鲜期同公司信号的 14 天；文件不存在时没有这一路。
 3. **判定**（`radar/feed_judge.py`）：
    - 过滤：GitHub 推荐卡与 fork 副本不算信号；创建或发布超过 180 天的不收；既无简介又无正文的不收。
    - 每个新工作调一次 DeepSeek，判它值不值得收进库：能不能成为方向 insight 的证据或启发。human 最近 star 的仓库、他最近 90 天推送过的自己的仓库（非 fork，最多 15 个）和他标过 yes / no 的工作放进上下文，帮模型了解他关心什么，不当边界；材料是仓库简介与 README，或网页正文。

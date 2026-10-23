@@ -52,15 +52,15 @@ def check_feed_judge(store: Path, rejections: Path | None = None) -> list[str]:
     """Every work from the feed and company channels judged once or skipped, keyed by work;
     candidates.json matches the judgments; company signals accumulate; star labels complete;
     own repos, rejection labels and the star hit rate as the latest run recorded them."""
-    from radar.feed_judge import (COMPANY_FRESH_DAYS, OWN_ACTIVE_DAYS, aggregate, candidates, display, feed_key,
-                                  is_fresh, sha, snapshot_name, star_hits)
+    from radar.feed_judge import (COMPANY_FRESH_DAYS, OWN_ACTIVE_DAYS, aggregate, candidates, channel_rows, display,
+                                  feed_key, is_fresh, sha, snapshot_name, star_hits)
 
     runs = read_rows(store / "judge_runs.jsonl")
     if not runs:
         problems = ["no feed_judge run recorded"]
     else:
         problems = [f"run {runs[-1]['run']}: errors {runs[-1]['errors']}"] if runs[-1]["errors"] else []
-    company = read_rows(store / "company" / "signals.jsonl")
+    company = channel_rows(store)
     works = aggregate(read_rows(store / "signals.jsonl"), company)
     judgments, skipped_rows, labels = (read_rows(store / f) for f in ("judgments.jsonl", "skipped.jsonl", "labels.jsonl"))
     for name, rows in (("judgments", judgments), ("skipped", skipped_rows), ("labels", labels)):
