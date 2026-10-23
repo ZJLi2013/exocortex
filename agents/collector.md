@@ -116,11 +116,11 @@ lens 外的来源成簇时，提议一个新研究方向，由 human 决定要�
 
 ## 搜索候选（human 说「搜索候选」）
 
-只把候选摆到 human 面前：agent 不写 `inbox/links.md`，不触发收录，不改 lens 与来源页。SearXNG 部署见 [docs/search-proposal.md](../docs/search-proposal.md)。
+只把候选摆到 human 面前：agent 不写 `inbox/links.md`，不触发收录，不改 lens 与来源页。检索后端见 [docs/search-proposal.md](../docs/search-proposal.md)。
 
-1. **查询**：每个已批准 lens（跳过 `status: proposed`）写 2–5 条英文查询：范围句改写 2–3 条，lens 内来源共享的评测集各一条。
- 写成临时文件，一行 `<lens> | <query>`。
-2. **搜索与去重**：`python scripts/search_candidates.py <查询文件>`（需环境变量 `SEARXNG_URL`；SearXNG 不常驻，跑前 `docker start searxng`，跑完 `docker stop searxng`）。
+1. **查询**：每个已批准 lens（跳过 `status: proposed`）写 2–5 条英文查询：范围句改写成 `embedding` 查询 2–3 条（一句短问题），lens 内来源共享的评测集名各一条 `keyword` 查询。
+ 写成临时文件，一行 `<lens> | <keyword|embedding> | <query>`。
+2. **搜索与去重**：`python scripts/search_candidates.py <查询文件>`（alphaXiv 公开检索，不需要 key）。
  脚本丢掉近 30 天以外的结果，以及 URL 已在来源页、`inbox/links.md`、`inbox/proposals.md`、`wiki/search-rejections.yaml` 里的结果
  （arXiv 同编号算同一来源），以及标题或摘要点名库内工作的结果。
 3. **写候选**：只读脚本给的标题与摘要，不抓全文。按与 lens 范围的相关度挑最多 10 条，在 `inbox/proposals.md` 末尾追加：
