@@ -9,7 +9,7 @@ benchmarks: []
 methods: []
 models_used: ["[[DINOv3]]"]
 models_compared: []
-lenses: []
+lenses: ["[[interactive-video-world-models]]"]
 ---
 # CADRE
 
