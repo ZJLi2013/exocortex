@@ -1,6 +1,6 @@
 # feed
 
-替 human 读他的关注网络：GitHub feed 与一份头部团队清单的官方渠道。两个源的信号按「工作」（规范化 URL）合在一起，每个工作用同一个偏好判定判一次，结果写进一个候选文件，由 [agents/collector.md](../agents/collector.md) 的「feed 收录」读取。
+替 human 读他的关注网络：GitHub feed 与一份头部团队清单的官方渠道，外加 3dgen_tracker 每天评审入选的前 5 篇 arXiv 论文。各源的信号按「工作」（规范化 URL）合在一起，每个工作用同一个偏好判定判一次，结果写进一个候选文件，由 [agents/collector.md](../agents/collector.md) 的「feed 收录」读取。
 
 ## 每天的流程
 

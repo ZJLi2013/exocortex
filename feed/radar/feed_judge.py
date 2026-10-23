@@ -57,6 +57,11 @@ def snapshot_name(key: str) -> str:
     return repo.replace("/", "__") if repo else re.sub(r"[^A-Za-z0-9]+", "_", key).strip("_")[:120]
 
 
+def channel_rows(store: Path) -> list[dict]:
+    """Company channel signals plus 3dgen_tracker's daily picks (`tracker/signals.jsonl`, same row shape, mounted read-only)."""
+    return read_rows(store / "company" / "signals.jsonl") + read_rows(store / "tracker" / "signals.jsonl")
+
+
 def aggregate(signals: list[dict], company: list[dict] = ()) -> dict:
     works = defaultdict(lambda: {"followers": set(), "kinds": set(), "trending": False, "channels": [],
                                  "url": None, "title": "", "published": None, "first_seen": None})
@@ -95,7 +100,8 @@ def signal_parts(w: dict) -> list[str]:
     parts = [f"{len(w['followers'])} 位关注者 {' / '.join(sorted(w['kinds']))}"] if w["followers"] else []
     parts += ["GitHub trending"] if w["trending"] else []
     published = f"，发布于 {w['published']}" if w["published"] else ""
-    return parts + [f"公司渠道 {c['entity']}（{c['type']}{published}）" for c in w["channels"]]
+    return parts + [f"3dgen_tracker 精选{published}" if c["type"] == "tracker" else f"公司渠道 {c['entity']}（{c['type']}{published}）"
+                    for c in w["channels"]]
 
 
 def candidates(works: dict, judgments: list[dict], today: date) -> list[dict]:
@@ -308,7 +314,7 @@ def run(store: Path, get, provider, model: str, run_id: str, now: datetime, fetc
     judgments = read_rows(judgments_path)
     judged = {j["key"] for j in judgments}
     skipped = {r["key"] for r in read_rows(skipped_path)}
-    works = aggregate(read_rows(store / "signals.jsonl"), read_rows(store / "company" / "signals.jsonl"))
+    works = aggregate(read_rows(store / "signals.jsonl"), channel_rows(store))
     errors, calls, retries_left = [], 0, HTTP_RETRY_BUDGET
     new_rejections = import_rejections(store, rejections, judgments, get, fetch) if rejections else 0
     try:

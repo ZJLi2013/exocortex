@@ -131,6 +131,23 @@ def test_company_only_works_leave_the_queue_after_14_days(tmp_path):
     assert check_feed_judge(store) == []
 
 
+def test_tracker_picks_are_a_third_source_judged_like_company_signals(tmp_path):
+    store = make_store(tmp_path, [])
+    (store / "tracker").mkdir()
+    append_rows(store / "tracker" / "signals.jsonl", [
+        {"key": k, "url": f"https://{k}", "title": t, "published": p, "entity": "3dgen_tracker", "type": "tracker",
+         "run_date": "2026-10-20"}
+        for k, t, p in (("arxiv.org/abs/2610.00001", "Fresh pick", "2026-10-19"),
+                        ("arxiv.org/abs/2609.00002", "Stale pick", "2026-09-01"))])
+    pages = {k: ("<p>An agent that controls a robot.</p>", None) for k in ("arxiv.org/abs/2610.00001", "arxiv.org/abs/2609.00002")}
+    provider = Provider(yes=set(pages))
+    feed_judge.run(store, fake_github({}, {}, []), provider, "m", RUN, NOW, fetch=fake_pages(pages))
+    assert "3dgen_tracker 精选，发布于 2026-10-19" in provider.prompts["arxiv.org/abs/2610.00001"]
+    queue = json.loads((store / "candidates.json").read_text(encoding="utf-8"))["works"]
+    assert [c["key"] for c in queue] == ["arxiv.org/abs/2610.00001"]
+    assert check_feed_judge(store) == []
+
+
 def test_own_active_repos_enter_the_context(tmp_path):
     store = make_store(tmp_path, [("star", "u1", "a/x")])
     provider = Provider()
