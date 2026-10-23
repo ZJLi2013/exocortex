@@ -1,15 +1,15 @@
 # 搜索候选来源
 
-agent 用 SearXNG 按已批准的 lens 搜新工作，只写候选清单；收不收由 human 决定，`inbox/links.md` 仍只归 human 写。
+agent 用 alphaXiv 公开检索按已批准的 lens 搜新工作，只写候选清单；收不收由 human 决定，`inbox/links.md` 仍只归 human 写。
 
-本机网络下只有 arXiv 引擎可用，候选全是论文，项目页与仓库搜不到。GitHub 与网页引擎待后续支持（如 GitHub 改走已登录的 `gh api`），或换到不做 TLS 拦截的网络后再开。
+检索只覆盖 arXiv，候选全是论文，项目页与仓库搜不到。
 
 ## 流程
 
 ```text
 human 说「搜索候选」
   → 每个已批准 lens 生成查询
-  → SearXNG 搜（只读结果摘要，不抓全文）
+  → alphaXiv 检索（只读标题与摘要，不抓全文）
   → 去重
   → 追加到 inbox/proposals.md
   → human 处置：收下的移进 inbox/links.md，之后照常「收录 inbox」
@@ -19,12 +19,13 @@ human 说「搜索候选」
 
 ## 查询从哪来
 
-- 每个已批准 lens 的范围句改写成 2–3 条英文关键词查询；
-- lens 内来源共享的评测集节点（如 RoboDojo、LIBERO-Pro）各一条；
-- 每个 lens 最多 5 条；参数 `format=json`。当前只开 `arxiv` 引擎（脚本默认），GitHub 与网页引擎待后续支持，或网络能访问后再开，可用 `--engines` 换。
-- 不传 `time_range`：SearXNG 会跳过不支持它的引擎（arXiv 就不支持），近 30 天由脚本按 `publishedDate` 过滤，没有日期的结果保留。
+- 每个已批准 lens 的范围句改写成 2–3 条 `embedding` 查询：一句短问题，在标题与摘要上做语义检索；
+- lens 内来源共享的评测集名（如 RoboDojo、LIBERO-Pro）各一条 `keyword` 查询：在标题、摘要与全文里精确匹配；
+- 每个 lens 最多 5 条；`--days`（默认 30）作为发表日期下限传给检索，`--days 0` 不设下限。
 
 `status: proposed` 的候选 lens 不生成查询。
+
+检索接口是 `https://api.alphaxiv.org/search/v2/paper/discover/{keyword|embedding}`（OpenResearch CLI 用的同一组），不需要 key，每条查询返回 15–25 篇；按 IP 限流，429 时脚本按 `Retry-After` 退避。使用条款未核实，只做每次几条查询的轻量调用。
 
 ## 去重
 
@@ -37,6 +38,8 @@ human 说「搜索候选」
 arXiv 的 `abs/`、`html/`、`pdf/` 同一编号算同一来源。
 
 从仓库或项目页收录的来源，搜索会以它的论文、换一个 URL 返回（RAX 就是这样），所以也按工作名去重：标题以库内来源页的工作名加冒号开头，或摘要写了「introduce(s) <工作名>」，就丢弃。只在评测里提到库内工作名（如「on RoboDojo」）的不丢。
+
+insight 查新要看到已知工作，用 `--include-known`：已知的不丢，`known` 字段标出它在哪。
 
 ## 候选格式
 
@@ -69,27 +72,5 @@ arXiv 的 `abs/`、`html/`、`pdf/` 同一编号算同一来源。
 ## 边界
 
 - agent 不写 `inbox/links.md`，不触发收录，不改 lens 与来源页。
-- SearXNG 在本机 WSL 的 Docker 里按需跑，不常驻，不需要另一台服务器；镜像 265 MB，运行时内存约 100 MB。实例地址放本地环境变量 `SEARXNG_URL`，不进仓库。
- 每次「搜索候选」前 `docker start searxng`，跑完 `docker stop searxng`。部署（只做一次）：
-
- ```bash
- mkdir -p ~/searxng/config   # 写入下面的 settings.yml
- docker run -d --name searxng --restart no -p 127.0.0.1:8888:8080 \
-   -v ~/searxng/config:/etc/searxng searxng/searxng:latest
- ```
-
- ```yaml
- use_default_settings: true
- server:
-   secret_key: "<openssl rand -hex 32>"
-   limiter: false
- search:
-   formats: [html, json]   # 默认只有 html，请求 JSON 返回 403
- outgoing:
-   request_timeout: 10.0
- ```
-
- 容器启动后会把配置目录改成容器用户所有，之后改配置用 `docker exec -i searxng sh -c 'cat >> /etc/searxng/settings.yml'`。
- 网络做 TLS 拦截时，网页引擎报证书错误，要把拦截根证书拼进 CA 包，再设 `outgoing.verify`。
-- 搜索请求与去重由脚本做，查询改写、相关度排序与一句理由由 agent 写。
-- SearXNG 连不上或返回 403 是环境问题，按上面的部署说明修。
+- 检索请求与去重由脚本做，查询改写、相关度排序与一句理由由 agent 写。
+- 已知重叠工作的召回不稳（2026-10-23 在 agentic-robotics 三条方向上两轮只召回 0–1/4），适合找新来源，不适合当「没人做过」的依据。

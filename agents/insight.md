@@ -39,6 +39,7 @@ updated: YYYY-MM-DD
    - 已做 → 改写 Gap 或删掉这条方向；
    - 部分重叠 → 重叠工作有来源页的，在 Why 或 Gap 里链上；没有的，URL 追加进 `inbox/proposals.md`（`## [YYYY-MM-DD] novelty <lens>` 一节）等 human 处置，方向里不引用；
    - 只读了摘要的比较写「摘要未说明」，不写成「没人做」。那个库只含 tracker 入选与本库导入的论文，查不到不等于没人做。
+   - 全 arXiv 检索（`scripts/search_candidates.py --days 0 --include-known`）只作线索：命中的相关工作照上面进 proposals，不作「未见」的依据——已知重叠工作它两轮只召回 0–1/4。
 4. 逐条过自检，过不了的删掉，不改写到勉强通过：
    - 只复述某一项工作的摘要或贡献 → 删；
    - 放到任何领域都成立（「需要更多数据」「提升泛化」「走向真实部署」）→ 删；
