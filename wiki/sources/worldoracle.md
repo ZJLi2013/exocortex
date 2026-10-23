@@ -9,7 +9,7 @@ benchmarks: []
 methods: []
 models_used: ["[[π0.5-DROID]]", "[[GPT-5.5]]", "[[GPT-5.6 Luna]]", "[[SAM3]]"]
 models_compared: ["[[GE-Sim 2.0]]", "[[Cosmos 3 Nano]]", "[[DreamDojo]]", "[[IRASim]]", "[[ctrl-world]]"]
-lenses: []
+lenses: ["[[interactive-video-world-models]]"]
 ---
 # WorldOracle
 

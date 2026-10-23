@@ -9,7 +9,7 @@ benchmarks: []
 methods: []
 models_used: ["[[Stable Video Diffusion]]", "[[π0.5-DROID]]"]
 models_compared: []
-lenses: []
+lenses: ["[[interactive-video-world-models]]"]
 ---
 # Ctrl-World
 

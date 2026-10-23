@@ -9,7 +9,7 @@ benchmarks: []
 methods: []
 models_used: ["[[Wan2.2-5B]]", "[[Wan2.2-14B]]", "[[LTX-2.5]]", "[[MiniMax-H3]]", "[[Kimi-K2.6]]"]
 models_compared: []
-lenses: []
+lenses: ["[[interactive-video-world-models]]"]
 ---
 # SolarWM
 
