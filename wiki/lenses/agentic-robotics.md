@@ -10,7 +10,7 @@ tags: [agentic-robotics]
 
 ## 总结
 
-11 个系统让 agent 从执行反馈中把经验沉淀成模型外的技能、程序、记忆或 harness，4 个 benchmark 评测这类 agent，其中一个同时评 VLA 策略，另有一个把 LLM agent、code-as-policy 与 VLA 接到同一套真机与仿真接口上的评测框架；另有一项实证研究比较前沿模型直接出动作、在 agent 会话里出动作、监督学习策略三种用法。常见评测是 RoboDojo、LIBERO-Pro、BEHAVIOR-1K、RoboCasa。只有一个系统的分数由 benchmark 方在隐藏种子上复评，其余都是自报。
+12 个系统让 agent 从执行反馈中把经验沉淀成模型外的技能、程序、记忆或 harness，4 个 benchmark 评测这类 agent，其中一个同时评 VLA 策略，另有一个把 LLM agent、code-as-policy 与 VLA 接到同一套真机与仿真接口上的评测框架；另有一项实证研究比较前沿模型直接出动作、在 agent 会话里出动作、监督学习策略三种用法。常见评测是 RoboDojo、LIBERO-Pro、BEHAVIOR-1K、RoboCasa。只有一个系统的分数由 benchmark 方在隐藏种子上复评，其余都是自报。
 
 ## 工作
 
@@ -31,3 +31,4 @@ tags: [agentic-robotics]
 - [[astranomy]]：GPT-6 Astra 当原生机器人策略的三种用法；RoboLab-120 上 Codex 会话里的 Agentic Policy 74.8%，每个成功回合约 $36.40。（自报）
 - [[robodoctor]]：agent 审查、修正或接管冻结 PrismWAM 的动作，按 Warmup 分数选控制方式，再更新干预经验；RoboDojo 54 个任务本地 Refinement 57.10 / 49.44%。（自报）
 - [[inspect-robots]]：把前沿 LLM agent、code-as-policy 与 VLA 接到同一套真机与仿真接口上评测，每次运行留可离线重打分的日志；alpha 阶段，未报评测结果。（自报）
+- [[roborsi]]：四个 agent 按任务–技能树执行与改技能，失败定位到最早出问题的节点、只改那一支；LIBERO-PRO 297/600（49.5%）对 OpenETA 231/600（38.5%），真机 104 轮家庭清理。（自报）

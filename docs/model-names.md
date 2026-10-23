@@ -113,3 +113,6 @@
 | HY-Embodied-0.5-VLA | HY-Embodied |
 | Spatial Forcing | — |
 | Motus | — |
+| Grok-4.6 | Grok 4.6 |
+| Seed2.1-Pro-0915 | Seed2.1pro-0915 |
+| MiniMax-M3 | — |
