@@ -8,7 +8,7 @@
 
 ## 与 3dgen_tracker 的配合
 
-3dgen_tracker 是另一个仓库里的每日 arXiv 筛选管线，攒下约 3k 篇论文（含摘要与向量）。两边互通四处：exocortex 收录的 arXiv 来源每天导入它的兴趣语料；它每天评审入选的前 5 篇作为 feed 的第三路信号，与关注网络、公司渠道走同一个偏好判定和收录额度；insight 写方向前在它的库里查新；全 arXiv 检索给 insight 线索，库外的重叠工作回到 proposals 等 human 处置。
+3dgen_tracker 是另一个仓库里的每日 arXiv 筛选管线，攒下约 3k 篇论文（含摘要与向量）。两边互通四处：exocortex 收录的 arXiv 来源每天导入它的兴趣语料；它每天的精选（评审分 ≥ 0.85，篇数不固定）作为 feed 的第三路信号，与关注网络、公司渠道走同一个偏好判定和收录额度；insight 写方向前在它的库里查新；全 arXiv 检索给 insight 线索，库外的重叠工作回到 proposals 等 human 处置。
 
 ```mermaid
 flowchart LR
@@ -26,7 +26,7 @@ flowchart LR
   db -- "查新：query_papers.py prior，只读" --> ins
   srch -. "库外线索" .-> ins
   ins -- "库外重叠工作" --> prop
-  ed -- "前 5 篇：tracker/signals.jsonl" --> feed
+  ed -- "精选：tracker/signals.jsonl" --> feed
 ```
 
 ## 全流程与 human 决策点
