@@ -1,13 +1,13 @@
 ---
 type: insight
 lens: "[[agentic-robotics]]"
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 # agentic-robotics: insight
 
 ## Directions
 
-### Give the agent state estimation, not more reasoning
+### Test whether state estimation, not more reasoning, closes the privileged–standard gap
 
 - **Why**: The top agent in [[embodied-first-exam]] solves 75.5% with privileged simulator state but 33.8% through the robot API. In [[roboquest]], 43–46% of failures are missing evidence, while the execution skills pass 72–81% once the hidden information is given. [[astranomy]] lifts Direct control from 19.3% to 72.7% by writing gripper and camera geometry into the prompt, and [[hexashell]] builds its own dual-view triangulation tool. All self-reported except HexaShell's official score.
 - **Gap**: No work isolates a perception layer: nobody gives the same agent estimated object poses as a tool and measures how much of the privileged–standard gap closes.
@@ -22,7 +22,7 @@ updated: 2026-10-22
 ### Hand contact-rich steps to a learned policy
 
 - **Why**: Agents are weakest where contact precision matters: [[hexashell]] scores 32.0% on RoboDojo Precision against 81.0% on Memory (official), and [[embodiedevo]] reports fine insertion and liquid handling as still hard. Hybrids already call VLAs as skills ([[harnesspai]], [[physicalrsi]], [[sensenova-roborsi]]) or let the agent supervise a policy, but [[robodoctor]] picks the controller per task from a fixed warmup threshold, and [[astranomy]]'s Orchestrated mode (66.5%) trails pure Agentic (74.8%).
-- **Gap**: No work reports per-capability results showing where a handoff helps; routing happens per task, not per step.
+- **Gap**: No work reports per-capability results showing where a handoff to a learned policy helps.
 - **First experiment**: On RoboDojo, compare agent-only against agent-plus-VLA-skill per capability dimension (Precision, Long-horizon, Memory), same agent and seeds.
 
 ## Open problems
